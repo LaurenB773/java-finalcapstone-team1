@@ -14,7 +14,11 @@ CREATE TABLE user_profile (
      profile_id SERIAL PRIMARY KEY,
      user_id INT REFERENCES users(user_id),
      profile_picture varchar(500) NOT NULL,
-     goals TEXT NOT NULL
+);
+
+create table user_goals (
+  goal varchar(50) not null,
+  user_id int references users (user_id)
 );
 
 
@@ -28,12 +32,11 @@ CREATE TABLE exercise(
 );
 
 CREATE TABLE workout_data(
-    workout_data_id SERIAL PRIMARY KEY,
+   workout_data_id SERIAL PRIMARY KEY,
    start_time DATE NOT NULL,
    end_time DATE,
    profile_id int REFERENCES user_profile(profile_id),
    exercise_id int REFERENCES exercise(exercise_id)
-
 );
 
 CREATE TABLE equipment(
