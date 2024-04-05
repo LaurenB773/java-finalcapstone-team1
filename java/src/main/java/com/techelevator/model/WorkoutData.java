@@ -1,6 +1,7 @@
 package com.techelevator.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class WorkoutData {
 
@@ -8,11 +9,7 @@ public class WorkoutData {
   private Date startTime;
   private Date endTime;
   private int profileId;
-  private int exerciseId;
-
-  public WorkoutData() {
-
-  }
+  private List<Exercise> exercises;
 
   public int getWorkoutDataId() {
     return workoutDataId;
@@ -46,19 +43,14 @@ public class WorkoutData {
     this.profileId = profileId;
   }
 
-  public int getExerciseId() {
-    return exerciseId;
-  }
+  public WorkoutData() {
 
-  public void setExerciseId(int exerciseId) {
-    this.exerciseId = exerciseId;
   }
-
   public WorkoutData(int workoutDataId, Date startTime, Date endTime, int profileId, int exerciseId) {
     this.workoutDataId = workoutDataId;
     this.startTime = startTime;
     this.endTime = endTime;
     this.profileId = profileId;
-    this.exerciseId = exerciseId;
+    this.exercises = exercises;
   }
 }
