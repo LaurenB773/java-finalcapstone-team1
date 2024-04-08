@@ -12,9 +12,9 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.techelevator.model.User;
 import com.techelevator.model.UserProfile;
-import com.techelevator.model.auth.RegisterUserDto;
+import com.techelevator.security.model.RegisterUserDto;
+import com.techelevator.security.model.User;
 
 @Component
 public class JdbcUserDao implements UserDao {
@@ -90,8 +90,6 @@ public class JdbcUserDao implements UserDao {
     }
     return newUser;
   }
-
-
 
   private User mapRowToUser(SqlRowSet rs) {
     User user = new User();

@@ -4,9 +4,6 @@ import javax.validation.Valid;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.*;
-import com.techelevator.model.auth.LoginDto;
-import com.techelevator.model.auth.LoginResponseDto;
-import com.techelevator.model.auth.RegisterUserDto;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,10 +15,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.techelevator.dao.UserDao;
 import com.techelevator.dao.UserProfileDao;
+import com.techelevator.security.dao.UserDao;
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
+import com.techelevator.security.model.LoginDto;
+import com.techelevator.security.model.LoginResponseDto;
+import com.techelevator.security.model.RegisterUserDto;
+import com.techelevator.security.model.User;
 
 @RestController
 @CrossOrigin
@@ -72,7 +73,6 @@ public class AuthenticationController {
       if (user == null) {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User registration failed.");
       }
-
 
       // Create a user profile when registering a new user
       UserProfile createdUserProfile = new UserProfile();
