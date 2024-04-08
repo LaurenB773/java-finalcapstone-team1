@@ -69,8 +69,8 @@ public class JdbcUserProfileDao implements UserProfileDao {
   @Override
   public UserProfile createProfile(UserProfile newProfile) {
     UserProfile profileToCreate = null;
-    String sql = "insert into user_profiles (first_name, last_name, email, " +
-            " goal) values(?,?,?,?) returning user_profile_id; ";
+    String sql = "insert into user_profiles (user_id,first_name, last_name, email, " +
+            " goal) values((select user_id from users where user),?,?,?,?) returning user_profile_id; ";
     try{
       int newId = jdbcTemplate.queryForObject(sql,int.class,newProfile.getFirstName(),newProfile.getLastName(),newProfile.getEmail()
               ,newProfile.getGoal());
