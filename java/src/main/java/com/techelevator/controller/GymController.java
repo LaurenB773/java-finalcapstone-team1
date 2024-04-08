@@ -29,8 +29,8 @@ public class GymController {
   }
 
   @GetMapping("/equipment")
-  public List<Equipment> getEquipment() {
-    return equipmentDao.getEquipment();
+  public List<Equipment> getAllEquipment() {
+    return equipmentDao.getAllEquipment();
   }
 
   @GetMapping("/members")

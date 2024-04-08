@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.dao.JdbcUserProfileDao;
 import com.techelevator.model.UserProfile;
+import com.techelevator.model.Workout;
 
 @RestController
 @CrossOrigin
