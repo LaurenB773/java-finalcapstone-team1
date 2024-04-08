@@ -1,7 +1,7 @@
-package com.techelevator.dao;
+package com.techelevator.security.dao;
 
-import com.techelevator.model.RegisterUserDto;
-import com.techelevator.model.User;
+import com.techelevator.security.model.RegisterUserDto;
+import com.techelevator.security.model.User;
 
 import java.util.List;
 

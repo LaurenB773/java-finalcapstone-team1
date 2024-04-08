@@ -44,4 +44,7 @@ public class JdbcProfileDao {
     private UserProfile mapRowToProfile(SqlRowSet results) {
 
     }
+
+    public static class JdbcExerciseDao {
+    }
 }

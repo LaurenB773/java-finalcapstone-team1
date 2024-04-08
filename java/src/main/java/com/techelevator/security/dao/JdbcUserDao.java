@@ -1,11 +1,11 @@
-package com.techelevator.dao;
+package com.techelevator.security.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import com.techelevator.exception.DaoException;
-import com.techelevator.model.RegisterUserDto;
+import com.techelevator.security.model.RegisterUserDto;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +13,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.techelevator.model.User;
+import com.techelevator.security.model.User;
 
 @Component
 public class JdbcUserDao implements UserDao {
