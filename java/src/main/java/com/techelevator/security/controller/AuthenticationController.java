@@ -3,18 +3,11 @@ package com.techelevator.security.controller;
 import javax.validation.Valid;
 
 import com.techelevator.exception.DaoException;
-<<<<<<< HEAD:java/src/main/java/com/techelevator/security/controller/AuthenticationController.java
-import com.techelevator.security.model.LoginDto;
-import com.techelevator.security.model.LoginResponseDto;
-import com.techelevator.security.model.RegisterUserDto;
-import com.techelevator.security.model.User;
-=======
 import com.techelevator.model.*;
 import com.techelevator.model.auth.LoginDto;
 import com.techelevator.model.auth.LoginResponseDto;
 import com.techelevator.model.auth.RegisterUserDto;
 
->>>>>>> 45031a91ae9cabba0db806b4bada7dc5d1d776ea:java/src/main/java/com/techelevator/controller/AuthenticationController.java
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-<<<<<<< HEAD:java/src/main/java/com/techelevator/security/controller/AuthenticationController.java
-import com.techelevator.security.dao.UserDao;
-=======
 import com.techelevator.dao.UserDao;
 import com.techelevator.dao.UserProfileDao;
->>>>>>> 45031a91ae9cabba0db806b4bada7dc5d1d776ea:java/src/main/java/com/techelevator/controller/AuthenticationController.java
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
 

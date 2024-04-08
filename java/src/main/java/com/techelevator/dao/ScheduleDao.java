@@ -12,7 +12,7 @@ public interface ScheduleDao {
      * get all schedules
      * @return List <Schedule>
      */
-    Schedule getAllSchedules(List<Schedule> schedules);
+    List<Schedule> getAllSchedules();
 
     /**
      * get a schedule by Id
@@ -37,12 +37,12 @@ public interface ScheduleDao {
     void deleteSchedule(int id);
 
     /**
-     * creates new user when new account is created based on info
+     * creates new schedule when new schedule is created based on info
      * inserted by user
      * @param newSchedule
-     * @return createdProfile
+     * @return createdSchedule
      */
-    UserProfile createProfile(Schedule newSchedule);
+    UserProfile createSchedule(Schedule newSchedule);
 }
 
 
