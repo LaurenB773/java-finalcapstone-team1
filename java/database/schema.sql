@@ -17,7 +17,7 @@ CREATE TABLE user_profiles (
   first_name varchar(50),
   last_name varchar(50),
   email varchar(200),
-  profile_picture varchar(500) NOT NULL,
+  profile_picture varchar(500) default '',
   goal varchar(50) not null
 );
 CREATE TABLE exercises (
@@ -47,6 +47,6 @@ CREATE TABLE schedules (
   description varchar (200),
   startTime time NOT NULL,
   classDate date NOT NULL,
-  duration time
+  duration_minutes int
 );
 COMMIT TRANSACTION;

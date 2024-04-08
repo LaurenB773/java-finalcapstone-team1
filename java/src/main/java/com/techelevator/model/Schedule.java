@@ -9,12 +9,12 @@ public class Schedule {
     private String description;
     private LocalDate time;
     private LocalDate date;
-    private LocalDate duration;
+    private int duration;
 
         public Schedule() {
         }
 
-        public Schedule(int scheduleID, String title, String instructor, String description, LocalDate time, LocalDate date, LocalDate duration) {
+        public Schedule(int scheduleID, String title, String instructor, String description, LocalDate time, LocalDate date, int duration) {
             this.scheduleId = scheduleID;
             this.title = title;
             this.instructor = instructor;
@@ -24,7 +24,15 @@ public class Schedule {
             this.duration = duration;
         }
 
-        public String getTitle() {
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public String getTitle() {
             return title;
         }
 
@@ -64,11 +72,11 @@ public class Schedule {
             this.date = date;
         }
 
-        public LocalDate getDuration() {
+        public int getDuration() {
             return duration;
         }
 
-        public void setDuration(LocalDate duration) {
+        public void setDuration(int duration) {
             this.duration = duration;
         }
     }
