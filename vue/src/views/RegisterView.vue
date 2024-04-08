@@ -21,9 +21,6 @@
         <label for="confirmPassword">Confirm Password</label>
         <input type="password" id="confirmPassword" v-model="user.confirmPassword" required />
       </div>
-<<<<<<< HEAD
-      
-=======
       <div class="form-input-group">
         <label for="goalSelector">What is your goal with the gym? </label> <!--could put gym name here-->
         <select id="goalSelector" v-model="user.goal"> 
@@ -36,13 +33,12 @@
       </div>
       <div class="form-input-group">
         <label for="first-name">Preferred First Name</label>
-        <input type="text">
+        <input type="text" id="first-name" v-model="user.firstName">
       </div>
       <div class="form-input-group">
         <label for="last-name">Last Name</label>
-        <input type="text" id="last-name" >
+        <input type="text" id="last-name" v-model="user.lastName">
       </div>
->>>>>>> 4a5f36d3b2eaebe7d00af28cff7a2a1597d88b01
       <button type="submit">Create Account</button>
       <p><router-link v-bind:to="{ name: 'login' }">Already have an account? Log in.</router-link></p>
     </form>

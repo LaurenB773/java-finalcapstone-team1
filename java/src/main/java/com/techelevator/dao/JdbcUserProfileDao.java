@@ -4,6 +4,7 @@ import com.techelevator.exception.DaoException;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
 
+import com.techelevator.security.model.User;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,9 +26,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   @Override
   public UserProfile getProfile(int userId) {
-    String sql = "select * from user_profile " +
-        "join user_goals using(user_id) " +
-        "where user_id = ?;";
+    String sql = "select * from user_profiles where user_id = ?;";
 
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
@@ -67,12 +66,11 @@ public class JdbcUserProfileDao implements UserProfileDao {
    */
 
   @Override
-  public UserProfile createProfile(UserProfile newProfile) {
+  public UserProfile createProfile(UserProfile newProfile, int id) {
     UserProfile profileToCreate = null;
-    String sql = "insert into user_profiles (first_name, last_name, email, " +
-            " goal) values(?,?,?,?) returning user_profile_id; ";
+    String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
     try{
-      int newId = jdbcTemplate.queryForObject(sql,int.class,newProfile.getFirstName(),newProfile.getLastName(),newProfile.getEmail()
+      int newId = jdbcTemplate.queryForObject(sql,int.class,id, newProfile.getFirstName(),newProfile.getLastName(),newProfile.getEmail()
               ,newProfile.getGoal());
       profileToCreate = getProfile(newId);
     }catch (CannotGetJdbcConnectionException e) {
@@ -91,7 +89,13 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   private UserProfile mapRowToProfile(SqlRowSet results) {
     UserProfile profile = new UserProfile();
-
+    profile.setProfileId(results.getInt("user_profile_id"));
+    profile.setUserId(results.getInt("user_id"));
+    profile.setFirstName(results.getString("first_name"));
+    profile.setLastName(results.getString("last_name"));
+    profile.setGoal(results.getString("goal"));
+    profile.setEmail(results.getString("email"));
+    profile.setProfilePicture("");
     return profile;
   }
 }

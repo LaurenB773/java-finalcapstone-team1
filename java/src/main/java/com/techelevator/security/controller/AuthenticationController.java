@@ -81,7 +81,7 @@ public class AuthenticationController {
       createdUserProfile.setEmail(newUser.getEmail());
       createdUserProfile.setGoal(newUser.getGoal());
 
-      userProfileDao.createProfile(createdUserProfile);
+      userProfileDao.createProfile(createdUserProfile, user.getId());
 
     } catch (DaoException e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User registration failed.");
