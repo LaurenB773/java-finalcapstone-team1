@@ -1,9 +1,15 @@
 package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
+<<<<<<< HEAD
 import com.techelevator.security.model.RegisterUserDto;
 import com.techelevator.security.model.User;
 import com.techelevator.security.dao.JdbcUserDao;
+=======
+import com.techelevator.model.User;
+import com.techelevator.model.auth.RegisterUserDto;
+
+>>>>>>> 45031a91ae9cabba0db806b4bada7dc5d1d776ea
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

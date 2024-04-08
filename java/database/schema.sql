@@ -10,11 +10,14 @@ CREATE TABLE users (
   username varchar(50) NOT NULL UNIQUE,
   password_hash varchar(200) NOT NULL,
   role varchar(50) NOT NULL,
-  email varchar(200)
 );
 CREATE TABLE user_profiles (
-  user_profile_id SERIAL PRIMARY KEY,
+  profile_id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users (user_id),
+
+  first_name varchar(50),
+  last_name varchar(50),
+  email varchar(200),
   profile_picture varchar(500) NOT NULL,
   goal varchar(50) not null
 );
