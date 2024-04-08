@@ -47,6 +47,6 @@ CREATE TABLE schedules (
   description varchar (200),
   startTime time NOT NULL,
   classDate date NOT NULL,
-  duration time
+  duration_minutes int
 );
 COMMIT TRANSACTION;
