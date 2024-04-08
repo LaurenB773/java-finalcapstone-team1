@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import java.util.List;
 
 import com.techelevator.model.UserProfile;
+import com.techelevator.model.Workout;
 
 public interface UserProfileDao {
 
@@ -11,7 +12,7 @@ public interface UserProfileDao {
    * 
    * @return UserProfile
    */
-  UserProfile getProfile(int id);
+  UserProfile getProfile(int userId);
 
   /**
    * Updates user profile get by id and return new profile,
@@ -22,14 +23,14 @@ public interface UserProfileDao {
    * @return updatedUserProfile
    */
 
-  UserProfile updateProfile(int id, UserProfile profileToUpdate);
+  UserProfile updateProfile(int userId, UserProfile profileToUpdate);
 
   /**
    * deletes user profile, only admin or user can delete profile
    * 
    * @param id
    */
-  void deleteProfile(int id);
+  void deleteProfile(int userId);
 
   /**
    * creates new user when new account is created based on info
@@ -46,4 +47,6 @@ public interface UserProfileDao {
    * @return A list of user profiles is being returned.
    */
   List<UserProfile> getMembers();
+
+  List<Workout> getWorkouts(int userId);
 }

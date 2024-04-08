@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.UserProfile;
+import com.techelevator.model.Workout;
 
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -57,6 +58,11 @@ public class JdbcUserProfileDao implements UserProfileDao {
   @Override
   public UserProfile createProfile(UserProfile newProfile) {
     throw new UnsupportedOperationException("Unimplemented method 'createProfile'");
+  }
+
+  @Override
+  public List<Workout> getWorkouts(int userId) {
+    throw new UnsupportedOperationException("Unimplemented method 'getWorkouts'");
   }
 
   private UserProfile mapRowToProfile(SqlRowSet results) {
