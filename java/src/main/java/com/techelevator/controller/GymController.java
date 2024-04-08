@@ -3,18 +3,21 @@ package com.techelevator.controller;
 import java.security.Principal;
 import java.util.List;
 
-import com.techelevator.dao.EquipmentDao;
-import com.techelevator.dao.ScheduleDao;
-import com.techelevator.model.Schedule;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.techelevator.dao.EquipmentDao;
+import com.techelevator.dao.ScheduleDao;
 import com.techelevator.dao.UserProfileDao;
+
 import com.techelevator.model.Equipment;
+import com.techelevator.model.Schedule;
 import com.techelevator.model.UserProfile;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/gym")
 public class GymController {
 
@@ -40,7 +43,7 @@ public class GymController {
   }
 
   @GetMapping("/schedule")
-  public List<Schedule> getAllSchedule() {
+  public List<Schedule> getAllSchedules() {
     return scheduleDao.getAllSchedules();
   }
 }
