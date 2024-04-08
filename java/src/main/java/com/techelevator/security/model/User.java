@@ -1,4 +1,4 @@
-package com.techelevator.model;
+package com.techelevator.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
