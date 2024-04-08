@@ -5,7 +5,17 @@ import com.techelevator.model.UserProfile;
 
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+
+@Component
 public class JdbcEquipmentDao implements EquipmentDao {
+
+  private JdbcTemplate jdbcTemplate;
+
+  public JdbcEquipmentDao(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
 
   @Override
   public List<Equipment> getAllEquipment() {
