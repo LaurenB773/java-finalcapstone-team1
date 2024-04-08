@@ -21,8 +21,8 @@ public class MemberController {
     }
 
 
-    @RequestMapping(path = "/id", method = RequestMethod.GET)
-    public UserProfile getUserProfile(int id) {
-        return profileDao.getProfile(id);
-    }
+//    @RequestMapping(path = "/id", method = RequestMethod.GET)
+//    public UserProfile getUserProfile(int id) {
+//        return profileDao.getProfile(id);
+//    }
 }

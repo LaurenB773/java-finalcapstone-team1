@@ -16,18 +16,18 @@ public class JdbcProfileDao {
         jdbcTemplate = new JdbcTemplate(datasource);
     }
 
-    UserProfile getProfile(int id) {
-        String sql = "select * from user_profile " +
-                "join user_goals using(user_id) " +
-                "where user_id = ?;";
-        try { // catch the joker
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-
-            if(results.next()) {
-                return mapRowToProfile(results)
-            }
-        }
-    }
+//    UserProfile getProfile(int id) {
+//        String sql = "select * from user_profile " +
+//                "join user_goals using(user_id) " +
+//                "where user_id = ?;";
+//        try { // catch the joker
+//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+//
+//            if(results.next()) {
+//                return mapRowToProfile(results)
+//            }
+//        }
+//    }
 
     UserProfile updateProfile(int id, UserProfile profileToUpdate) {
         return null;
@@ -41,7 +41,7 @@ public class JdbcProfileDao {
         return null;
     }
 
-    private UserProfile mapRowToProfile(SqlRowSet results) {
-
-    }
+//    private UserProfile mapRowToProfile(SqlRowSet results) {
+//
+//    }
 }
