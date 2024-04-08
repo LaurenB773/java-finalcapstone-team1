@@ -1,4 +1,4 @@
-package com.techelevator.model;
+package com.techelevator.security.model;
 
 import java.util.Objects;
 
