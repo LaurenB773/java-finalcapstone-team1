@@ -4,6 +4,10 @@ import javax.validation.Valid;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.*;
+import com.techelevator.model.auth.LoginDto;
+import com.techelevator.model.auth.LoginResponseDto;
+import com.techelevator.model.auth.RegisterUserDto;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.techelevator.dao.UserDao;
+import com.techelevator.dao.UserProfileDao;
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
 
@@ -23,50 +28,64 @@ import com.techelevator.security.jwt.TokenProvider;
 @CrossOrigin
 public class AuthenticationController {
 
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private UserDao userDao;
+  private final TokenProvider tokenProvider;
+  private final AuthenticationManagerBuilder authenticationManagerBuilder;
+  private UserDao userDao;
+  private UserProfileDao userProfileDao;
 
-    public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao) {
-        this.tokenProvider = tokenProvider;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.userDao = userDao;
+  public AuthenticationController(TokenProvider tokenProvider,
+      AuthenticationManagerBuilder authenticationManagerBuilder,
+      UserDao userDao, UserProfileDao userProfileDao) {
+    this.tokenProvider = tokenProvider;
+    this.authenticationManagerBuilder = authenticationManagerBuilder;
+    this.userDao = userDao;
+    this.userProfileDao = userProfileDao;
+  }
+
+  @RequestMapping(path = "/login", method = RequestMethod.POST)
+  public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
+
+    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+        loginDto.getUsername(), loginDto.getPassword());
+
+    Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = tokenProvider.createToken(authentication, false);
+
+    User user;
+    try {
+      user = userDao.getUserByUsername(loginDto.getUsername());
+    } catch (DaoException e) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username or password is incorrect.");
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+    return new ResponseEntity<>(new LoginResponseDto(jwt, user), httpHeaders, HttpStatus.OK);
+  }
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+  @ResponseStatus(HttpStatus.CREATED)
+  @RequestMapping(path = "/register", method = RequestMethod.POST)
+  public void register(@Valid @RequestBody RegisterUserDto newUser) {
 
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication, false);
+    try {
+      User user = userDao.createUser(newUser);
+      if (user == null) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User registration failed.");
+      }
 
-        User user;
-        try {
-            user = userDao.getUserByUsername(loginDto.getUsername());
-        } catch (DaoException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username or password is incorrect.");
-        }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return new ResponseEntity<>(new LoginResponseDto(jwt, user), httpHeaders, HttpStatus.OK);
+      // Create a user profile when registering a new user
+      UserProfile createdUserProfile = new UserProfile();
+      createdUserProfile.setFirstName(newUser.getFirstName());
+      createdUserProfile.setLastName(newUser.getLastName());
+      createdUserProfile.setEmail(newUser.getEmail());
+      createdUserProfile.setGoal(newUser.getGoal());
+
+      userProfileDao.createProfile(createdUserProfile);
+    } catch (DaoException e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User registration failed.");
     }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public void register(@Valid @RequestBody RegisterUserDto newUser) {
-        try {
-            User user = userDao.createUser(newUser);
-            if (user == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User registration failed.");
-            }
-        } catch (DaoException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User registration failed.");
-        }
-    }
+  }
 
 }
-
