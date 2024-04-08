@@ -1,36 +1,30 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.Exercise;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
 import java.util.List;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+public class JdbcExerciseDao implements ExerciseDao{
 
-import com.techelevator.model.Exercise;
+    private final JdbcTemplate jdbcTemplate;
 
-@Component
-public class JdbcExerciseDao implements ExerciseDao {
+    public JdbcExerciseDao(DataSource datasource) {
+        jdbcTemplate = new JdbcTemplate(datasource);
+    }
+    @Override
+    public Exercise startNewExercise() {
+        return null;
+    }
 
-  private JdbcTemplate jdbcTemplate;
+    @Override
+    public List<Exercise> getAllUserExercisesByWorkoutId(int workoutId) {
+        return null;
+    }
 
-  public JdbcExerciseDao(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
-  }
-
-  @Override
-  public Exercise startNewExercise() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'startNewExercise'");
-  }
-
-  @Override
-  public List<Exercise> getAllUserExercisesByWorkoutId(int workoutId) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getAllUserExercisesByWorkoutId'");
-  }
-
-  @Override
-  public Exercise getExerciseById(int id) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getExerciseById'");
-  }
+    @Override
+    public Exercise getExerciseById(int id) {
+        return null;
+    }
 }
