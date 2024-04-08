@@ -12,8 +12,8 @@ CREATE TABLE users (
   role varchar(50) NOT NULL,
   email varchar(200)
 );
-CREATE TABLE user_profiles (
-  user_profile_id SERIAL PRIMARY KEY,
+CREATE TABLE profiles (
+  profile_id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users (user_id),
   profile_picture varchar(500) NOT NULL,
   goal varchar(50) not null

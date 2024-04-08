@@ -4,6 +4,10 @@ import javax.validation.Valid;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.*;
+import com.techelevator.model.auth.LoginDto;
+import com.techelevator.model.auth.LoginResponseDto;
+import com.techelevator.model.auth.RegisterUserDto;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
