@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
+import com.techelevator.security.model.User;
 
 public interface UserProfileDao {
 
@@ -39,7 +40,7 @@ public interface UserProfileDao {
    * @param newProfile
    * @return createdProfile
    */
-  UserProfile createProfile(UserProfile newProfile);
+  UserProfile createProfile(UserProfile newProfile, int userId);
 
   /**
    * The function `getMembers()` returns a list of `UserProfile` objects.
