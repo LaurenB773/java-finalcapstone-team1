@@ -10,6 +10,10 @@
         <input type="text" id="username" v-model="user.username" required autofocus />
       </div>
       <div class="form-input-group">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" v-model="user.email">
+      </div>
+      <div class="form-input-group">
         <label for="password">Password</label>
         <input type="password" id="password" v-model="user.password" required />
       </div>
@@ -17,7 +21,28 @@
         <label for="confirmPassword">Confirm Password</label>
         <input type="password" id="confirmPassword" v-model="user.confirmPassword" required />
       </div>
+<<<<<<< HEAD
       
+=======
+      <div class="form-input-group">
+        <label for="goalSelector">What is your goal with the gym? </label> <!--could put gym name here-->
+        <select id="goalSelector" v-model="user.goal"> 
+          <option value="weight-loss">Weight Loss</option>
+          <option value="strength">Strength/Muscle Building</option>
+          <option value="aesthetics">Aesthetic Body Building</option>
+          <option value="have-fun">To Have Fun</option>
+          <option value="not-sure">Not Sure</option>
+        </select>
+      </div>
+      <div class="form-input-group">
+        <label for="first-name">Preferred First Name</label>
+        <input type="text">
+      </div>
+      <div class="form-input-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" id="last-name" >
+      </div>
+>>>>>>> 4a5f36d3b2eaebe7d00af28cff7a2a1597d88b01
       <button type="submit">Create Account</button>
       <p><router-link v-bind:to="{ name: 'login' }">Already have an account? Log in.</router-link></p>
     </form>
@@ -35,6 +60,11 @@ export default {
         password: '',
         confirmPassword: '',
         role: 'user',
+        goal: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        
       },
       registrationErrors: false,
       registrationErrorMsg: 'There were problems registering this user.',
