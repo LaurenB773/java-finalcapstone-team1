@@ -12,7 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+
+@Component
 public class JdbcEquipmentDao implements EquipmentDao {
+
 
   private final JdbcTemplate jdbcTemplate;
 
