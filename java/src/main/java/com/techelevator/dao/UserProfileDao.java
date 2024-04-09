@@ -12,13 +12,13 @@ public interface UserProfileDao {
    * 
    * @return UserProfile
    */
-  UserProfile getProfile(int userId);
+  UserProfile getProfile(String username);
 
   /**
    * Updates user profile get by id and return new profile,
    * update in database
    * 
-   * @param id
+   * @param userId
    * @param profileToUpdate
    * @return updatedUserProfile
    */
@@ -28,7 +28,7 @@ public interface UserProfileDao {
   /**
    * deletes user profile, only admin or user can delete profile
    * 
-   * @param id
+   * @param userId
    */
   void deleteProfile(int userId);
 
@@ -40,6 +40,7 @@ public interface UserProfileDao {
    * @return createdProfile
    */
   UserProfile createProfile(UserProfile newProfile, int userId);
+
 
   /**
    * The function `getMembers()` returns a list of `UserProfile` objects.
@@ -59,4 +60,6 @@ public interface UserProfileDao {
    * @return A list of Workout objects for the specified userId.
    */
   List<Workout> getWorkouts(int userId);
+  UserProfile getProfileById(int id);
 }
+

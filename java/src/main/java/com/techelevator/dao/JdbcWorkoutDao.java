@@ -2,7 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Workout;
-
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -56,7 +56,41 @@ public class JdbcWorkoutDao implements WorkoutDao {
     return null;
   }
 
-  @Override
+  public Workout createWorkout (Workout newWorkout) {
+    Workout workoutToCreate = null;
+    String sql = "INSERT INTO workouts (workout_id, start_time, end_time, user_profile_id) " +
+            "VALUES (?, ?, ?, ?) returning workout_id";
+    try {
+      int id = jdbcTemplate.queryForObject(sql, int.class, newWorkout.getStartTime(),
+              newWorkout.getEndTime(), newWorkout.getUserProfileId());
+      workoutToCreate = getWorkoutById(id);
+    }
+    catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+    return workoutToCreate;
+  }
+
+
+  public Workout updateWorkout(int id, Workout workoutToUpdate) {
+    String sql = "UPDATE schedules SET workout_id = ?, start_time = ?, " +
+            "end_time = ?, user_profile_id = ?;";
+    try {
+      int numberOfRowsAffected = jdbcTemplate.update(sql, workoutToUpdate.getWorkoutId(), workoutToUpdate.getStartTime(),
+              workoutToUpdate.getEndTime(), workoutToUpdate.getUserProfileId());
+      if (numberOfRowsAffected > 0) {
+        return workoutToUpdate;
+      } else {
+        throw new DaoException("Cannot find workout");
+      }
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+  }
   public void startWorkout(int userProfileId, int workoutId) {
     String sql = "insert into workouts (user_profile_id, workout_id, start_time) values (?, ?, ?)";
 
@@ -66,7 +100,6 @@ public class JdbcWorkoutDao implements WorkoutDao {
       throw new DaoException(e.getMessage());
     }
   }
-
   @Override
   public void endWorkout(int userProfileId, int workoutId) {
     String sql = "update workouts set end_time = ? where user_profile_id = ? and workout_id = ?";

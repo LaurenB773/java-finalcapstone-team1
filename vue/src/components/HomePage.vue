@@ -2,21 +2,22 @@
     <div>
         <h1>Welcome (put username here)</h1>
 
-        <div class="schedule">
-            <h1>Scheduled Events</h1>
-            <scheduled-event v-for="event in schedules" :key="event.schedule_id"/> 
-        </div>
+        <button @click="viewSchedule()">Schedule</button>
     </div>
 </template>
 
 <script>
-import ScheduledEvent from '../components/ScheduledEvent.vue';
-
+import UserService from '../services/UserService'
 export default {
-    props: ['schedules'],
 
+   
     components: {
-        ScheduledEvent
+        
+    },
+    methods: {
+        viewSchedule() {
+            this.$router.push('/gym/schedule');
+        }
     }
 }
 </script>
