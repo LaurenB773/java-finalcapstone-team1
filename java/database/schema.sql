@@ -22,11 +22,11 @@ CREATE TABLE user_profiles (
 );
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
+  equipment_id int references equipments (equipment_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes int,
   reps int NOT NULL,
-  weight NUMERIC(5, 2) NOT NULL,
-  equipment varchar(50) NOT NULL
+  weight NUMERIC(5, 2) NOT NULL
 );
 CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
