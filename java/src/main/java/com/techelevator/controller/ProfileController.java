@@ -24,8 +24,8 @@ public class ProfileController {
   }
 
   @GetMapping
-  public UserProfile getUserProfile(int userId) {
-    return userProfileDao.getProfile(userId);
+  public UserProfile getUserProfile(String username) {
+    return userProfileDao.getProfile(username);
   }
 
   @GetMapping("/workouts")

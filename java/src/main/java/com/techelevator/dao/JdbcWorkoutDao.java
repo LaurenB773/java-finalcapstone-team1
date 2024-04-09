@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Workout;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -39,23 +40,60 @@ public class JdbcWorkoutDao implements WorkoutDao {
 
   @Override
   public Workout getWorkoutById(int id) {
+    String sql = "select * from workouts where workout_id = ?;";
+
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+      if (results.next()) {
+        return mapToRowWorkout(results);
+      }
+    }catch (CannotGetJdbcConnectionException e){
+      throw new DaoException(e.getMessage());
+    }
     return null;
+  }
+  @Override
+  public Workout createWorkout (Workout newWorkout) {
+    Workout workoutToCreate = null;
+    String sql = "INSERT INTO workouts (workout_id, start_time, end_time, user_profile_id) " +
+            "VALUES (?, ?, ?, ?) returning workout_id";
+    try {
+      int id = jdbcTemplate.queryForObject(sql, int.class, newWorkout.getStartTime(),
+              newWorkout.getEndTime(), newWorkout.getProfileId());
+      workoutToCreate = getWorkoutById(id);
+    }
+    catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+    return workoutToCreate;
   }
 
   @Override
   public Workout updateWorkout(int id, Workout workoutToUpdate) {
-    return null;
-  }
+    String sql = "UPDATE schedules SET workout_id = ?, start_time = ?, " +
+            "end_time = ?, user_profile_id = ?;";
+    try {
+      int numberOfRowsAffected = jdbcTemplate.update(sql, workoutToUpdate.getWorkoutId(), workoutToUpdate.getStartTime(),
+              workoutToUpdate.getEndTime(), workoutToUpdate.getProfileId());
+      if (numberOfRowsAffected > 0) {
+        return workoutToUpdate;
+      } else {
+        throw new DaoException("Cannot find workout");
+      }
+    }catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
 
+  }
   @Override
   public void deleteWorkout(int id) {
 
   }
 
-  @Override
-  public Workout createWorkout (Workout newWorkout) {
-    return null;
-  }
   private Workout mapToRowWorkout(SqlRowSet results){
     Workout workout = new Workout();
     workout.setWorkoutId(results.getInt("workout_id"));

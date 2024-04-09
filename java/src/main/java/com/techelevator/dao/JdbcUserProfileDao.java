@@ -25,7 +25,22 @@ public class JdbcUserProfileDao implements UserProfileDao {
   }
 
   @Override
-  public UserProfile getProfile(int userId) {
+  public UserProfile getProfile(String username) {
+    String sql = "select * from user_profiles where user_id = (select user_id from users where username = ?);";
+
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+
+      if (results.next()) {
+        return mapRowToProfile(results);
+      }
+    } catch (CannotGetJdbcConnectionException e) {}
+
+    return null;
+  }
+
+
+  public UserProfile getProfileById(int userId) {
     String sql = "select * from user_profiles where user_id = ?;";
 
     try {
@@ -38,7 +53,6 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
     return null;
   }
-
   @Override
   public List<UserProfile> getMembers() {
     List<UserProfile> listOfMembers = new ArrayList<>();
@@ -113,7 +127,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
         newProfile.getEmail(),
         newProfile.getGoal()
       );
-      profileToCreate = getProfile(newId);
+      profileToCreate = getProfileById(newId);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
