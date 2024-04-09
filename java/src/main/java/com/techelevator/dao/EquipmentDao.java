@@ -29,7 +29,7 @@ public interface EquipmentDao {
    * @return updatedEquipment
    */
 
-  UserProfile updateEquipment(int id, Equipment equipmentToUpdate);
+  Equipment updateEquipment(int id, Equipment equipmentToUpdate);
 
   /**
    * deletes equipment

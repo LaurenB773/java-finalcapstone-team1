@@ -1,5 +1,10 @@
 package com.techelevator.dao;
 
-public interface WorkoutDao {
+import com.techelevator.model.Workout;
 
+import java.util.List;
+
+public interface WorkoutDao {
 }
+
+

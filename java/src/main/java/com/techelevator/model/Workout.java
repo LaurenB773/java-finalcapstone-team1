@@ -1,37 +1,38 @@
 package com.techelevator.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class Workout {
 
     private int workoutId;
-    private Date startTime;
-    private Date endTime;
+    private LocalDate startTime;
+    private LocalDate endTime;
     private int profileId;
     private List<Exercise> exercises;
 
-    public int getWorkoutDataId() {
+    public int getWorkoutId() {
         return workoutId;
     }
 
-    public void setWorkoutDataId(int workoutDataId) {
+    public void setWorkoutId(int workoutDataId) {
         this.workoutId = workoutDataId;
     }
 
-    public Date getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
 
@@ -46,7 +47,7 @@ public class Workout {
     public Workout() {
 
     }
-    public Workout(int workoutDataId, Date startTime, Date endTime, int profileId, int exerciseId) {
+    public Workout(int workoutDataId, LocalDate startTime, LocalDate endTime, int profileId, int exerciseId) {
         this.workoutId = workoutDataId;
         this.startTime = startTime;
         this.endTime = endTime;
