@@ -54,12 +54,12 @@ public class ProfileController {
     return userProfileDao.getWorkouts(user.getId());
   }
 
-  @PutMapping("/workouts/start") // todo
+  @PutMapping("/workouts/start")
   public void startWorkout(int userProfileId, int workoutId) {
     workoutDao.startWorkout(userProfileId, workoutId);
   }
 
-  @PutMapping("/workouts/end") // todo
+  @PutMapping("/workouts/end")
   public void endWorkout(int userProfileId, int workoutId) {
     workoutDao.endWorkout(userProfileId, workoutId);
   }

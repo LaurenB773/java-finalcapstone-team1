@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,12 +54,14 @@ public class JdbcScheduleDao implements ScheduleDao {
 
   @Override
   public Schedule updateSchedule(int id, Schedule scheduleToUpdate) {
-    String sql = "UPDATE schedules SET title = ?, instructor = ?, description = ?, classDate = ?, " +
-        "startTime = ?, duration_minutes = ? WHERE schedule_id = ?";
+    String sql = "UPDATE schedules SET title = ?, instructor = ?, description = ? " +
+        "classTime = ?, duration_minutes = ? WHERE schedule_id = ?";
     try {
-      int numberOfRowsAffected = jdbcTemplate.update(sql, scheduleToUpdate.getTitle(), scheduleToUpdate.getInstructor(),
-          scheduleToUpdate.getDescription(), scheduleToUpdate.getDate(), scheduleToUpdate.getTime(),
-          scheduleToUpdate.getTime(), scheduleToUpdate.getDuration(), id);
+      int numberOfRowsAffected = jdbcTemplate.update(sql,
+          scheduleToUpdate.getTitle(), scheduleToUpdate.getInstructor(),
+          scheduleToUpdate.getDescription(), scheduleToUpdate.getClassTime(),
+          scheduleToUpdate.getDuration(), id);
+
       if (numberOfRowsAffected > 0) {
         return scheduleToUpdate;
       } else {
@@ -94,14 +96,13 @@ public class JdbcScheduleDao implements ScheduleDao {
   @Override
   public Schedule createSchedule(Schedule newSchedule) {
     Schedule scheduleToCreate = null;
-    String sql = "INSERT INTO schedules (title, instructor, description, classDate, startTime, duration_minutes) " +
-        "VALUES (?, ?, ?, ?, ?, ?) returning schedule_id";
+    String sql = "INSERT INTO schedules (title, instructor, description, classTime, duration_minutes) " +
+        "VALUES (?, ?, ?, ?, ?) returning schedule_id";
     try {
       int id = jdbcTemplate.queryForObject(sql, int.class, newSchedule.getTitle(),
           newSchedule.getInstructor(),
           newSchedule.getDescription(),
-          newSchedule.getDate(),
-          newSchedule.getTime(),
+          newSchedule.getClassTime(),
           newSchedule.getDuration());
       scheduleToCreate = getSchedule(id);
     } catch (CannotGetJdbcConnectionException e) {
@@ -117,11 +118,12 @@ public class JdbcScheduleDao implements ScheduleDao {
     schedule.setScheduleId(results.getInt("schedule_id"));
     schedule.setTitle(results.getString("title"));
     schedule.setDescription(results.getString("description"));
-    LocalDate classDate = results.getDate("classDate").toLocalDate();
-    schedule.setDate(classDate);
-    LocalDate startTime = results.getDate("start_time").toLocalDate();
-    schedule.setTime(startTime);
+
+    LocalDateTime classTime = results.getTimestamp("class_time").toLocalDateTime();
+    schedule.setClassTime(classTime);
+
     schedule.setDuration(results.getInt("duration_minutes"));
+
     return schedule;
   }
 }
