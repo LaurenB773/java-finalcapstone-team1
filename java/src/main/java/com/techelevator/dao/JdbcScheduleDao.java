@@ -2,9 +2,7 @@ package com.techelevator.dao;
 
 
 import com.techelevator.exception.DaoException;
-import com.techelevator.model.Equipment;
 import com.techelevator.model.Schedule;
-import com.techelevator.model.UserProfile;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +55,7 @@ public class JdbcScheduleDao implements ScheduleDao {
     }
 
   @Override
-  public UserProfile updateSchedule(int id, Schedule scheduleToUpdate) {
+  public Schedule updateSchedule(int id, Schedule scheduleToUpdate) {
       String sql = "UPDATE schedules SET title = ?, instructor = ?, description = ?, classDate = ?, " +
                    "startTime = ?, duration_minutes = ? WHERE schedule_id = ?";
       try {
@@ -97,7 +94,7 @@ public class JdbcScheduleDao implements ScheduleDao {
   }
 
     @Override
-    public UserProfile createSchedule(Schedule newSchedule) {
+    public Schedule createSchedule(Schedule newSchedule) {
         Schedule scheduleToCreate = null;
         String sql = "INSERT INTO schedules (title, instructor, description, classDate, startTime, duration_minutes) " +
                 "VALUES (?, ?, ?, ?, ?, ?) returning schedule_id";
