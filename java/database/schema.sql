@@ -1,56 +1,61 @@
 BEGIN TRANSACTION;
 DROP TABLE IF EXISTS users,
 user_profiles,
-workouts,
-exercises,
 equipments,
+exercises,
+workouts,
 workout_exercises,
 schedules;
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
-  username varchar(50) NOT NULL UNIQUE,
-  password_hash varchar(200) NOT NULL,
-  role varchar(50) NOT NULL
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(200) NOT NULL,
+  role VARCHAR(50) NOT NULL
 );
 CREATE TABLE user_profiles (
   user_profile_id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users (user_id),
-  first_name varchar(50),
-  last_name varchar(50),
-  email varchar(200),
-  profile_picture varchar(500) default '',
-  goal varchar(50) not null
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  email VARCHAR(200),
+  profile_picture VARCHAR(500) default '',
+  goal VARCHAR(50)
 );
 CREATE TABLE equipments (
   equipment_id SERIAL PRIMARY KEY,
   equipment_name varchar(100),
-  used_time_minutes int
+  used_time_minutes INT
 );
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
-  equipment_id int references equipments(equipment_id),
+  equipment_id INT references equipments(equipment_id),
   exercise_name varchar(100) NOT NULL,
-  exercise_duration_minutes int,
-  reps int NOT NULL,
+  exercise_duration_minutes INT,
+  reps INT NOT NULL,
   weight NUMERIC(5, 2) NOT NULL
 );
 CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
-  start_time DATE NOT NULL,
-  end_time DATE,
-  user_profile_id int REFERENCES user_profiles (user_profile_id)
+  start_time TIMESTAMP NOT NULL,
+  end_time TIMESTAMP,
+  user_profile_id INT REFERENCES user_profiles (user_profile_id)
 );
 CREATE TABLE workout_exercises(
-  workout_id int REFERENCES workouts (workout_id) NOT NULL,
-  exercise_id int REFERENCES exercises (exercise_id) NOT NULL
+  workout_id INT REFERENCES workouts (workout_id) NOT NULL,
+  exercise_id INT REFERENCES exercises (exercise_id) NOT NULL
 );
 CREATE TABLE schedules (
   schedule_id SERIAL PRIMARY KEY,
-  title varchar(100) NOT NULL,
-  instructor varchar(50) NOT NULL,
-  description varchar (200),
-  startTime time NOT NULL,
-  classDate date NOT NULL,
-  duration_minutes int
+  title VARCHAR(100) NOT NULL,
+  instructor VARCHAR(50) NOT NULL,
+  description VARCHAR (200),
+  class_time TIMESTAMP NOT NULL,
+  duration_minutes INT
+);
+CREATE TABLE checkins (
+  checkin_id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users (user_id),
+  checkin_time TIMESTAMP,
+  checkout_time TIMESTAMP
 );
 COMMIT TRANSACTION;

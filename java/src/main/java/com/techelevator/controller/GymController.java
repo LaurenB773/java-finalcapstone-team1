@@ -48,7 +48,7 @@ public class GymController {
 
   @GetMapping("/members/{id}")
   public UserProfile getMember(int id) {
-    return userProfileDao.getProfileById(id);
+    return userProfileDao.getProfile(id);
   }
 
   @GetMapping("/schedule")

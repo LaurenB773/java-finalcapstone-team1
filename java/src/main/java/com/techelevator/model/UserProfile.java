@@ -1,10 +1,18 @@
 package com.techelevator.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserProfile {
   private String firstName;
   private String lastName;
   private String email;
   private String goal;
+
+  @JsonProperty("user_profile_id")
+  private int profileId;
+
+  private int userId;
+  private String profilePicture;
 
   public String getFirstName() {
     return firstName;
@@ -38,20 +46,6 @@ public class UserProfile {
     this.goal = goal;
   }
 
-  private int profileId;
-  private int userId;
-  private String profilePicture;
-
-  public UserProfile() {
-
-  }
-
-  public UserProfile(int profileId, int userId, String profilePicture) {
-    this.profileId = profileId;
-    this.userId = userId;
-    this.profilePicture = profilePicture;
-  }
-
   public int getProfileId() {
     return profileId;
   }
@@ -74,6 +68,21 @@ public class UserProfile {
 
   public void setProfilePicture(String profilePicture) {
     this.profilePicture = profilePicture;
+  }
+
+  public UserProfile(String firstName, String lastName, String email, String goal, int profileId, int userId,
+      String profilePicture) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.goal = goal;
+    this.profileId = profileId;
+    this.userId = userId;
+    this.profilePicture = profilePicture;
+  }
+
+  public UserProfile() {
+
   }
 
 }
