@@ -2,7 +2,11 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Workout;
+<<<<<<< HEAD
 import org.springframework.dao.DataIntegrityViolationException;
+=======
+
+>>>>>>> ed4335761cfa268bcc32715465cbe17f6a4ed20d
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -20,26 +24,28 @@ public class JdbcWorkoutDao implements WorkoutDao {
   public JdbcWorkoutDao(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
-  // We need to be able to get a list of exercises in a workout
 
   @Override
-  public List<Workout> getAllWorkouts() {
-    List <Workout> allWorkouts = new ArrayList<>();
+  public List<Workout> getWorkouts() {
     String sql = "select * from workouts";
+    List<Workout> workouts = new ArrayList<>();
 
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+
       while (results.next()) {
-        allWorkouts.add(mapToRowWorkout(results));
+        workouts.add(mapRowToWorkout(results));
       }
-    }catch (CannotGetJdbcConnectionException e){
+    } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }
-    return allWorkouts;
+
+    return workouts;
   }
 
   @Override
   public Workout getWorkoutById(int id) {
+<<<<<<< HEAD
     String sql = "select * from workouts where workout_id = ?;";
 
     try {
@@ -50,6 +56,20 @@ public class JdbcWorkoutDao implements WorkoutDao {
     }catch (CannotGetJdbcConnectionException e){
       throw new DaoException(e.getMessage());
     }
+=======
+    String sql = "select * from workouts where workout_id = ?";
+
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+
+      if (results.next()) {
+        return mapRowToWorkout(results);
+      }
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
+
+>>>>>>> ed4335761cfa268bcc32715465cbe17f6a4ed20d
     return null;
   }
   @Override
@@ -87,22 +107,43 @@ public class JdbcWorkoutDao implements WorkoutDao {
     } catch (DataIntegrityViolationException e) {
       throw new DaoException("Data integrity violation", e);
     }
+    }
+  public void startWorkout(int userProfileId, int workoutId) {
+    String sql = "insert into workouts (user_profile_id, workout_id, start_time) values (?, ?, ?)";
 
+    try {
+      jdbcTemplate.update(sql, userProfileId, workoutId, LocalDate.now());
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
   }
+
+  
   @Override
-  public void deleteWorkout(int id) {
+  public void endWorkout(int userProfileId, int workoutId) {
+    String sql = "update workouts set end_time = ? where user_profile_id = ? and workout_id = ?";
+
+    try {
+      jdbcTemplate.update(sql, LocalDate.now(), userProfileId, workoutId);
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
 
   }
 
-  private Workout mapToRowWorkout(SqlRowSet results){
+  protected static Workout mapRowToWorkout(SqlRowSet row) {
     Workout workout = new Workout();
-    workout.setWorkoutId(results.getInt("workout_id"));
-    workout.setProfileId(results.getInt("user_profile_id"));
-    LocalDate startTime = results.getDate("start_time").toLocalDate();
+
+    workout.setWorkoutId(row.getInt("workout_id"));
+    workout.setUserProfileId(row.getInt("user_profile_id"));
+    workout.setExerciseId(row.getInt("exercise_id"));
+
+    LocalDate startTime = row.getDate("start_time").toLocalDate();
     workout.setStartTime(startTime);
-    LocalDate endTime = results.getDate("end_time").toLocalDate();
+
+    LocalDate endTime = row.getDate("end_time").toLocalDate();
     workout.setEndTime(endTime);
-//   exercise_id is meant to be a list of users?
+
     return workout;
   }
 }
