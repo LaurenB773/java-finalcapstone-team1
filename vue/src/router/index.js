@@ -9,6 +9,7 @@ import RegisterView from "../views/RegisterView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import WorkoutsView from "../views/WorkoutsView.vue";
 import ScheduleView from "../views/ScheduleView.vue";
+import NewWorkoutView from "../views/NewWorkoutView.vue";
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -70,6 +71,14 @@ const routes = [
     component: ScheduleView,
     meta: {
       requiresAuth: false,
+    },
+  },
+  {
+    path: "/gym/workouts/start",
+    name: "newWorkout",
+    component: NewWorkoutView,
+    meta: {
+      requiresAuth: true,
     },
   },
 ];
