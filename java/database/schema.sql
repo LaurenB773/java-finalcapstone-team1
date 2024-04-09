@@ -33,7 +33,7 @@ CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
   start_time DATE NOT NULL,
   end_time DATE,
-  user_profile_id int REFERENCES user_profiles (user_profile_id),
+  user_profile_id int REFERENCES user_profiles (user_profile_id)
 );
 CREATE TABLE workout_exercises(
   workout_id int REFERENCES workouts (workout_id) NOT NULL,
