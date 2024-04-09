@@ -3,10 +3,9 @@ package com.techelevator.controller;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.techelevator.dao.CheckinDao;
+import com.techelevator.model.Checkin;
+import org.springframework.web.bind.annotation.*;
 
 import com.techelevator.dao.EquipmentDao;
 import com.techelevator.dao.ScheduleDao;
@@ -25,10 +24,13 @@ public class GymController {
   private EquipmentDao equipmentDao;
   private ScheduleDao scheduleDao;
 
-  public GymController(UserProfileDao userProfileDao, EquipmentDao equipmentDao, ScheduleDao scheduleDao) {
+  private CheckinDao checkinDao;
+
+  public GymController(UserProfileDao userProfileDao, EquipmentDao equipmentDao, ScheduleDao scheduleDao, CheckinDao checkinDao) {
     this.userProfileDao = userProfileDao;
     this.equipmentDao = equipmentDao;
     this.scheduleDao = scheduleDao;
+    this.checkinDao = checkinDao;
   }
 
   @GetMapping("/equipment")
@@ -46,6 +48,14 @@ public class GymController {
     return userProfileDao.getMembers();
   }
 
+  @PostMapping("/members/{id}")
+  public void checkMemberIn(@PathVariable int id) {
+    checkinDao.checkin(id);
+  }
+  @PutMapping("/members/{id}")
+  public void checkMemberOut(@PathVariable int id) {
+    checkinDao.checkOut(id);
+  }
   @GetMapping("/members/{id}")
   public UserProfile getMember(int id) {
     return userProfileDao.getProfile(id);
