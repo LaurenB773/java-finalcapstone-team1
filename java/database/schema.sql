@@ -4,6 +4,7 @@ user_profiles,
 workouts,
 exercises,
 equipments,
+workout_exercises,
 schedules;
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
@@ -33,7 +34,10 @@ CREATE TABLE workouts (
   start_time DATE NOT NULL,
   end_time DATE,
   user_profile_id int REFERENCES user_profiles (user_profile_id),
-  exercise_id int REFERENCES exercises (exercise_id)
+);
+CREATE TABLE workout_exercises(
+  workout_id int REFERENCES workouts (workout_id) NOT NULL
+  exercise_id int REFERENCES exercises (exercise_id) NOT NULL
 );
 CREATE TABLE equipments (
   equipment_id SERIAL PRIMARY KEY,

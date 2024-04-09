@@ -121,8 +121,6 @@ public class JdbcScheduleDao implements ScheduleDao {
         schedule.setDescription(results.getString("description"));
         LocalDate classDate = results.getDate("classDate").toLocalDate();
         schedule.setDate(classDate);
-
-        // Retrieve time as LocalTime
         LocalDate startTime = results.getDate("start_time").toLocalDate();
         schedule.setTime(startTime);
         schedule.setDuration(results.getInt("duration_minutes"));
