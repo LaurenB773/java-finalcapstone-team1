@@ -1,83 +1,74 @@
 package com.techelevator.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Schedule {
-    private int scheduleId;
-    private String title;
-    private String instructor;
-    private String description;
-    private LocalDate time;
-    private LocalDate date;
-    private int duration;
+  private int scheduleId;
+  private String title;
+  private String instructor;
+  private String description;
+  private LocalDateTime classTime;
+  private int duration;
 
-        public Schedule() {
-        }
+  public Schedule() {
 
-        public Schedule(int scheduleID, String title, String instructor, String description, LocalDate time, LocalDate date, int duration) {
-            this.scheduleId = scheduleID;
-            this.title = title;
-            this.instructor = instructor;
-            this.description = description;
-            this.time = time;
-            this.date = date;
-            this.duration = duration;
-        }
+  }
 
-    public int getScheduleId() {
-        return scheduleId;
-    }
+  public Schedule(int scheduleId, String title, String instructor, String description, LocalDateTime classTime,
+      int duration) {
+    this.scheduleId = scheduleId;
+    this.title = title;
+    this.instructor = instructor;
+    this.description = description;
+    this.classTime = classTime;
+    this.duration = duration;
+  }
 
-    public void setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
-    }
+  public LocalDateTime getClassTime() {
+    return classTime;
+  }
 
-    public String getTitle() {
-            return title;
-        }
+  public void setClassTime(LocalDateTime classTime) {
+    this.classTime = classTime;
+  }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+  public int getScheduleId() {
+    return scheduleId;
+  }
 
-        public String getInstructor() {
-            return instructor;
-        }
+  public void setScheduleId(int scheduleId) {
+    this.scheduleId = scheduleId;
+  }
 
-        public void setInstructor(String instructor) {
-            this.instructor = instructor;
-        }
+  public String getTitle() {
+    return title;
+  }
 
-        public String getDescription() {
-            return description;
-        }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+  public String getInstructor() {
+    return instructor;
+  }
 
-        public LocalDate getTime() {
-            return time;
-        }
+  public void setInstructor(String instructor) {
+    this.instructor = instructor;
+  }
 
-        public void setTime(LocalDate time) {
-            this.time = time;
-        }
+  public String getDescription() {
+    return description;
+  }
 
-        public LocalDate getDate() {
-            return date;
-        }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-        public void setDate(LocalDate date) {
-            this.date = date;
-        }
+  public int getDuration() {
+    return duration;
+  }
 
-        public int getDuration() {
-            return duration;
-        }
-
-        public void setDuration(int duration) {
-            this.duration = duration;
-        }
-    }
-
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
+}

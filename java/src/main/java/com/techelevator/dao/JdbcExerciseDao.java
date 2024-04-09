@@ -8,16 +8,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.util.List;
+import java.util.ArrayList;
 
 @Component
 public class JdbcExerciseDao implements ExerciseDao {
 
   private final JdbcTemplate jdbcTemplate;
 
-  public JdbcExerciseDao(DataSource datasource) {
-    jdbcTemplate = new JdbcTemplate(datasource);
+  public JdbcExerciseDao(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
   }
 
   @Override
@@ -43,7 +43,21 @@ public class JdbcExerciseDao implements ExerciseDao {
 
   @Override
   public List<Exercise> getAllUserExercisesByWorkoutId(int workoutId) {
-    return null;
+    String sql = "select * from exercises join workout_exercises on exercises.exercise_id = workout_exercises.exercise_id where workout_id = ?;";
+    List<Exercise> exercises = new ArrayList<>();
+
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, workoutId);
+
+      while (results.next()) {
+        exercises.add(mapToRowExercise(results));
+      }
+
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
+
+    return exercises;
   }
 
   @Override
