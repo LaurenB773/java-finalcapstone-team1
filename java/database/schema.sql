@@ -26,9 +26,14 @@ CREATE TABLE equipments (
   equipment_name varchar(100),
   used_time_minutes int
 );
+CREATE TABLE equipments (
+  equipment_id SERIAL PRIMARY KEY,
+  equipment_name varchar(100),
+  used_time_minutes int
+);
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
-  equipment_id int references equipments (equipment_id),
+  equipment_id int references equipments(equipment_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes int,
   reps int NOT NULL,
@@ -36,13 +41,13 @@ CREATE TABLE exercises (
 );
 CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
-  user_profile_id int REFERENCES user_profiles (user_profile_id),
   start_time DATE NOT NULL,
-  end_time DATE
+  end_time DATE,
+  user_profile_id int REFERENCES user_profiles (user_profile_id)
 );
-CREATE TABLE workout_exercises (
-  workout_id int references workouts (workout_id),
-  exercise_id int references exercises (exercise_id)
+CREATE TABLE workout_exercises(
+  workout_id int REFERENCES workouts (workout_id) NOT NULL,
+  exercise_id int REFERENCES exercises (exercise_id) NOT NULL
 );
 CREATE TABLE schedules (
   schedule_id SERIAL PRIMARY KEY,
