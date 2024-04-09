@@ -58,7 +58,7 @@ public class JdbcEquipmentDao implements EquipmentDao {
   }
 
   @Override
-  public UserProfile updateEquipment(int id, Equipment equipmentToUpdate) {
+  public Equipment updateEquipment(int id, Equipment equipmentToUpdate) {
     return null;
   }
 
