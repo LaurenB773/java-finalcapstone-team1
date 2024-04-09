@@ -26,10 +26,9 @@ public interface EquipmentDao {
    * 
    * @param id
    * @param equipmentToUpdate
-   * @return updatedEquipment
    */
 
-  UserProfile updateEquipment(int id, Equipment equipmentToUpdate);
+  void updateEquipment(int id, Equipment equipmentToUpdate);
 
   /**
    * deletes equipment

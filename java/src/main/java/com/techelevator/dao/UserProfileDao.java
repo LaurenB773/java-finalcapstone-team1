@@ -24,7 +24,7 @@ public interface UserProfileDao {
    * @return updatedUserProfile
    */
 
-  UserProfile updateProfile(int userId, UserProfile profileToUpdate);
+  void updateProfile(int userId, UserProfile profileToUpdate);
 
   /**
    * deletes user profile, only admin or user can delete profile

@@ -103,33 +103,36 @@ public class JdbcUserProfileDao implements UserProfileDao {
   }
 
   @Override
-  public UserProfile updateProfile(int userId, UserProfile profileToUpdate) {
+  public void updateProfile(int userId, UserProfile profileToUpdate) {
     UserProfile profile = null;
     String sql = "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? returning user_profile_id;";
 
     try {
       int newId = jdbcTemplate.queryForObject(sql, int.class, profileToUpdate.getFirstName(),
-          profileToUpdate.getLastName(), profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
+          profileToUpdate.getLastName(),
+          profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
+
       profile = getProfile(newId);
+
+      if (profile == null) {
+        throw new DaoException("Unable to update profile");
+      }
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
       throw new DaoException("Data integrity violation", e);
     }
 
-    return profile;
   }
 
-  // ? are we deleting the user from the users table as well?
   @Override
   public void deleteProfile(int userId) {
-    String sql = "delete from user_profiles where user_id = ?;";
-    // delete user from users table
-    // String usql = "delete from users where user_id = ?;";
+    String deleteUserProfileSQL = "delete from user_profiles where user_id = ?;";
+    String deleteUserSQL = "delete from users where user_id = ?;";
 
     try {
-      jdbcTemplate.update(sql, userId);
-      // jdbcTemplate.update(usql, userId);
+      jdbcTemplate.update(deleteUserProfileSQL, userId);
+      jdbcTemplate.update(deleteUserSQL, userId);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     }
@@ -146,16 +149,4 @@ public class JdbcUserProfileDao implements UserProfileDao {
     profile.setProfilePicture("");
     return profile;
   }
-
-  // private Workout mapRowToWorkout(SqlRowSet row) {
-  // Workout workout = new Workout();
-
-  // workout.setWorkoutId(row.getInt("workout_id"));
-  // workout.setUserProfileId(row.getInt("user_profile_id"));
-  // workout.setExerciseId(row.getInt("exercise_id"));
-  // workout.setStartTime(row.getDate("start_time").toLocalDate());
-  // workout.setEndTime(row.getDate("end_time").toLocalDate());
-
-  // return workout;
-  // }
 }
