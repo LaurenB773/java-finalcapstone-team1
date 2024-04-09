@@ -11,4 +11,5 @@ public class JdbcWorkoutDao implements WorkoutDao {
   public JdbcWorkoutDao(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
+
 }
