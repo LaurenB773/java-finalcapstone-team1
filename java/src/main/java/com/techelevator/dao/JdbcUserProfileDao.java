@@ -87,20 +87,12 @@ public class JdbcUserProfileDao implements UserProfileDao {
     UserProfile profileToCreate = null;
     String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
     try {
-      int newId = jdbcTemplate.queryForObject(
-        sql,
-        int.class,
-        id,
-        newProfile.getFirstName(),
-        newProfile.getLastName(),
-        newProfile.getEmail(),
-        newProfile.getGoal()
+      int newId = jdbcTemplate.queryForObject(sql, int.class, id,
+        newProfile.getFirstName(), newProfile.getLastName(),
+        newProfile.getEmail(), newProfile.getGoal()
       );
       profileToCreate = getProfile(newId);
-      newId = jdbcTemplate.queryForObject(sql, int.class, id, newProfile.getFirstName(), newProfile.getLastName(),
-          newProfile.getEmail(), newProfile.getGoal());
-      profileToCreate = getProfile(newId);
-      
+
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
@@ -112,25 +104,19 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   @Override
   public void updateProfile(int userId, UserProfile profileToUpdate) {
-    UserProfile profile = null;
     String sql = "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? returning user_profile_id;";
 
     try {
-      int newId = jdbcTemplate.queryForObject(sql, int.class, profileToUpdate.getFirstName(),
-          profileToUpdate.getLastName(),
-          profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
+      int rowsAffected = jdbcTemplate.update(sql, profileToUpdate.getFirstName(),
+              profileToUpdate.getLastName(),
+              profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
 
-      profile = getProfile(newId);
-
-      if (profile == null) {
-        throw new DaoException("Unable to update profile");
+      if (rowsAffected != 1) {
+        throw new DaoException("Unable to update Profile");
       }
     } catch (CannotGetJdbcConnectionException e) {
-      throw new DaoException("Unable to connect to server or database", e);
-    } catch (DataIntegrityViolationException e) {
-      throw new DaoException("Data integrity violation", e);
+      throw new DaoException(e.getMessage());
     }
-
   }
 
   @Override
