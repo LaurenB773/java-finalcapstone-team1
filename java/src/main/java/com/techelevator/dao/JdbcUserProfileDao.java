@@ -60,28 +60,10 @@ public class JdbcUserProfileDao implements UserProfileDao {
   }
 
   @Override
-  public void updateProfile(int userId, UserProfile profileToUpdate) {
-    String sql =
-      "UPDATE user_profiles SET first_name = ?, last_name = ?, email = ?, " +
-      " goal = ? WHERE user_id = ?";
-    try {
-      int rowsAffected = jdbcTemplate.update(
-        sql,
-        profileToUpdate.getFirstName(),
-        profileToUpdate.getLastName(),
-        profileToUpdate.getEmail(),
-        profileToUpdate.getGoal(),
-        userId
-      );
-      if (rowsAffected == 0) {
-        throw new DaoException("Cannot find the user profile!");
-      }
-    } catch (CannotGetJdbcConnectionException e) {
-      throw new DaoException("Unable to connect to server or database", e);
-    } catch (DataIntegrityViolationException e) {
-      throw new DaoException("Data integrity violation", e);
-    }
+  public List<Workout> getWorkouts(int userId) {
+
   }
+
 
   @Override
   public void deleteProfile(int userId) {
@@ -114,18 +96,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
         newProfile.getEmail(),
         newProfile.getGoal()
       );
-      profileToCreate = getProfileById(newId);
 
-      profileToCreate = getProfileById(newId);
-      int newId = jdbcTemplate.queryForObject(
-        sql,
-        int.class,
-        id,
-        newProfile.getFirstName(),
-        newProfile.getLastName(),
-        newProfile.getEmail(),
-        newProfile.getGoal()
-      );
       profileToCreate = getProfile(newId);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
