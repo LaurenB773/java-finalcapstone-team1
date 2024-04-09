@@ -34,8 +34,8 @@ public class ProfileController {
   }
 
   @GetMapping("/workouts")
-  public List<Workout> getWorkouts(int userId) {
-    return userProfileDao.getWorkouts(userId);
+  public List<Workout> getWorkouts() {
+    return workoutDao.getWorkouts();
   }
 
   @PutMapping("/workouts/start")

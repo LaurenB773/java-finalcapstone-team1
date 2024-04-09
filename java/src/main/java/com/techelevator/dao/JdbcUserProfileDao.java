@@ -3,7 +3,7 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
-import com.techelevator.security.model.User;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
   }
 
   @Override
-  public UserProfile updateProfile(int userId, UserProfile profileToUpdate) {
+  public void updateProfile(int userId, UserProfile profileToUpdate) {
     String sql =
       "UPDATE user_profiles SET first_name = ?, last_name = ?, email = ?, " +
       " goal = ? WHERE user_id = ?";
@@ -87,9 +87,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
         profileToUpdate.getGoal(),
         userId
       );
-      if (rowsAffected > 0) {
-        return profileToUpdate;
-      } else {
+      if (rowsAffected == 0) {
         throw new DaoException("Cannot find the user profile!");
       }
     } catch (CannotGetJdbcConnectionException e) {
@@ -130,16 +128,8 @@ public class JdbcUserProfileDao implements UserProfileDao {
         newProfile.getEmail(),
         newProfile.getGoal()
       );
-      profileToCreate = getProfile(newId);
-      int newId = jdbcTemplate.queryForObject(
-        sql,
-        int.class,
-        id,
-        newProfile.getFirstName(),
-        newProfile.getLastName(),
-        newProfile.getEmail(),
-        newProfile.getGoal()
-      );
+      profileToCreate = getProfileById(newId);
+
       profileToCreate = getProfileById(newId);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
@@ -150,38 +140,8 @@ public class JdbcUserProfileDao implements UserProfileDao {
     return profileToCreate;
   }
 
-  @Override
-  public List<Workout> getWorkouts(int userId) {
-    List<Workout> workoutList = new ArrayList<>();
-    String sql = "select * from workouts where user_profile_id = ?";
-    try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-      while (results.next()) {
-        Workout workouts = mapRowToWorkout(results);
-        workoutList.add(workouts);
-      }
-    } catch (CannotGetJdbcConnectionException e) {
-      throw new DaoException("Unable to connect to server or database", e);
-    } catch (DataIntegrityViolationException e) {
-      throw new DaoException("Data integrity violation", e);
-    }
-    return workoutList;
-  }
 
-  private Workout mapRowToWorkout(SqlRowSet results) {
-    int workoutId = results.getInt("workout_id");
-    Date startTime = results.getDate("start_time");
-    Date endTime = results.getDate("end_time");
-    int userProfileId = results.getInt("user_profile_id");
-    int exerciseId = results.getInt("exercise_id");
-    return new Workout(
-      workoutId,
-      startTime.toLocalDate(),
-      endTime.toLocalDate(),
-      userProfileId,
-      exerciseId
-    );
-  }
+
 
   private UserProfile mapRowToProfile(SqlRowSet results) {
     UserProfile profile = new UserProfile();

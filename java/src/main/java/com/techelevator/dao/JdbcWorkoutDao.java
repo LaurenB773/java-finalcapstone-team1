@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class JdbcWorkoutDao implements WorkoutDao {
 
   @Override
   public List<Workout> getWorkouts() {
-    String sql = "select * from workouts";
+    String sql = "select * from workouts where user_id = ?";
     List<Workout> workouts = new ArrayList<>();
 
     try {
@@ -119,12 +120,13 @@ public class JdbcWorkoutDao implements WorkoutDao {
     workout.setUserProfileId(row.getInt("user_profile_id"));
     workout.setExerciseId(row.getInt("exercise_id"));
 
-    LocalDate startTime = row.getDate("start_time").toLocalDate();
+    LocalDate startTime = row.getDate("start_time").toLocalDate;
     workout.setStartTime(startTime);
 
     LocalDate endTime = row.getDate("end_time").toLocalDate();
     workout.setEndTime(endTime);
 
     return workout;
+
   }
 }
