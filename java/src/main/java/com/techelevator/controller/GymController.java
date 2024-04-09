@@ -36,14 +36,28 @@ public class GymController {
     return equipmentDao.getAllEquipment();
   }
 
+  @GetMapping("/equipment/{id}")
+  public Equipment getEquipment(int id) {
+    return equipmentDao.getEquipmentById(id);
+  }
+
   @GetMapping("/members")
   public List<UserProfile> getMembers(Principal principal) {
-    // check role
     return userProfileDao.getMembers();
+  }
+
+  @GetMapping("/members/{id}")
+  public UserProfile getMember(int id) {
+    return userProfileDao.getProfile(id);
   }
 
   @GetMapping("/schedule")
   public List<Schedule> getAllSchedules() {
     return scheduleDao.getAllSchedules();
+  }
+
+  @GetMapping("/schedule/{id}")
+  public Schedule getSchedule(int id) {
+    return scheduleDao.getSchedule(id);
   }
 }

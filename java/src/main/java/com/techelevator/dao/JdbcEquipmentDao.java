@@ -2,7 +2,6 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Equipment;
-import com.techelevator.model.UserProfile;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -10,14 +9,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.DataFormatException;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JdbcEquipmentDao implements EquipmentDao {
-
 
   private final JdbcTemplate jdbcTemplate;
 
@@ -27,7 +23,7 @@ public class JdbcEquipmentDao implements EquipmentDao {
 
   @Override
   public List<Equipment> getAllEquipment() {
-    List <Equipment> allEquipment = new ArrayList<>();
+    List<Equipment> allEquipment = new ArrayList<>();
     String sql = "select * from equipments";
 
     try {
@@ -35,7 +31,7 @@ public class JdbcEquipmentDao implements EquipmentDao {
       while (results.next()) {
         allEquipment.add(mapToRowEquipment(results));
       }
-    }catch (CannotGetJdbcConnectionException e){
+    } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }
 
@@ -51,28 +47,60 @@ public class JdbcEquipmentDao implements EquipmentDao {
       if (results.next()) {
         return mapToRowEquipment(results);
       }
-    }catch (CannotGetJdbcConnectionException e){
+    } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }
     return null;
   }
 
   @Override
-  public Equipment updateEquipment(int id, Equipment equipmentToUpdate) {
-    return null;
+  public void updateEquipment(int id, Equipment equipmentToUpdate) {
+    String sql = "update equipments set equipment_name = ?, used_time_minutes = ? where equipment_id = ?";
+
+    try {
+      int rowsAffected = jdbcTemplate.update(sql, equipmentToUpdate.getEquipmentName(),
+          equipmentToUpdate.getUserTimeMinutes(), id);
+
+      if (rowsAffected != 1) {
+        throw new DaoException("Unable to update equipment");
+      }
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
   }
 
   @Override
   public void deleteEquipment(int id) {
+    String sql = "delete from equipments where equipment_id = ?";
 
+    try {
+      int rowsAffected = jdbcTemplate.update(sql, id);
+
+      if (rowsAffected != 1) {
+        throw new DaoException("Unable to delete equipment");
+      }
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
   }
 
   @Override
   public Equipment createEquipment(Equipment newEquipment) {
-    return null;
+    String sql = "insert into equipments (equipment_name, used_time_minutes) values (?, ?) returning equipment_id";
+
+    try {
+      int newId = jdbcTemplate.queryForObject(sql, Integer.class,
+          newEquipment.getEquipmentName(), newEquipment.getUserTimeMinutes());
+
+      newEquipment.setEquipmentId(newId);
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
+
+    return newEquipment;
   }
 
-  private Equipment mapToRowEquipment(SqlRowSet results){
+  private Equipment mapToRowEquipment(SqlRowSet results) {
     Equipment equipment = new Equipment();
     equipment.setEquipmentId(results.getInt("equipment_id"));
     equipment.setEquipmentName(results.getString("equipment_name"));
