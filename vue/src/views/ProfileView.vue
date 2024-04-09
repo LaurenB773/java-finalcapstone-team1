@@ -4,7 +4,6 @@
     <img src="" alt="Profile-Picture"> <!--TODO-->
     <p>Your goals are: {{ this.userProfile.goal }}</p>
     <router-link v-bind:to="{name: 'workouts' }"> See Workouts </router-link>
-    
 
 </template>
 
