@@ -6,7 +6,6 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +16,8 @@ public class JdbcEquipmentDao implements EquipmentDao {
 
   private final JdbcTemplate jdbcTemplate;
 
-  public JdbcEquipmentDao(DataSource datasource) {
-    jdbcTemplate = new JdbcTemplate(datasource);
+  public JdbcEquipmentDao(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
   }
 
   @Override

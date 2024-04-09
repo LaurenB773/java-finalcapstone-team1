@@ -2,6 +2,11 @@ package com.techelevator.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import java.security.Principal;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,32 +15,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techelevator.dao.JdbcUserProfileDao;
-import com.techelevator.dao.JdbcWorkoutDao;
+import com.techelevator.dao.UserProfileDao;
+import com.techelevator.dao.WorkoutDao;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
+import com.techelevator.security.dao.UserDao;
+import com.techelevator.security.model.User;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/profile")
+@PreAuthorize("isAuthenticated()")
 public class ProfileController {
 
-  private JdbcUserProfileDao userProfileDao;
-  private JdbcWorkoutDao workoutDao;
+  private UserDao userDao;
+  private UserProfileDao userProfileDao;
+  private WorkoutDao workoutDao;
 
-  public ProfileController(JdbcUserProfileDao userProfileDao, JdbcWorkoutDao workoutDao) {
+  public ProfileController(UserDao userDao, UserProfileDao userProfileDao, WorkoutDao workoutDao) {
+    this.userDao = userDao;
     this.userProfileDao = userProfileDao;
     this.workoutDao = workoutDao;
   }
 
   @GetMapping
-  public UserProfile getUserProfile(String username) {
-    return userProfileDao.getProfile(username);
+  public UserProfile getUserProfile(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+
+    return userProfileDao.getProfile(user.getId());
   }
 
   @GetMapping("/workouts")
-  public List<Workout> getWorkouts(int userId) {
-    return userProfileDao.getWorkouts(userId);
+  public List<Workout> getWorkouts(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+
+    return userProfileDao.getWorkouts(user.getId());
   }
 
   @PutMapping("/workouts/start")
@@ -51,13 +67,19 @@ public class ProfileController {
   // userProfileDao.createProfile() is called in the AuthenticationController
 
   @PutMapping
-  public void updateProfile(int userId, @RequestBody UserProfile profileToUpdate) {
-    userProfileDao.updateProfile(userId, profileToUpdate);
+  public void updateProfile(Principal principal, @Valid @RequestBody UserProfile profileToUpdate) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+
+    userProfileDao.updateProfile(user.getId(), profileToUpdate);
   }
 
   @DeleteMapping
-  public void deleteProfile(int userId) {
-    userProfileDao.deleteProfile(userId);
+  public void deleteProfile(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+
+    userProfileDao.deleteProfile(user.getId());
   }
 
 }

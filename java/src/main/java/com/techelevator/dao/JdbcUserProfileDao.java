@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 /*
  * user_profile_id SERIAL PRIMARY KEY,
  * user_id INT REFERENCES users (user_id),
@@ -29,28 +27,12 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   private final JdbcTemplate jdbcTemplate;
 
-  public JdbcUserProfileDao(DataSource datasource) {
-    jdbcTemplate = new JdbcTemplate(datasource);
+  public JdbcUserProfileDao(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
   }
 
   @Override
-  public UserProfile getProfile(String username) {
-    String sql = "select * from user_profiles where user_id = (select user_id from users where username = ?);";
-
-    try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
-
-      if (results.next()) {
-        return mapRowToProfile(results);
-      }
-    } catch (CannotGetJdbcConnectionException e) {
-    }
-
-    return null;
-  }
-
-
-  public UserProfile getProfileById(int userId) {
+  public UserProfile getProfile(int userId) {
     String sql = "select * from user_profiles where user_id = ?;";
 
     try {
@@ -60,10 +42,12 @@ public class JdbcUserProfileDao implements UserProfileDao {
         return mapRowToProfile(results);
       }
     } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
     }
 
     return null;
   }
+
   @Override
   public List<UserProfile> getMembers() {
     String sql = "select * from user_profiles;";
@@ -103,6 +87,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
     UserProfile profileToCreate = null;
     String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
     try {
+<<<<<<< HEAD
       int newId = jdbcTemplate.queryForObject(
         sql,
         int.class,
@@ -113,6 +98,11 @@ public class JdbcUserProfileDao implements UserProfileDao {
         newProfile.getGoal()
       );
       profileToCreate = getProfileById(newId);
+=======
+      int newId = jdbcTemplate.queryForObject(sql, int.class, id, newProfile.getFirstName(), newProfile.getLastName(),
+          newProfile.getEmail(), newProfile.getGoal());
+      profileToCreate = getProfile(newId);
+>>>>>>> b8af0c13d7e89d31d01db29af8a4c999494007c5
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
@@ -132,7 +122,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
           profileToUpdate.getLastName(),
           profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
 
-      profile = getProfileById(newId);
+      profile = getProfile(newId);
 
       if (profile == null) {
         throw new DaoException("Unable to update profile");

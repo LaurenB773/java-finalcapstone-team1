@@ -1,4 +1,5 @@
 <template>
+<p>Schedule goes here!</p>
 <div v-for="event in events" :key="event.schedule_id">
     <h1>might b working</h1>
 </div>
