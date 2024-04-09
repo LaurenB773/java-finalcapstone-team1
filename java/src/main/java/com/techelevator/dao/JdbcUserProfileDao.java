@@ -43,7 +43,8 @@ public class JdbcUserProfileDao implements UserProfileDao {
       if (results.next()) {
         return mapRowToProfile(results);
       }
-    } catch (CannotGetJdbcConnectionException e) {}
+    } catch (CannotGetJdbcConnectionException e) {
+    }
 
     return null;
   }
@@ -131,7 +132,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
           profileToUpdate.getLastName(),
           profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
 
-      profile = getProfile(newId);
+      profile = getProfileById(newId);
 
       if (profile == null) {
         throw new DaoException("Unable to update profile");

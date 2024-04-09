@@ -8,6 +8,7 @@ import LogoutView from "../views/LogoutView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import WorkoutsView from "../views/WorkoutsView.vue";
+import ScheduleView from "../views/ScheduleView.vue";
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -54,9 +55,6 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: ProfileView,
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: "/profile/workouts",
@@ -64,6 +62,14 @@ const routes = [
     component: WorkoutsView,
     meta: {
       requiresAuth: true,
+    },
+  },
+  {
+    path: "/gym/schedule",
+    name: "schedule",
+    component: ScheduleView,
+    meta: {
+      requiresAuth: false,
     },
   },
 ];
@@ -83,9 +89,9 @@ router.beforeEach((to) => {
 
   // If it does and they are not logged in, send the user to "/login" EDITED DONT FORGET TO PUT BACK
 
-  // if (requiresAuth && store.state.token === "") {
-  //   return { name: "login" };
-  // }
+  if (requiresAuth && store.state.token === "") {
+    return { name: "login" };
+  }
 
   // Otherwise, do nothing and they'll go to their next destination
 });
