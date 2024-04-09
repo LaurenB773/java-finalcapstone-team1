@@ -87,7 +87,6 @@ public class JdbcUserProfileDao implements UserProfileDao {
     UserProfile profileToCreate = null;
     String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
     try {
-<<<<<<< HEAD
       int newId = jdbcTemplate.queryForObject(
         sql,
         int.class,
@@ -97,12 +96,11 @@ public class JdbcUserProfileDao implements UserProfileDao {
         newProfile.getEmail(),
         newProfile.getGoal()
       );
-      profileToCreate = getProfileById(newId);
-=======
-      int newId = jdbcTemplate.queryForObject(sql, int.class, id, newProfile.getFirstName(), newProfile.getLastName(),
+      profileToCreate = getProfile(newId);
+      newId = jdbcTemplate.queryForObject(sql, int.class, id, newProfile.getFirstName(), newProfile.getLastName(),
           newProfile.getEmail(), newProfile.getGoal());
       profileToCreate = getProfile(newId);
->>>>>>> b8af0c13d7e89d31d01db29af8a4c999494007c5
+      
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
