@@ -23,11 +23,11 @@ CREATE TABLE user_profiles (
 );
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
+  equipment_id int references equipments (equipment_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes int,
   reps int NOT NULL,
-  weight NUMERIC(5, 2) NOT NULL,
-  equipment varchar(50) NOT NULL
+  weight NUMERIC(5, 2) NOT NULL
 );
 CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
@@ -36,7 +36,7 @@ CREATE TABLE workouts (
   user_profile_id int REFERENCES user_profiles (user_profile_id),
 );
 CREATE TABLE workout_exercises(
-  workout_id int REFERENCES workouts (workout_id) NOT NULL
+  workout_id int REFERENCES workouts (workout_id) NOT NULL,
   exercise_id int REFERENCES exercises (exercise_id) NOT NULL
 );
 CREATE TABLE equipments (
