@@ -8,6 +8,7 @@ import LogoutView from "../views/LogoutView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import WorkoutsView from "../views/WorkoutsView.vue";
+import ScheduleView from "../views/ScheduleView.vue";
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -61,6 +62,14 @@ const routes = [
     component: WorkoutsView,
     meta: {
       requiresAuth: true,
+    },
+  },
+  {
+    path: "/gym/schedule",
+    name: "schedule",
+    component: ScheduleView,
+    meta: {
+      requiresAuth: false,
     },
   },
 ];

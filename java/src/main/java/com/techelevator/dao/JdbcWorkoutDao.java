@@ -55,14 +55,14 @@ public class JdbcWorkoutDao implements WorkoutDao {
 
     return null;
   }
-  @Override
+
   public Workout createWorkout (Workout newWorkout) {
     Workout workoutToCreate = null;
     String sql = "INSERT INTO workouts (workout_id, start_time, end_time, user_profile_id) " +
             "VALUES (?, ?, ?, ?) returning workout_id";
     try {
       int id = jdbcTemplate.queryForObject(sql, int.class, newWorkout.getStartTime(),
-              newWorkout.getEndTime(), newWorkout.getProfileId());
+              newWorkout.getEndTime(), newWorkout.getUserProfileId());
       workoutToCreate = getWorkoutById(id);
     }
     catch (CannotGetJdbcConnectionException e) {
@@ -73,24 +73,24 @@ public class JdbcWorkoutDao implements WorkoutDao {
     return workoutToCreate;
   }
 
-  @Override
+
   public Workout updateWorkout(int id, Workout workoutToUpdate) {
     String sql = "UPDATE schedules SET workout_id = ?, start_time = ?, " +
             "end_time = ?, user_profile_id = ?;";
     try {
       int numberOfRowsAffected = jdbcTemplate.update(sql, workoutToUpdate.getWorkoutId(), workoutToUpdate.getStartTime(),
-              workoutToUpdate.getEndTime(), workoutToUpdate.getProfileId());
+              workoutToUpdate.getEndTime(), workoutToUpdate.getUserProfileId());
       if (numberOfRowsAffected > 0) {
         return workoutToUpdate;
       } else {
         throw new DaoException("Cannot find workout");
       }
-    }catch (CannotGetJdbcConnectionException e) {
+    } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
       throw new DaoException("Data integrity violation", e);
     }
-
+  }
   public void startWorkout(int userProfileId, int workoutId) {
     String sql = "insert into workouts (user_profile_id, workout_id, start_time) values (?, ?, ?)";
 

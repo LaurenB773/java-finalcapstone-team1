@@ -41,6 +41,7 @@ public interface UserProfileDao {
    */
   UserProfile createProfile(UserProfile newProfile, int userId);
 
+
   /**
    * The function `getMembers()` returns a list of `UserProfile` objects.
    * 
@@ -59,4 +60,6 @@ public interface UserProfileDao {
    * @return A list of Workout objects for the specified userId.
    */
   List<Workout> getWorkouts(int userId);
+  UserProfile getProfileById(int id);
 }
+

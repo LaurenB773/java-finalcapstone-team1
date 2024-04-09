@@ -105,7 +105,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
     try {
       int newId = jdbcTemplate.queryForObject(sql, int.class, id, newProfile.getFirstName(), newProfile.getLastName(),
           newProfile.getEmail(), newProfile.getGoal());
-      profileToCreate = getProfile(newId);
+      profileToCreate = getProfileById(newId);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
@@ -125,7 +125,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
           profileToUpdate.getLastName(),
           profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
 
-      profile = getProfile(newId);
+      profile = getProfileById(newId);
 
       if (profile == null) {
         throw new DaoException("Unable to update profile");
