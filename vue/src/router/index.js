@@ -54,9 +54,6 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: ProfileView,
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: "/profile/workouts",
@@ -83,9 +80,9 @@ router.beforeEach((to) => {
 
   // If it does and they are not logged in, send the user to "/login" EDITED DONT FORGET TO PUT BACK
 
-  // if (requiresAuth && store.state.token === "") {
-  //   return { name: "login" };
-  // }
+  if (requiresAuth && store.state.token === "") {
+    return { name: "login" };
+  }
 
   // Otherwise, do nothing and they'll go to their next destination
 });

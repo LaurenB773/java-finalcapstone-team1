@@ -163,7 +163,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
     Date endTime = results.getDate("end_time");
     int userProfileId = results.getInt("user_profile_id");
     int exerciseId = results.getInt("exercise_id");
-    return new Workout(workoutId,startTime,endTime,userProfileId,exerciseId);
+    return null;
   }
 
   private UserProfile mapRowToProfile(SqlRowSet results) {
