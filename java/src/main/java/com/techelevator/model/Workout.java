@@ -1,56 +1,63 @@
 package com.techelevator.model;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 public class Workout {
 
-    private int workoutId;
-    private Date startTime;
-    private Date endTime;
-    private int profileId;
-    private List<Exercise> exercises;
+  private int workoutId;
+  private int userProfileId;
+  private int exerciseId;
+  private LocalDate startTime;
+  private LocalDate endTime;
 
-    public int getWorkoutDataId() {
-        return workoutId;
-    }
+  public Workout() {
+  }
 
-    public void setWorkoutDataId(int workoutDataId) {
-        this.workoutId = workoutDataId;
-    }
+  public Workout(int workoutId, int userProfileId, int exerciseId, LocalDate startTime, LocalDate endTime) {
+    this.workoutId = workoutId;
+    this.userProfileId = userProfileId;
+    this.exerciseId = exerciseId;
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
 
-    public Date getStartTime() {
-        return startTime;
-    }
+  public int getWorkoutId() {
+    return workoutId;
+  }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
+  public void setWorkoutId(int workoutId) {
+    this.workoutId = workoutId;
+  }
 
-    public Date getEndTime() {
-        return endTime;
-    }
+  public int getUserProfileId() {
+    return userProfileId;
+  }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+  public void setUserProfileId(int userProfileId) {
+    this.userProfileId = userProfileId;
+  }
 
-    public int getProfileId() {
-        return profileId;
-    }
+  public int getExerciseId() {
+    return exerciseId;
+  }
 
-    public void setProfileId(int profileId) {
-        this.profileId = profileId;
-    }
+  public void setExerciseId(int exerciseId) {
+    this.exerciseId = exerciseId;
+  }
 
-    public Workout() {
+  public LocalDate getStartTime() {
+    return startTime;
+  }
 
-    }
-    public Workout(int workoutDataId, Date startTime, Date endTime, int profileId, int exerciseId) {
-        this.workoutId = workoutDataId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.profileId = profileId;
-        this.exercises = exercises;
-    }
+  public void setStartTime(LocalDate startTime) {
+    this.startTime = startTime;
+  }
+
+  public LocalDate getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(LocalDate endTime) {
+    this.endTime = endTime;
+  }
 }
