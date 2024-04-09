@@ -84,6 +84,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
   @Override
   public void deleteProfile(int userId) {
     String sql = "delete from user_profiles where user_profile_id = ?";
+
     try {
       int rowsAffected = jdbcTemplate.update(sql,userId);
       if(rowsAffected == 0){
@@ -149,7 +150,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
     Date endTime = results.getDate("end_time");
     int userProfileId = results.getInt("user_profile_id");
     int exerciseId = results.getInt("exercise_id");
-    return new Workout(workoutId,startTime,endTime,userProfileId,exerciseId);
+    return new Workout(workoutId, startTime.toLocalDate(), endTime.toLocalDate(),userProfileId,exerciseId);
   }
 
   private UserProfile mapRowToProfile(SqlRowSet results) {
