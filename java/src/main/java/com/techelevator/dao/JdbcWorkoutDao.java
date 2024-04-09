@@ -84,7 +84,6 @@ public class JdbcWorkoutDao implements WorkoutDao {
 
     workout.setWorkoutId(row.getInt("workout_id"));
     workout.setUserProfileId(row.getInt("user_profile_id"));
-    workout.setExerciseId(row.getInt("exercise_id"));
 
     LocalDate startTime = row.getDate("start_time").toLocalDate();
     workout.setStartTime(startTime);

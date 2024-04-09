@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 /*
  * user_profile_id SERIAL PRIMARY KEY,
  * user_id INT REFERENCES users (user_id),
@@ -29,8 +27,8 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   private final JdbcTemplate jdbcTemplate;
 
-  public JdbcUserProfileDao(DataSource datasource) {
-    jdbcTemplate = new JdbcTemplate(datasource);
+  public JdbcUserProfileDao(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
   }
 
   @Override

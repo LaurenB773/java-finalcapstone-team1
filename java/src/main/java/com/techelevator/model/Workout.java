@@ -6,17 +6,15 @@ public class Workout {
 
   private int workoutId;
   private int userProfileId;
-  private int exerciseId;
   private LocalDate startTime;
   private LocalDate endTime;
 
   public Workout() {
   }
 
-  public Workout(int workoutId, int userProfileId, int exerciseId, LocalDate startTime, LocalDate endTime) {
+  public Workout(int workoutId, int userProfileId, LocalDate startTime, LocalDate endTime) {
     this.workoutId = workoutId;
     this.userProfileId = userProfileId;
-    this.exerciseId = exerciseId;
     this.startTime = startTime;
     this.endTime = endTime;
   }
@@ -35,14 +33,6 @@ public class Workout {
 
   public void setUserProfileId(int userProfileId) {
     this.userProfileId = userProfileId;
-  }
-
-  public int getExerciseId() {
-    return exerciseId;
-  }
-
-  public void setExerciseId(int exerciseId) {
-    this.exerciseId = exerciseId;
   }
 
   public LocalDate getStartTime() {

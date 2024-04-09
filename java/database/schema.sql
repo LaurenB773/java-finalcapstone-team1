@@ -31,13 +31,13 @@ CREATE TABLE exercises (
 );
 CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
+  user_profile_id int REFERENCES user_profiles (user_profile_id),
   start_time DATE NOT NULL,
   end_time DATE,
-  user_profile_id int REFERENCES user_profiles (user_profile_id),
 );
-CREATE TABLE workout_exercises(
-  workout_id int REFERENCES workouts (workout_id) NOT NULL,
-  exercise_id int REFERENCES exercises (exercise_id) NOT NULL
+CREATE TABLE workout_exercises (
+  workout_id int references workouts (workout_id),
+  exercise_id int references exercise (exercise_id)
 );
 CREATE TABLE equipments (
   equipment_id SERIAL PRIMARY KEY,
