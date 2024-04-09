@@ -1,7 +1,6 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Equipment;
-import com.techelevator.model.UserProfile;
 
 import java.util.List;
 

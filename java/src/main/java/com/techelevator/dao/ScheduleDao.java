@@ -1,11 +1,8 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Schedule;
-import com.techelevator.model.UserProfile;
-import org.springframework.context.annotation.Profile;
 
 import java.util.List;
-import java.util.Scanner;
 
 public interface ScheduleDao {
     /**
@@ -23,12 +20,13 @@ public interface ScheduleDao {
     /**
      * Updates schedule get by id and return new schedule,
      * update in database
+     *
      * @param id
      * @param scheduleToUpdate
      * @return updatedSchedule
      */
 
-    UserProfile updateSchedule(int id, Schedule scheduleToUpdate);
+    Schedule updateSchedule(int id, Schedule scheduleToUpdate);
 
     /**
      * deletes schedule
@@ -39,10 +37,11 @@ public interface ScheduleDao {
     /**
      * creates new schedule when new schedule is created based on info
      * inserted by user
+     *
      * @param newSchedule
      * @return createdSchedule
      */
-    UserProfile createSchedule(Schedule newSchedule);
+    Schedule createSchedule(Schedule newSchedule);
 }
 
 

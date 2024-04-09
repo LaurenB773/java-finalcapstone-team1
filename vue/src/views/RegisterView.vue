@@ -37,7 +37,7 @@
       </div>
       <div class="form-input-group">
         <label for="last-name">Last Name</label>
-        <input type="text" id="last-name" v-model="user.lastName">
+         <input type="text" id="last-name" v-model="user.lastName">
       </div>
       <button type="submit">Create Account</button>
       <p><router-link v-bind:to="{ name: 'login' }">Already have an account? Log in.</router-link></p>
@@ -60,7 +60,6 @@ export default {
         email: '',
         firstName: '',
         lastName: '',
-        
       },
       registrationErrors: false,
       registrationErrorMsg: 'There were problems registering this user.',

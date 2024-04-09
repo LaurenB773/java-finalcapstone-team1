@@ -3,7 +3,6 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -45,7 +44,6 @@ public class JdbcUserProfileDao implements UserProfileDao {
         return mapRowToProfile(results);
       }
     } catch (CannotGetJdbcConnectionException e) {
-
     }
 
     return null;
