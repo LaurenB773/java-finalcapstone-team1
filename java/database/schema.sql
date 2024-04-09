@@ -36,7 +36,7 @@ CREATE TABLE workouts (
   user_profile_id int REFERENCES user_profiles (user_profile_id),
 );
 CREATE TABLE workout_exercises(
-  workout_id int REFERENCES workouts (workout_id) NOT NULL
+  workout_id int REFERENCES workouts (workout_id) NOT NULL,
   exercise_id int REFERENCES exercises (exercise_id) NOT NULL
 );
 CREATE TABLE equipments (

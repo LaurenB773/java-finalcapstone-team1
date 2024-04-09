@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.dao.JdbcUserProfileDao;
+import com.techelevator.dao.JdbcWorkoutDao;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
 
@@ -20,9 +21,11 @@ import com.techelevator.model.Workout;
 public class ProfileController {
 
   private JdbcUserProfileDao userProfileDao;
+  private JdbcWorkoutDao workoutDao;
 
-  public ProfileController(JdbcUserProfileDao userProfileDao) {
+  public ProfileController(JdbcUserProfileDao userProfileDao, JdbcWorkoutDao workoutDao) {
     this.userProfileDao = userProfileDao;
+    this.workoutDao = workoutDao;
   }
 
   @GetMapping
@@ -33,6 +36,16 @@ public class ProfileController {
   @GetMapping("/workouts")
   public List<Workout> getWorkouts(int userId) {
     return userProfileDao.getWorkouts(userId);
+  }
+
+  @PutMapping("/workouts/start")
+  public void startWorkout(int userProfileId, int workoutId) {
+    workoutDao.startWorkout(userProfileId, workoutId);
+  }
+
+  @PutMapping("/workouts/end")
+  public void endWorkout(int userProfileId, int workoutId) {
+    workoutDao.endWorkout(userProfileId, workoutId);
   }
 
   // userProfileDao.createProfile() is called in the AuthenticationController

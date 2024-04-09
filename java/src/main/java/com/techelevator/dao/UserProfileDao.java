@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
-import com.techelevator.security.model.User;
 
 public interface UserProfileDao {
 
