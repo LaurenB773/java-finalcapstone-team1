@@ -1,16 +1,19 @@
 package com.techelevator.dao;
 
+import com.techelevator.exception.DaoException;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
+import com.techelevator.security.model.User;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sql.DataSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-
-import javax.sql.DataSource;
 
 @Component
 public class JdbcUserProfileDao implements UserProfileDao {
@@ -23,9 +26,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   @Override
   public UserProfile getProfile(int userId) {
-    String sql = "select * from user_profile " +
-        "join user_goals using(user_id) " +
-        "where user_id = ?;";
+    String sql = "select * from user_profiles where user_id = ?;";
 
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
@@ -33,40 +34,133 @@ public class JdbcUserProfileDao implements UserProfileDao {
       if (results.next()) {
         return mapRowToProfile(results);
       }
-    } catch (CannotGetJdbcConnectionException e) {
-
-    }
+    } catch (CannotGetJdbcConnectionException e) {}
 
     return null;
   }
 
   @Override
   public List<UserProfile> getMembers() {
-    throw new UnsupportedOperationException("Unimplemented method 'getMembers'");
+    List<UserProfile> listOfMembers = new ArrayList<>();
+    String sql = "select * from user_profiles where user_id in " +
+            "(select user_id from users where role = 'member')";
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+      while (results.next()){
+        UserProfile userProfile = mapRowToProfile(results);
+        listOfMembers.add(userProfile);
+      }
+    }
+    catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+    return listOfMembers;
   }
 
   @Override
   public UserProfile updateProfile(int userId, UserProfile profileToUpdate) {
-    throw new UnsupportedOperationException("Unimplemented method 'updateProfile'");
+    String sql = "UPDATE user_profiles SET first_name = ?, last_name = ?, email = ?, " +
+                 " goal = ? WHERE user_id = ?";
+    try {
+      int rowsAffected =  jdbcTemplate.update(sql,profileToUpdate.getFirstName(),profileToUpdate.getLastName(),
+                          profileToUpdate.getEmail(),profileToUpdate.getGoal(),
+                           userId);
+      if (rowsAffected > 0){
+        return profileToUpdate;
+      } else {
+        throw new DaoException("Cannot find the user profile!");
+      }
+    }
+    catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+
   }
 
   @Override
   public void deleteProfile(int userId) {
-    throw new UnsupportedOperationException("Unimplemented method 'deleteProfile'");
+    String sql = "delete from user_profiles where user_profile_id = ?";
+    try {
+      int rowsAffected = jdbcTemplate.update(sql,userId);
+      if(rowsAffected == 0){
+        throw new DaoException("Cannot find the user profile!");
+      }
+
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
   }
 
+
   @Override
-  public UserProfile createProfile(UserProfile newProfile) {
-    throw new UnsupportedOperationException("Unimplemented method 'createProfile'");
+  public UserProfile createProfile(UserProfile newProfile, int id) {
+    UserProfile profileToCreate = null;
+    String sql =
+      "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
+    try {
+      int newId = jdbcTemplate.queryForObject(
+        sql,
+        int.class,
+        id,
+        newProfile.getFirstName(),
+        newProfile.getLastName(),
+        newProfile.getEmail(),
+        newProfile.getGoal()
+      );
+      profileToCreate = getProfile(newId);
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+
+    return profileToCreate;
   }
 
   @Override
   public List<Workout> getWorkouts(int userId) {
-    throw new UnsupportedOperationException("Unimplemented method 'getWorkouts'");
+    List<Workout> workoutList = new ArrayList<>();
+    String sql = "select * from workouts where user_profile_id = ?";
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql,userId);
+      while (results.next()){
+      Workout workouts =  mapRowToWorkout(results);
+      workoutList.add(workouts);
+      }
+    }
+    catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+    return workoutList;
+  }
+
+
+  private Workout mapRowToWorkout(SqlRowSet results) {
+    int workoutId = results.getInt("workout_id");
+    Date startTime = results.getDate("start_time");
+    Date endTime = results.getDate("end_time");
+    int userProfileId = results.getInt("user_profile_id");
+    int exerciseId = results.getInt("exercise_id");
+    return new Workout(workoutId,startTime,endTime,userProfileId,exerciseId);
   }
 
   private UserProfile mapRowToProfile(SqlRowSet results) {
     UserProfile profile = new UserProfile();
+    profile.setProfileId(results.getInt("user_profile_id"));
+    profile.setUserId(results.getInt("user_id"));
+    profile.setFirstName(results.getString("first_name"));
+    profile.setLastName(results.getString("last_name"));
+    profile.setGoal(results.getString("goal"));
+    profile.setEmail(results.getString("email"));
+    profile.setProfilePicture("");
     return profile;
   }
 }
