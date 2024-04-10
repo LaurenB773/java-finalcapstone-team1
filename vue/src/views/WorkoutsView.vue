@@ -1,5 +1,4 @@
 <template>
-    <h1>Users workouts go here</h1>
     <workout-list />
     <workout-detail />
 </template>
