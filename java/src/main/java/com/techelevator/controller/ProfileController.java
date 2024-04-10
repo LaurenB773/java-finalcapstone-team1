@@ -1,21 +1,17 @@
 package com.techelevator.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import java.security.Principal;
-
 import com.techelevator.dao.CheckinDao;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
 import com.techelevator.dao.UserProfileDao;
 import com.techelevator.dao.WorkoutDao;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
 import com.techelevator.security.dao.UserDao;
 import com.techelevator.security.model.User;
+import java.security.Principal;
+import java.util.List;
+import javax.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -29,7 +25,12 @@ public class ProfileController {
 
   private CheckinDao checkinDao;
 
-  public ProfileController(UserDao userDao, UserProfileDao userProfileDao, WorkoutDao workoutDao, CheckinDao checkinDao) {
+  public ProfileController(
+    UserDao userDao,
+    UserProfileDao userProfileDao,
+    WorkoutDao workoutDao,
+    CheckinDao checkinDao
+  ) {
     this.userDao = userDao;
     this.userProfileDao = userProfileDao;
     this.workoutDao = workoutDao;
@@ -62,13 +63,13 @@ public class ProfileController {
     workoutDao.endWorkout(userProfileId, workoutId);
   }
 
-
   @GetMapping("/checkin")
   public boolean isCheckedIn(Principal principal) {
     User user = userDao.getUserByUsername(principal.getName());
     int userId = user.getId();
     return checkinDao.isCheckin(userId);
   }
+
   @PostMapping("/checkin")
   public void checkUserIn(Principal principal) {
     User user = userDao.getUserByUsername(principal.getName());
@@ -84,11 +85,13 @@ public class ProfileController {
     checkinDao.checkOut(userId);
   }
 
-
   // userProfileDao.createProfile() is called in the AuthenticationController
 
   @PutMapping
-  public void updateProfile(Principal principal, @Valid @RequestBody UserProfile profileToUpdate) {
+  public void updateProfile(
+    Principal principal,
+    @Valid @RequestBody UserProfile profileToUpdate
+  ) {
     String username = principal.getName();
     User user = userDao.getUserByUsername(username);
 
@@ -102,8 +105,4 @@ public class ProfileController {
 
     userProfileDao.deleteProfile(user.getId());
   }
-
-
-
-
 }
