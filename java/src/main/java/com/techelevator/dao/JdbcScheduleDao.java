@@ -24,7 +24,7 @@ public class JdbcScheduleDao implements ScheduleDao {
   @Override
   public List<Schedule> getAllSchedules() {
     List<Schedule> schedules = new ArrayList<>();
-    String sql = "select * from schedules";
+    String sql = "select * from schedules order by class_time asc;";
 
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
@@ -93,6 +93,7 @@ public class JdbcScheduleDao implements ScheduleDao {
 
   }
 
+
   @Override
   public Schedule createSchedule(Schedule newSchedule) {
     Schedule scheduleToCreate = null;
@@ -115,6 +116,7 @@ public class JdbcScheduleDao implements ScheduleDao {
 
   private Schedule mapToRowSchedules(SqlRowSet results) {
     Schedule schedule = new Schedule();
+    schedule.setInstructor(results.getString("instructor"));
     schedule.setScheduleId(results.getInt("schedule_id"));
     schedule.setTitle(results.getString("title"));
     schedule.setDescription(results.getString("description"));
