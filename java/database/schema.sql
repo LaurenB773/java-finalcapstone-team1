@@ -46,11 +46,11 @@ CREATE TABLE workout_exercises(
 );
 CREATE TABLE schedules (
   schedule_id SERIAL PRIMARY KEY,
-  title VARCHAR(100) NOT NULL,
-  instructor VARCHAR(50) NOT NULL,
+  title VARCHAR(100) default 'title',
+  instructor VARCHAR(50) default 'teacher' NOT NULL,
   description VARCHAR (200),
-  class_time TIMESTAMP NOT NULL,
-  duration_minutes INT
+  class_time TIMESTAMP default CURRENT_TIMESTAMP,
+  duration_minutes INT default 30
 );
 CREATE TABLE checkins (
   checkin_id SERIAL PRIMARY KEY,
