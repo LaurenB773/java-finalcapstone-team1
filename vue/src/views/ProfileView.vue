@@ -8,12 +8,14 @@
 	<p>Your goals are: {{ this.userProfile.goal }}</p>
 	<router-link v-bind:to="{ name: 'workouts' }"> See Workouts </router-link>
 	<router-link v-bind:to="{ name: 'newWorkout' }">Start New Workout</router-link>
+	<button @click="checkInOrOut">Check In</button>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
 import UserService from '../services/UserService'
+import axios from 'axios'
 
 export default {
 	data() {
@@ -26,6 +28,8 @@ export default {
 				profilePicture: '',
 				goal: '',
 			},
+			isCheckedIn: false,
+
 		}
 	},
 	mounted() {
@@ -40,6 +44,19 @@ export default {
 	computed: {
 		...mapState(['user']),
 	},
+	methods: {
+		checkInOrOut() {
+
+			if (this.isCheckedIn) {
+				UserService.checkOut(this.userProfile.userId);
+				this.isCheckedIn = false;
+			} else {
+				UserService.checkIn(this.userProfile.userId);
+				this.isCheckedIn = true;
+			} 
+
+		}
+	}
 }
 </script>
 

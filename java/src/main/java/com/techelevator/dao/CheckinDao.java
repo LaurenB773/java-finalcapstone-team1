@@ -12,6 +12,6 @@ public interface CheckinDao {
     /**
      * update checkin checout time
      */
-    void checkOut(int checkinId);
+    void checkOut(int userId);
 
 }
