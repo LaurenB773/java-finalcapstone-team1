@@ -74,24 +74,6 @@ public class JdbcUserProfileDao implements UserProfileDao {
     }
 
     return workouts;
-
-  }
-
-
-  @Override
-  public void deleteProfile(int userId) {
-    String sql = "delete from user_profiles where user_profile_id = ?";
-
-    try {
-      int rowsAffected = jdbcTemplate.update(sql, userId);
-      if (rowsAffected == 0) {
-        throw new DaoException("Cannot find the user profile!");
-      }
-    } catch (CannotGetJdbcConnectionException e) {
-      throw new DaoException("Unable to connect to server or database", e);
-    } catch (DataIntegrityViolationException e) {
-      throw new DaoException("Data integrity violation", e);
-    }
   }
 
   @Override
@@ -109,7 +91,6 @@ public class JdbcUserProfileDao implements UserProfileDao {
         newProfile.getEmail(),
         newProfile.getGoal()
       );
-
       profileToCreate = getProfile(newId);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
@@ -122,14 +103,12 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   @Override
   public void updateProfile(int userId, UserProfile profileToUpdate) {
-    UserProfile profile = null;
     String sql =
       "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? returning user_profile_id;";
 
     try {
-      int newId = jdbcTemplate.queryForObject(
+      int rowsAffected = jdbcTemplate.update(
         sql,
-        int.class,
         profileToUpdate.getFirstName(),
         profileToUpdate.getLastName(),
         profileToUpdate.getEmail(),
@@ -137,15 +116,25 @@ public class JdbcUserProfileDao implements UserProfileDao {
         userId
       );
 
-      profile = getProfile(newId);
-
-      if (profile == null) {
-        throw new DaoException("Unable to update profile");
+      if (rowsAffected != 1) {
+        throw new DaoException("Unable to update Profile");
       }
     } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException(e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteProfile(int userId) {
+    String deleteUserProfileSQL =
+      "delete from user_profiles where user_id = ?;";
+    String deleteUserSQL = "delete from users where user_id = ?;";
+
+    try {
+      jdbcTemplate.update(deleteUserProfileSQL, userId);
+      jdbcTemplate.update(deleteUserSQL, userId);
+    } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
-    } catch (DataIntegrityViolationException e) {
-      throw new DaoException("Data integrity violation", e);
     }
   }
 
