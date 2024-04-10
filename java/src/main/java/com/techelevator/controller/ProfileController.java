@@ -51,7 +51,7 @@ public class ProfileController {
     String username = principal.getName();
     User user = userDao.getUserByUsername(username);
 
-    return userProfileDao(user.getId());
+    return userProfileDao.getWorkouts(user.getId());
   }
 
   @PutMapping("/workouts/start")
