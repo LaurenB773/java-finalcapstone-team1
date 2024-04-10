@@ -13,5 +13,8 @@ public interface CheckinDao {
      * update checkin checout time
      */
     void checkOut(int userId);
-
+    /**
+     * gets most recent checkin to set state of isCheckedIn
+     */
+    boolean isCheckin(int userId);
 }

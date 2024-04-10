@@ -7,10 +7,13 @@ export default {
   getAllSchedule() {
     return axios.get("/gym/schedule");
   },
-  checkIn(userId) {
-    return axios.post("/profile/checkin", userId);
+  checkIn() {
+    return axios.post("/profile/checkin");
   },
-  checkOut(userId) {
-    return axios.put("/profile/checkout", userId);
+  checkOut() {
+    return axios.put("/profile/checkout");
+  },
+  getLastCheckin() {
+    return axios.get("profile/checkin");
   },
 };

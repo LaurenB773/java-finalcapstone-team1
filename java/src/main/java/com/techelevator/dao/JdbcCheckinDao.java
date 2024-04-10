@@ -51,4 +51,21 @@ public class JdbcCheckinDao implements CheckinDao {
         }
 
     }
+
+    @Override
+    public boolean isCheckin(int userId) {
+        String sql = "select * from checkins where user_id = ? and checkout_time is null;";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+
+            if (results.next()) {
+                return true;
+            }
+                return false;
+
+        }catch(CannotGetJdbcConnectionException e) {
+            throw new DaoException(e.getMessage());
+        }
+    }
 }

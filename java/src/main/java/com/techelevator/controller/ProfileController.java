@@ -61,15 +61,29 @@ public class ProfileController {
   public void endWorkout(int userProfileId, int workoutId) {
     workoutDao.endWorkout(userProfileId, workoutId);
   }
-  // request body for these because it is not in path
+
+
+  @GetMapping("/checkin")
+  public boolean isCheckedIn(Principal principal) {
+    User user = userDao.getUserByUsername(principal.getName());
+    int userId = user.getId();
+    return checkinDao.isCheckin(userId);
+  }
   @PostMapping("/checkin")
-  public void checkUserIn(@RequestBody int userId) {
+  public void checkUserIn(Principal principal) {
+    User user = userDao.getUserByUsername(principal.getName());
+    int userId = user.getId();
+
     checkinDao.checkin(userId);
   }
+
   @PutMapping("/checkout")
-  public void checkUserOut(@RequestBody int userId) {
+  public void checkUserOut(Principal principal) {
+    User user = userDao.getUserByUsername(principal.getName());
+    int userId = user.getId();
     checkinDao.checkOut(userId);
   }
+
 
   // userProfileDao.createProfile() is called in the AuthenticationController
 
@@ -88,6 +102,7 @@ public class ProfileController {
 
     userProfileDao.deleteProfile(user.getId());
   }
+
 
 
 

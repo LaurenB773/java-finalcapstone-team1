@@ -8,7 +8,8 @@
 	<p>Your goals are: {{ this.userProfile.goal }}</p>
 	<router-link v-bind:to="{ name: 'workouts' }"> See Workouts </router-link>
 	<router-link v-bind:to="{ name: 'newWorkout' }">Start New Workout</router-link>
-	<button @click="checkInOrOut">Check In</button>
+	<button @click="checkInOrOut">{{ isCheckedIn ? 'check out' : 'check in' }}</button>
+	<!-- <button v-else @click="checkInOrOut">Check Out</button>	 -->
 </template>
 
 <script>
@@ -33,29 +34,24 @@ export default {
 		}
 	},
 	mounted() {
-		UserService.getProfile(this.user.id)
-			.then(response => {
-				this.userProfile = response.data
-			})
-			.catch(error => {
-				console.error('Error getting profile data', error)
-			})
+		UserService.getProfile().then(res => this.userProfile = res.data)
+		UserService.getLastCheckin().then(response => this.isCheckedIn = response.data)
 	},
 	computed: {
 		...mapState(['user']),
 	},
 	methods: {
 		checkInOrOut() {
-
 			if (this.isCheckedIn) {
-				UserService.checkOut(this.userProfile.userId);
+				UserService.checkOut();
 				this.isCheckedIn = false;
 			} else {
-				UserService.checkIn(this.userProfile.userId);
+				UserService.checkIn();
 				this.isCheckedIn = true;
 			} 
 
 		}
+		
 	}
 }
 </script>
