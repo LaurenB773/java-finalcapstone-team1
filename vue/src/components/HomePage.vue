@@ -1,23 +1,19 @@
 <template>
     <div>
-        <h1>Welcome (put username here)</h1>
-
-        <button @click="viewSchedule()">Schedule</button>
+        <schedule/>
     </div>
 </template>
 
 <script>
-import UserService from '../services/UserService'
+import Schedule from '../components/Schedule.vue';
 export default {
 
    
     components: {
-        
+        Schedule       
     },
     methods: {
-        viewSchedule() {
-            this.$router.push('/gym/schedule');
-        }
+        
     }
 }
 </script>
