@@ -3,24 +3,15 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sql.DataSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/*
- * user_profile_id SERIAL PRIMARY KEY,
- * user_id INT REFERENCES users (user_id),
- * first_name varchar(50),
- * last_name varchar(50),
- * email varchar(200),
- * profile_picture varchar(500) NOT NULL,
- * goal varchar(50) not null
- */
 
 @Component
 public class JdbcUserProfileDao implements UserProfileDao {
@@ -50,19 +41,22 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   @Override
   public List<UserProfile> getMembers() {
-    String sql = "select * from user_profiles;";
-    List<UserProfile> profiles = new ArrayList<>();
-
+    List<UserProfile> listOfMembers = new ArrayList<>();
+    String sql =
+      "select * from user_profiles where user_id in " +
+      "(select user_id from users where role = 'member')";
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
       while (results.next()) {
-        profiles.add(mapRowToProfile(results));
+        UserProfile userProfile = mapRowToProfile(results);
+        listOfMembers.add(userProfile);
       }
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
     }
-
-    return profiles;
+    return listOfMembers;
   }
 
   @Override
@@ -85,14 +79,19 @@ public class JdbcUserProfileDao implements UserProfileDao {
   @Override
   public UserProfile createProfile(UserProfile newProfile, int id) {
     UserProfile profileToCreate = null;
-    String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
+    String sql =
+      "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
     try {
-      int newId = jdbcTemplate.queryForObject(sql, int.class, id,
-        newProfile.getFirstName(), newProfile.getLastName(),
-        newProfile.getEmail(), newProfile.getGoal()
+      int newId = jdbcTemplate.queryForObject(
+        sql,
+        int.class,
+        id,
+        newProfile.getFirstName(),
+        newProfile.getLastName(),
+        newProfile.getEmail(),
+        newProfile.getGoal()
       );
       profileToCreate = getProfile(newId);
-
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
@@ -104,12 +103,18 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   @Override
   public void updateProfile(int userId, UserProfile profileToUpdate) {
-    String sql = "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? returning user_profile_id;";
+    String sql =
+      "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? returning user_profile_id;";
 
     try {
-      int rowsAffected = jdbcTemplate.update(sql, profileToUpdate.getFirstName(),
-              profileToUpdate.getLastName(),
-              profileToUpdate.getEmail(), profileToUpdate.getGoal(), userId);
+      int rowsAffected = jdbcTemplate.update(
+        sql,
+        profileToUpdate.getFirstName(),
+        profileToUpdate.getLastName(),
+        profileToUpdate.getEmail(),
+        profileToUpdate.getGoal(),
+        userId
+      );
 
       if (rowsAffected != 1) {
         throw new DaoException("Unable to update Profile");
@@ -121,7 +126,8 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   @Override
   public void deleteProfile(int userId) {
-    String deleteUserProfileSQL = "delete from user_profiles where user_id = ?;";
+    String deleteUserProfileSQL =
+      "delete from user_profiles where user_id = ?;";
     String deleteUserSQL = "delete from users where user_id = ?;";
 
     try {

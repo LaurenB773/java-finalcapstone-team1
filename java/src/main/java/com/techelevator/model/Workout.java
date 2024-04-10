@@ -9,10 +9,14 @@ public class Workout {
   private LocalDateTime startTime;
   private LocalDateTime endTime;
 
-  public Workout() {
-  }
+  public Workout() {}
 
-  public Workout(int workoutId, int userProfileId, LocalDateTime startTime, LocalDateTime endTime) {
+  public Workout(
+    int workoutId,
+    int userProfileId,
+    LocalDateTime startTime,
+    LocalDateTime endTime
+  ) {
     this.workoutId = workoutId;
     this.userProfileId = userProfileId;
     this.startTime = startTime;
