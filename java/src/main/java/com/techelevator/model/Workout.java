@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Workout {
 
   private int workoutId;
-  private int userProfileId;
+  private int userId;
   private LocalDateTime startTime;
   private LocalDateTime endTime;
 
@@ -13,12 +13,12 @@ public class Workout {
 
   public Workout(
     int workoutId,
-    int userProfileId,
+    int userId,
     LocalDateTime startTime,
     LocalDateTime endTime
   ) {
     this.workoutId = workoutId;
-    this.userProfileId = userProfileId;
+    this.userId = userId;
     this.startTime = startTime;
     this.endTime = endTime;
   }
@@ -31,12 +31,12 @@ public class Workout {
     this.workoutId = workoutId;
   }
 
-  public int getUserProfileId() {
-    return userProfileId;
+  public int getUserId() {
+    return userId;
   }
 
-  public void setUserProfileId(int userProfileId) {
-    this.userProfileId = userProfileId;
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public LocalDateTime getStartTime() {
