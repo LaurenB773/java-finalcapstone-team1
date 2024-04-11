@@ -60,12 +60,12 @@ public class JdbcUserProfileDao implements UserProfileDao {
   }
 
   @Override
-  public List<Workout> getWorkouts(int userProfileId) {
-    String sql = "select * from workouts where user_profile_id = ?;";
+  public List<Workout> getWorkouts(int userId) {
+    String sql = "select * from workouts where user_id = ?;";
     List<Workout> workouts = new ArrayList<>();
 
     try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userProfileId);
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
       while (results.next()) {
         workouts.add(JdbcWorkoutDao.mapRowToWorkout(results));
       }

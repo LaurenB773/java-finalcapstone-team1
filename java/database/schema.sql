@@ -31,14 +31,15 @@ CREATE TABLE exercises (
   equipment_id INT references equipments(equipment_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes INT,
+  sets INT NOT NULL,
   reps INT NOT NULL,
-  weight NUMERIC(5, 2) NOT NULL
+  weightLbs NUMERIC(5, 2) NOT NULL
 );
 CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
   start_time TIMESTAMP NOT NULL,
   end_time TIMESTAMP,
-  user_profile_id INT REFERENCES user_profiles (user_profile_id)
+  user_id INT REFERENCES users (user_id)
 );
 CREATE TABLE workout_exercises(
   workout_id INT REFERENCES workouts (workout_id) NOT NULL,
