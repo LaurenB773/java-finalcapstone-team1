@@ -29,6 +29,7 @@
             <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())" @click="removeEvent()">
                 Remove
             </button>
+            <button v-if="isMember() && selectedEventId === event.scheduleId">Sign Up!(TODO)</button>
 
         </div>
 
@@ -92,6 +93,15 @@ export default {
             authorities = this.userPermissions;
 
             if (authorities.some((authority) => authority.name === "ROLE_ADMIN")) {
+                return true;
+            }
+            return false;
+        },
+        isMember() {
+            let authorities = [];
+            authorities = this.userPermissions;
+
+            if (authorities.some((authority) => authority.name === "ROLE_USER")) {
                 return true;
             }
             return false;
