@@ -6,11 +6,11 @@
 	/>
 	<!--TODO-->
 	<p>Your goals are: {{ this.userProfile.goal }}</p>
-	<router-link v-bind:to="{ name: 'workouts' }"> See Workouts </router-link>
+	<a style="margin-right: 5px;" @click="showWorkouts">Show Workouts</a>
 	<router-link v-bind:to="{ name: 'newWorkout' }">Start New Workout</router-link>
 	<button @click="checkInOrOut">{{ isCheckedIn ? 'check out' : 'check in' }}</button>
-
-  <button @click="logWorkout">{{ isWorkoutStarted ? 'End Workout' : 'Start Workout' }}</button>
+  <WorkoutDetail v-if="isWorkoutShowing" />
+  <button v-if="isCheckedIn" @click="logWorkout">{{ isWorkoutStarted ? 'End Workout' : 'Start Workout' }}</button>
 </template>
 
 
@@ -18,8 +18,12 @@
 import { mapState } from 'vuex'
 import UserService from '../services/UserService'
 import WorkoutService from '../services/WorkoutService'
+import WorkoutDetail from '../components/WorkoutDetail.vue'
 
 export default {
+  components: {
+    WorkoutDetail
+  },
 	data() {
 		return {
 			userProfile: {
@@ -32,6 +36,7 @@ export default {
 			},
 			isCheckedIn: false,
       isWorkoutStarted: false,
+      isWorkoutShowing: false,
 		}
 	},
 
@@ -57,6 +62,9 @@ export default {
 
 		},
 
+    showWorkouts() {
+      this.isWorkoutShowing = !this.isWorkoutShowing;
+    },
 
     logWorkout() {
       if (this.isWorkoutStarted) {

@@ -63,7 +63,7 @@ export default {
 
 <style>
 html {
-  background-color: rgb(50, 50, 57);
+  background-color: whitesmoke;
 }
 
 #nav {
