@@ -10,6 +10,7 @@ import ProfileView from "../views/ProfileView.vue";
 import WorkoutsView from "../views/WorkoutsView.vue";
 import ScheduleView from "../views/ScheduleView.vue";
 import NewWorkoutView from "../views/NewWorkoutView.vue";
+import EmployeeView from "../views/EmployeeView.vue";
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -25,7 +26,7 @@ const routes = [
     name: "home",
     component: HomeView,
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
     },
   },
   {
@@ -77,6 +78,14 @@ const routes = [
     path: "/gym/workouts/start",
     name: "newWorkout",
     component: NewWorkoutView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/gym",
+    name: "employee",
+    component: EmployeeView,
     meta: {
       requiresAuth: true,
     },

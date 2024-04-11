@@ -7,6 +7,11 @@ export function createStore(currentToken, currentUser) {
       token: currentToken || "",
       user: currentUser || {},
     },
+    getters: {
+      userPermissions(state) {
+        return state.user.authorities;
+      },
+    },
     mutations: {
       SET_AUTH_TOKEN(state, token) {
         state.token = token;
