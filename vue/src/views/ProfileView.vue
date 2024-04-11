@@ -32,17 +32,13 @@ export default {
 			},
 			isCheckedIn: false,
       isWorkoutStarted: false,
-      workout: {}
 		}
 	},
 
 	mounted() {
 		UserService.getProfile().then(res => this.userProfile = res.data)
 		UserService.getLastCheckin().then(response => this.isCheckedIn = response.data)
-    WorkoutService.getCurrentWorkout().then(response => {
-      this.isWorkoutStarted = response.data ? true : false
-      this.workout = response.data
-    })
+    WorkoutService.getCurrentWorkout().then(response =>  this.isWorkoutStarted = response.data ? true : false)
 	},
 
 	computed: {
@@ -64,7 +60,7 @@ export default {
 
     logWorkout() {
       if (this.isWorkoutStarted) {
-        WorkoutService.endWorkout(this.workout.id);
+        WorkoutService.endWorkout();
         this.isWorkoutStarted = false;
       } else {
         WorkoutService.startWorkout();

@@ -8,8 +8,8 @@ export default {
     return axios.put(`${url}/start`)
   },
 
-  endWorkout(workoutId) {
-    return axios.put(`${url}/end`, { workoutId })
+  endWorkout() {
+    return axios.put(`${url}/end`)
   },
 
   getCurrentWorkout() {
