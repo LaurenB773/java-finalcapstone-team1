@@ -1,26 +1,27 @@
 <template>
-  <div id="login">
-    <form v-on:submit.prevent="login">
-      <h1 >Please Sign In</h1>
-      <div role="alert" v-if="invalidCredentials">
-        Invalid username and password!
-      </div>
-      <div role="alert" v-if="this.$route.query.registration">
-        Thank you for registering, please sign in.
-      </div>
-      <div class="form-input-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" v-model="user.username" required autofocus />
-      </div>
-      <div class="form-input-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model="user.password" required />
-      </div>
-      <button type="submit">Sign in</button>
-      <p>
-      <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link></p>
-    </form>
-  </div>
+    <div class="container" id="login">
+      <form v-on:submit.prevent="login">
+        <h1 id="sign-in">Please Sign In</h1>
+        <div role="alert" v-if="invalidCredentials">
+          Invalid username and password!
+        </div>
+        <div role="alert" v-if="this.$route.query.registration">
+          Thank you for registering, please sign in.
+        </div>
+        <div class="form-input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" v-model="user.username" required autofocus />
+        </div>
+        <div class="form-input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" v-model="user.password" required />
+        </div>
+        <button type="submit">Sign in</button>
+        <p>
+          <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link>
+        </p>
+      </form>
+    </div>
 </template>
 
 <script>
@@ -32,7 +33,8 @@ export default {
     return {
       user: {
         username: "",
-        password: ""
+        password: "",
+        role: '',
       },
       invalidCredentials: false
     };
@@ -61,10 +63,26 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+}
 .form-input-group {
   margin-bottom: 1rem;
 }
+
 label {
   margin-right: 0.5rem;
+}
+
+#sign-in {
+  color: hsl(202, 49%, 89.8%);
+  padding-bottom: 15px;
+}
+
+.form-input-group label {
+  color: hsl(202, 49%, 89.8%);
 }
 </style>
