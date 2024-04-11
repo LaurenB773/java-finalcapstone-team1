@@ -6,7 +6,7 @@ import java.util.List;
 public interface WorkoutDao {
   void startWorkout(int userId);
 
-  void endWorkout(int workoutId);
+  void endWorkout(int userId);
 
   /**
    * The `getWorkouts` function in Java returns a list of all workouts.
