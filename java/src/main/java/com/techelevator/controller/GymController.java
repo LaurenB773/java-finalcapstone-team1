@@ -70,4 +70,20 @@ public class GymController {
   public Schedule getSchedule(int id) {
     return scheduleDao.getSchedule(id);
   }
+
+  @PostMapping("/schedule")
+  public void createSchedule(@RequestBody Schedule scheduleToCreate) {
+    scheduleDao.createSchedule(scheduleToCreate);
+  }
+
+  @DeleteMapping("/schedule/{id}")
+  public void deleteSchedule(@PathVariable int id) {
+    scheduleDao.deleteSchedule(id);
+
+  }
+
+  @PutMapping("/schedule/{id}")
+  public void updateSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable int id) {
+    scheduleDao.updateSchedule(scheduleToUpdate, id);
+  }
 }

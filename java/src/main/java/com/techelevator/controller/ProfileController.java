@@ -88,10 +88,7 @@ public class ProfileController {
   // userProfileDao.createProfile() is called in the AuthenticationController
 
   @PutMapping
-  public void updateProfile(
-    Principal principal,
-    @Valid @RequestBody UserProfile profileToUpdate
-  ) {
+  public void updateProfile(Principal principal, @Valid @RequestBody UserProfile profileToUpdate) {
     String username = principal.getName();
     User user = userDao.getUserByUsername(username);
 

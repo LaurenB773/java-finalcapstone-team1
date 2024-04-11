@@ -53,19 +53,17 @@ public class JdbcScheduleDao implements ScheduleDao {
   }
 
   @Override
-  public Schedule updateSchedule(int id, Schedule scheduleToUpdate) {
-    String sql = "UPDATE schedules SET title = ?, instructor = ?, description = ? " +
-        "classTime = ?, duration_minutes = ? WHERE schedule_id = ?";
+  public Schedule updateSchedule(Schedule scheduleToUpdate, int id) {
+    String sql = "UPDATE schedules SET title = ?, instructor = ?, description = ?, " +
+        "class_time = ?, duration_minutes = ? WHERE schedule_id = ?";
     try {
-      int numberOfRowsAffected = jdbcTemplate.update(sql,
-          scheduleToUpdate.getTitle(), scheduleToUpdate.getInstructor(),
-          scheduleToUpdate.getDescription(), scheduleToUpdate.getClassTime(),
-          scheduleToUpdate.getDuration(), id);
+      int numberOfRowsAffected = jdbcTemplate.update(sql, scheduleToUpdate.getTitle(), scheduleToUpdate.getInstructor(),
+              scheduleToUpdate.getDescription(), scheduleToUpdate.getClassTime(), scheduleToUpdate.getDuration(), id);
 
       if (numberOfRowsAffected > 0) {
         return scheduleToUpdate;
       } else {
-        throw new DaoException("Cannot find the user profile!");
+        throw new DaoException("Cannot find the schedule!");
       }
 
     } catch (CannotGetJdbcConnectionException e) {
@@ -78,9 +76,9 @@ public class JdbcScheduleDao implements ScheduleDao {
 
   @Override
   public void deleteSchedule(int id) {
-    String sql = "delete from schedules where schedule_id = ?";
+    String sql = "delete from schedules where schedule_id = ?;";
     try {
-      int rowsAffected = jdbcTemplate.update(sql);
+      int rowsAffected = jdbcTemplate.update(sql, id);
       if (rowsAffected == 0) {
         throw new DaoException("Cannot find the user profile!");
       }
@@ -97,8 +95,8 @@ public class JdbcScheduleDao implements ScheduleDao {
   @Override
   public Schedule createSchedule(Schedule newSchedule) {
     Schedule scheduleToCreate = null;
-    String sql = "INSERT INTO schedules (title, instructor, description, classTime, duration_minutes) " +
-        "VALUES (?, ?, ?, ?, ?) returning schedule_id";
+    String sql = "INSERT INTO schedules (title, instructor, description, class_time, duration_minutes) " +
+        "VALUES (?, ?, ?, ?, ?) returning schedule_id;";
     try {
       int id = jdbcTemplate.queryForObject(sql, int.class, newSchedule.getTitle(),
           newSchedule.getInstructor(),
