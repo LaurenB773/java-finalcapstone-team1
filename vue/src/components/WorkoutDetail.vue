@@ -15,9 +15,8 @@
           <h3>{{ workout.WorkOut }}</h3>
           <p>Muscle: {{ workout.Muscles }}</p>
           <p>Intensity Level: {{ workout.Intensity_Level }}</p>
-          <p v-if="workout['Beginner Sets']">Beginner Sets: {{ workout['Beginner Sets'] }}</p>
-          <p v-if="workout['Intermediate Sets']">Intermediate Sets: {{ workout['Intermediate Sets'] }}</p>
-          <p v-if="workout['Expert Sets']">Expert Sets: {{ workout['Expert Sets'] }}</p>
+          <p v-if= "workout[intensityLevel +' Sets']"> 
+            {{ intensityLevel }} Sets: {{ workout[intensityLevel+' Sets'] }}</p>
           <button @click="showDescription">Show Description</button>
           <div v-if="isDescriptionShown">
             <p>Description: {{ workout['Long Explanation'] }}</p>
@@ -41,7 +40,8 @@ export default {
       copyOfWorkouts: [],
       selectedWorkout: {},
       isDescriptionShown: false,
-      intensityLevels: ['Beginner', 'Intermediate', 'Expert'] 
+      intensityLevels: ['Beginner', 'Intermediate', 'Expert'],
+      intensityLevel: ''
     };
   },
   methods: {
@@ -61,7 +61,9 @@ export default {
       this.isDescriptionShown = !this.isDescriptionShown
     },
     filterByIntensity(intensityLevel) {
+      this.intensityLevel = intensityLevel;
       this.copyOfWorkouts = this.workouts.filter(workout => workout.Intensity_Level === intensityLevel);
+
     },
 
   }
