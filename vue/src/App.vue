@@ -62,8 +62,13 @@ export default {
 </script>
 
 <style>
+html {
+  background-color: rgb(50, 50, 57);
+}
+
 #nav {
   display: flex;
   gap: 10px;
+  justify-content: center;
 }
 </style>
