@@ -1,27 +1,43 @@
 <template>
-<div>
-    <p>Today's Events</p>
-    <div class="event-container" v-for="event in events" :key="event.scheduleId" @click="selectEvent(event.scheduleId)" style="cursor:pointer;">
-    <p>Title: {{ event.title }}</p>
-    <p>Instructor: {{ event.instructor }}</p>
-    <p>Date: {{ timeFormatter(event.classTime) }}</p>
-    <p v-if="selectedEventId === event.scheduleId">Details: {{event.description}}</p>
-    <p v-if="selectedEventId === event.scheduleId" >Duration: {{ event.duration }} minutes</p>
+    <div>
+        <p>Today's Events</p>
+        <div class="event-container" v-for="event in events" :key="event.scheduleId" @click="selectEvent(event.scheduleId)"
+            style="cursor: pointer">
+            <p>Title: {{ event.title }}</p>
+            <p>Instructor: {{ event.instructor }}</p>
+            <p>Date: {{ timeFormatter(event.classTime) }}</p>
+            <p v-if="selectedEventId === event.scheduleId">
+                Details: {{ event.description }}
+            </p>
+            <p v-if="selectedEventId === event.scheduleId">
+                Duration: {{ event.duration }} minutes
+            </p>
+            <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())
+                ">
+                Edit
+            </button>
+            <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())" @click="removeEvent()">
+                Remove
+            </button>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
-import UserService from '../services/UserService';
+import EmployeeService from "../services/EmployeeService";
+import UserService from "../services/UserService";
+import { mapGetters } from "vuex";
 export default {
     data() {
         return {
             events: [],
-            selectedEventId: 0
-        }
+            selectedEventId: 0,
+        };
     },
     mounted() {
-        UserService.getAllSchedule().then(response => this.events = response.data);
+        UserService.getAllSchedule().then(
+            (response) => (this.events = response.data)
+        );
     },
     methods: {
         selectEvent(id) {
@@ -34,20 +50,45 @@ export default {
         timeFormatter(time) {
             let dateTime = new Date(time);
 
-            let formattedDate = dateTime.toLocaleString('en-US', { 
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
+            let formattedDate = dateTime.toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
             });
 
             return formattedDate;
-        }
-    }
-}
+        },
+        isEmployee() {
+            let authorities = [];
+            authorities = this.userPermissions;
 
+            if (authorities.some((authority) => authority.name === "ROLE_EMPLOYEE")) {
+                return true;
+            }
+            return false;
+        },
+        isOwner() {
+            let authorities = [];
+            authorities = this.userPermissions;
+
+            if (authorities.some((authority) => authority.name === "ROLE_ADMIN")) {
+                return true;
+            }
+            return false;
+        },
+        removeEvent() {
+            EmployeeService.removeEvent(this.selectedEventId);
+            window.location.reload();
+        },
+        editEvent() { },
+    },
+    computed: {
+        ...mapGetters(["userPermissions"]),
+    },
+};
 </script>
 
 <style>

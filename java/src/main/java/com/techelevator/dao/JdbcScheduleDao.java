@@ -78,9 +78,9 @@ public class JdbcScheduleDao implements ScheduleDao {
 
   @Override
   public void deleteSchedule(int id) {
-    String sql = "delete from schedules where schedule_id = ?";
+    String sql = "delete from schedules where schedule_id = ?;";
     try {
-      int rowsAffected = jdbcTemplate.update(sql);
+      int rowsAffected = jdbcTemplate.update(sql, id);
       if (rowsAffected == 0) {
         throw new DaoException("Cannot find the user profile!");
       }
@@ -97,8 +97,8 @@ public class JdbcScheduleDao implements ScheduleDao {
   @Override
   public Schedule createSchedule(Schedule newSchedule) {
     Schedule scheduleToCreate = null;
-    String sql = "INSERT INTO schedules (title, instructor, description, classTime, duration_minutes) " +
-        "VALUES (?, ?, ?, ?, ?) returning schedule_id";
+    String sql = "INSERT INTO schedules (title, instructor, description, class_time, duration_minutes) " +
+        "VALUES (?, ?, ?, ?, ?) returning schedule_id;";
     try {
       int id = jdbcTemplate.queryForObject(sql, int.class, newSchedule.getTitle(),
           newSchedule.getInstructor(),

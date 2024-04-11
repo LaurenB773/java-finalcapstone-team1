@@ -2,10 +2,17 @@
     <h1>Gym Manager</h1>
     <h2 @click="(isShowing === 'Schedule' ? isShowing = '' : isShowing = 'Schedule')">Manage Schedule</h2>
     <div v-if="isShowing === 'Schedule'">
-        <p>Add new event to schedule</p>
-        <p>Remove event from schedule</p>
-        <p>Edit event on schedule</p>
-        <p>See all events</p>
+        <p @click="(isFormShowing === 'Schedule' ? isFormShowing = '' : isFormShowing = 'Schedule')">Create new event</p>
+        <form v-if="isFormShowing === 'Schedule'">
+            <input placeholder="title" type="text" v-model="newSchedule.title">
+            <input placeholder="instructor" type="text" v-model="newSchedule.instructor"> <!--if theres time make this a dropdown of employees-->
+            <input placeholder="description" type="textarea" v-model="newSchedule.description">
+            <input placeholder="Hour Of Class" type="datetime-local" v-model="newSchedule.classTime">
+            <input placeholder="Duration Minutes" type="number" v-model="newSchedule.duration">
+            <button @click="createNewSchedule(newSchedule)">Create!</button>
+        </form>
+        <p @click="(isFormShowing === 'RemoveSchedule' ? isFormShowing = '' : isFormShowing = 'RemoveSchedule')">Manage Schedule</p>
+        <Schedule v-if="isFormShowing === 'RemoveSchedule'"/>
     </div>
     <h2  @click="(isShowing === 'Members' ? isShowing = '' : isShowing = 'Members')">Manage Members</h2>
     <div v-if="isShowing === 'Members'">
@@ -19,22 +26,33 @@
         <p>Add New Equipment</p>
         <p>Remove Equipment</p>
     </div>
-    <Schedule v-if="false"/>
 </template>
 <script>
 import Schedule from './Schedule.vue';
+import EmployeeService from '../services/EmployeeService';
 
 export default {
 data() {
     return {
         isShowing: '',
+        isFormShowing: '',
+        newSchedule: {
+            title: '',
+            instructor: '',
+            description: '',
+            classTime: null,
+            duration: 30,
+        }
     }
 },
 components: {
-    Schedule
+    Schedule,
+    EmployeeService,
 },
 methods: {
-   
+    createNewSchedule(newSchedule) {
+        EmployeeService.createEvent(newSchedule);
+    }
 }
 }
 </script>
