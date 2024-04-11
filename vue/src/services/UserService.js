@@ -14,6 +14,6 @@ export default {
     return axios.put("/profile/checkout");
   },
   getLastCheckin() {
-    return axios.get("profile/checkin");
+    return axios.get("/profile/checkin");
   },
 };
