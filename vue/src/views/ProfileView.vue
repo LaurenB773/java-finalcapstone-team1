@@ -64,11 +64,11 @@ export default {
 
     logWorkout() {
       if (this.isWorkoutStarted) {
-        WorkoutService.endWorkout(this.workout);
-        this.isWorkoutStarted = true;
+        WorkoutService.endWorkout(this.workout.id);
+        this.isWorkoutStarted = false;
       } else {
         WorkoutService.startWorkout();
-        this.isWorkoutStarted = false;
+        this.isWorkoutStarted = true;
       }
     },
 

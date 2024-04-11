@@ -113,11 +113,15 @@ public class JdbcWorkoutDao implements WorkoutDao {
   }
 
   @Override
-  public void endWorkout(int workoutId) {
-    String sql = "update workouts set end_time = ? where workout_id = ?";
+  public void endWorkout(int userId) {
+    String sql = "update workouts set end_time = ? where user_id = ? and end_time is null";
 
     try {
-      jdbcTemplate.update(sql, LocalDateTime.now(), workoutId);
+      int rowsAffected = jdbcTemplate.update(sql, LocalDateTime.now(), userId);
+
+      if (rowsAffected == 0) {
+        throw new DaoException("Workout not found");
+      }
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }

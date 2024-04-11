@@ -72,8 +72,12 @@ public class ProfileController {
   }
 
   @PutMapping("/workouts/end")
-  public void endWorkout(@RequestBody Workout workout) {
-    workoutDao.endWorkout(workout.getWorkoutId());
+  public void endWorkout(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+    int userId = user.getId();
+
+    workoutDao.endWorkout(userId);
   }
 
   @GetMapping("/checkin")
