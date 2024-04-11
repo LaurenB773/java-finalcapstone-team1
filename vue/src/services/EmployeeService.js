@@ -7,7 +7,7 @@ export default {
   removeEvent(id) {
     axios.delete(`/gym/schedule/${id}`);
   },
-  updateEvent(event) {
+  updateEvent(event, id) {
     axios.put(`/gym/schedule/${id}`, event);
   },
 };

@@ -1,8 +1,18 @@
 <template>
     <div>
-        <p>Today's Events</p>
-        <div class="event-container" v-for="event in events" :key="event.scheduleId" @click="selectEvent(event.scheduleId)"
-            style="cursor: pointer">
+        <form v-if="isFormShowing === true">
+            <p>Edit Event with id: {{ selectedEventId }}</p>
+            <input placeholder="title" type="text" v-model="editSchedule.title">
+            <input placeholder="instructor" type="text" v-model="editSchedule.instructor">
+            <!--if theres time make this a dropdown of employees-->
+            <input placeholder="description" type="textarea" v-model="editSchedule.description">
+            <input placeholder="Hour Of Class" type="datetime-local" v-model="editSchedule.classTime">
+            <input placeholder="Duration Minutes" type="number" v-model="editSchedule.duration">
+            <p @click="updateEvent()">Confirm Edit</p>
+        </form>
+        <h1>Today's Events</h1>
+        <div class="event-container" v-for="event in    events   " :key="event.scheduleId"
+            @click="selectEvent(event.scheduleId)" style="cursor: pointer">
             <p>Title: {{ event.title }}</p>
             <p>Instructor: {{ event.instructor }}</p>
             <p>Date: {{ timeFormatter(event.classTime) }}</p>
@@ -12,14 +22,16 @@
             <p v-if="selectedEventId === event.scheduleId">
                 Duration: {{ event.duration }} minutes
             </p>
-            <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())
-                ">
+            <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())"
+                @click="(isFormShowing = true) && (this.editSchedule = event)">
                 Edit
             </button>
             <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())" @click="removeEvent()">
                 Remove
             </button>
+
         </div>
+
     </div>
 </template>
 
@@ -32,6 +44,15 @@ export default {
         return {
             events: [],
             selectedEventId: 0,
+            editSchedule: {
+                id: this.selectedEventId,
+                title: '',
+                instructor: '',
+                description: '',
+                classTime: null,
+                duration: 30,
+            },
+            isFormShowing: '',
         };
     },
     mounted() {
@@ -41,11 +62,7 @@ export default {
     },
     methods: {
         selectEvent(id) {
-            if (id === this.selectedEventId) {
-                this.selectedEventId = 0;
-            } else {
-                this.selectedEventId = id;
-            }
+            this.selectedEventId = id;
         },
         timeFormatter(time) {
             let dateTime = new Date(time);
@@ -83,7 +100,11 @@ export default {
             EmployeeService.removeEvent(this.selectedEventId);
             window.location.reload();
         },
-        editEvent() { },
+        updateEvent() {
+            EmployeeService.updateEvent(this.editSchedule, this.selectedEventId);
+            window.location.reload();
+        },
+
     },
     computed: {
         ...mapGetters(["userPermissions"]),

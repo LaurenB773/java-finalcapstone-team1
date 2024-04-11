@@ -79,5 +79,11 @@ public class GymController {
   @DeleteMapping("/schedule/{id}")
   public void deleteSchedule(@PathVariable int id) {
     scheduleDao.deleteSchedule(id);
+
+  }
+
+  @PutMapping("/schedule/{id}")
+  public void updateSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable int id) {
+    scheduleDao.updateSchedule(scheduleToUpdate, id);
   }
 }

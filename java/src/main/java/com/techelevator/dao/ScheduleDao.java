@@ -26,7 +26,7 @@ public interface ScheduleDao {
      * @return updatedSchedule
      */
 
-    Schedule updateSchedule(int id, Schedule scheduleToUpdate);
+    Schedule updateSchedule(Schedule scheduleToUpdate, int id);
 
     /**
      * deletes schedule
