@@ -31,7 +31,10 @@ VALUES (
 INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
 VALUES (1, 'Barbell', 0);
 
-INSERT INTO exercises (exercise_id, equipment_id, exercise_name, sets, reps, weightLbs)
+INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
+VALUES (2, 'Bench', 0);
+
+INSERT INTO exercises (exercise_id, equipment_id, exercise_name, sets, reps, weight_lbs)
 VALUES (1, 1, 'Bench Press', 4, 8, 30);
 
 INSERT INTO workouts (workout_id, user_id, start_time, end_time)
@@ -42,4 +45,7 @@ VALUES (1, 1);
 
 INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Beginner Class With Gill', 'Gill', 'Gill will stretch you out and show you some beginner lifts. Class is open to all', 90);
 INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Cardio With Max', 'Max', 'Max chases you through the gym', 30);
+
+
+
 COMMIT TRANSACTION;

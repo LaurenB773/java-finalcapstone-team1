@@ -6,6 +6,6 @@ import java.util.List;
 public interface WorkoutDao {
   void startWorkout(int userId);
   void endWorkout(int userId);
-  List<Workout> getWorkouts();
+  List<Workout> getWorkouts(int userId);
   Workout getCurrentWorkout(int userId);
 }

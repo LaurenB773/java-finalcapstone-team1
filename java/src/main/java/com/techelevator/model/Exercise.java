@@ -7,7 +7,23 @@ public class Exercise {
   private String exerciseName;
   private int exerciseDurationMinutes;
   private int reps;
-  private double weight;
+
+  private int sets;
+  private double weightLbs;
+  public Exercise() {
+
+  }
+
+  public Exercise(int exerciseId, int equipmentId, String exerciseName, int exerciseDurationMinutes, int reps,
+                  double weightLbs, int sets) {
+    this.exerciseId = exerciseId;
+    this.equipmentId = equipmentId;
+    this.exerciseName = exerciseName;
+    this.exerciseDurationMinutes = exerciseDurationMinutes;
+    this.reps = reps;
+    this.weightLbs = weightLbs;
+    this.sets = sets;
+  }
 
   public int getExerciseId() {
     return exerciseId;
@@ -49,26 +65,20 @@ public class Exercise {
     this.reps = reps;
   }
 
-  public double getWeight() {
-    return weight;
+  public double getWeightLbs() {
+    return weightLbs;
   }
 
-  public void setWeight(double weight) {
-    this.weight = weight;
+  public void setWeightLbs(double weightLbs) {
+    this.weightLbs = weightLbs;
   }
 
-  public Exercise() {
-
+  public int getSets() {
+    return sets;
   }
 
-  public Exercise(int exerciseId, int equipmentId, String exerciseName, int exerciseDurationMinutes, int reps,
-      double weight) {
-    this.exerciseId = exerciseId;
-    this.equipmentId = equipmentId;
-    this.exerciseName = exerciseName;
-    this.exerciseDurationMinutes = exerciseDurationMinutes;
-    this.reps = reps;
-    this.weight = weight;
+  public void setSets(int sets) {
+    this.sets = sets;
   }
 
 }

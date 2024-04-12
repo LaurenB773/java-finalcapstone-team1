@@ -26,15 +26,21 @@ CREATE TABLE equipments (
   equipment_name varchar(100),
   used_time_minutes INT
 );
+
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
-  equipment_id INT references equipments(equipment_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes INT,
   sets INT NOT NULL,
   reps INT NOT NULL,
-  weightLbs NUMERIC(5, 2) NOT NULL
+  weight_lbs NUMERIC(5, 2) NOT NULL
 );
+
+CREATE TABLE exercise_equipments (
+    equipment_id INT REFERENCES equipments (equipment_id),
+    exercise_id INT REFERENCES exercises (exercise_id)
+);
+
 CREATE TABLE workouts (
   workout_id SERIAL PRIMARY KEY,
   start_time TIMESTAMP NOT NULL,

@@ -1,8 +1,10 @@
 package com.techelevator.controller;
 
 import com.techelevator.dao.CheckinDao;
+import com.techelevator.dao.ExerciseDao;
 import com.techelevator.dao.UserProfileDao;
 import com.techelevator.dao.WorkoutDao;
+import com.techelevator.model.Exercise;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Workout;
 import com.techelevator.security.dao.UserDao;
@@ -24,17 +26,20 @@ public class ProfileController {
   private WorkoutDao workoutDao;
 
   private CheckinDao checkinDao;
+  private ExerciseDao exerciseDao;
 
   public ProfileController(
     UserDao userDao,
     UserProfileDao userProfileDao,
     WorkoutDao workoutDao,
-    CheckinDao checkinDao
+    CheckinDao checkinDao,
+    ExerciseDao exerciseDao
   ) {
     this.userDao = userDao;
     this.userProfileDao = userProfileDao;
     this.workoutDao = workoutDao;
     this.checkinDao = checkinDao;
+    this.exerciseDao = exerciseDao;
   }
 
   @GetMapping
@@ -50,7 +55,11 @@ public class ProfileController {
     String username = principal.getName();
     User user = userDao.getUserByUsername(username);
 
-    return userProfileDao.getWorkouts(user.getId());
+    return workoutDao.getWorkouts(user.getId());
+  }
+  @PostMapping("/workouts")
+  public Exercise addExercise(@RequestBody Exercise exercise){
+    return  exerciseDao.createExercise(exercise);
   }
 
   @GetMapping("/workouts/current")
@@ -119,4 +128,6 @@ public class ProfileController {
 
     userProfileDao.deleteProfile(user.getId());
   }
+
+
 }

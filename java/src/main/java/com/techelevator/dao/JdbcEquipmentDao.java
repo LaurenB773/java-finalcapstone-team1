@@ -99,7 +99,7 @@ public class JdbcEquipmentDao implements EquipmentDao {
     return newEquipment;
   }
 
-  private Equipment mapToRowEquipment(SqlRowSet results) {
+  protected static Equipment mapToRowEquipment(SqlRowSet results) {
     Equipment equipment = new Equipment();
     equipment.setEquipmentId(results.getInt("equipment_id"));
     equipment.setEquipmentName(results.getString("equipment_name"));
