@@ -123,8 +123,6 @@ public class JdbcUserProfileDao implements UserProfileDao {
       throw new DaoException("Unable to connect to server or database", e);
     }
 
-    return workouts;
-  }
 
   @Override
   public UserProfile createProfile(UserProfile newProfile, int id) {

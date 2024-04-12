@@ -63,13 +63,34 @@ export default {
 </script>
 
 <style>
-html {
-  background-color: rgb(50, 50, 57);
+.top-right {
+  top: 0;
+  right: 0;
 }
 
 #nav {
+  background-color: hsl(200, 2%, 61.4%, 0.5);
+  width: 50%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
   gap: 10px;
+  padding-bottom: 20px;
   justify-content: center;
+  margin: auto;
+}
+
+#capstone-app {
+  background-image: url("../src/assets/login.png");
+  background-size: cover;
+  height: 100vh;
+}
+
+.home-link {
+  color: var(--color-blue);
+}
+
+.sign-in-link {
+  color: var(--color-blue);
 }
 </style>
