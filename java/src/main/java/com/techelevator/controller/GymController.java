@@ -57,8 +57,8 @@ public class GymController {
     checkinDao.checkOut(id);
   }
   @GetMapping("/members/{id}")
-  public UserProfile getMember(int id) {
-    return userProfileDao.getProfile(id);
+  public boolean isMemberCheckedIn(@PathVariable int id) {
+    return checkinDao.isCheckin(id);
   }
 
   @GetMapping("/schedule")

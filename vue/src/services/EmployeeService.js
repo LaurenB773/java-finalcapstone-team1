@@ -10,4 +10,16 @@ export default {
   updateEvent(event, id) {
     axios.put(`/gym/schedule/${id}`, event);
   },
+  getAllMembers() {
+    return axios.get("/gym/members");
+  },
+  checkMemberIn(id) {
+    axios.post(`/gym/members/${id}`);
+  },
+  checkMemberOut(id) {
+    axios.put(`/gym/members/${id}`);
+  },
+  isCheckedIn(id) {
+    return axios.get(`/gym/members/${id}`);
+  },
 };
