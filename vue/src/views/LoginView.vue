@@ -1,6 +1,10 @@
 <template>
-  <h1 id="title">FITNESS</h1>
-  <h1 id="title2">ELEVATOR</h1>
+  <div
+    style="display: flex; width: fit-content; flex-direction: column; line-height: 1; margin: auto; height: auto; margin-top:50px; margin-bottom: 10px;">
+
+    <h1 id="title">FITNESS</h1>
+    <h1 id="title2">ELEVATOR</h1>
+  </div>
   <div style="display: flex; gap: 10px; width: fit-content; margin: auto;">
     <div style="height: 3px; width: 40px; border: 1px solid white; background-color: white; border-radius: 10px;">
     </div>
@@ -83,7 +87,7 @@ export default {
   color: hsl(202, 49%, 89.8%);
   font-size: 50px;
   justify-content: center;
-  margin-top: 50px;
+  /* margin-top: 50px; */
 }
 
 #title2 {
@@ -131,10 +135,6 @@ export default {
   color: hsl(200, 2%, 61.4%)
 }
 
-/* .form-input-group input:hover{
-  background-color:  hsl(203, 8%, 39%, 0.5)
-} */
-
 label {
   margin-right: 0.5rem;
 }
@@ -163,6 +163,7 @@ label {
 
 .sign-in-button:hover {
   background-color: var(--color-blue-o);
+  cursor: pointer;
 }
 
 .sign-in-button {

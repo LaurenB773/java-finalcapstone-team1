@@ -1,11 +1,11 @@
 <template>
   <div id="capstone-app">
     <div id="nav">
-      <router-link class="home" v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
-      <router-link class="sign-in" v-bind:to="{ name: 'login' }" v-if="this.$store.state.token === ''">Sign In</router-link>
-      <router-link class="logout" v-bind:to="{ name: 'logout' }" v-if="this.$store.state.token != ''">Logout</router-link>&nbsp;|&nbsp;
-      <router-link class="profile" v-bind:to="{ name: 'profile' }" v-if="this.$store.state.token != '' && isUser()">Profile</router-link>
-      <router-link class="employee" v-bind:to="{ name: 'employee' }"
+      <router-link class="home-link" v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
+      <router-link class="sign-in-link" v-bind:to="{ name: 'login' }" v-if="this.$store.state.token === ''">Sign In</router-link>
+      <router-link class="logout-link" v-bind:to="{ name: 'logout' }" v-if="this.$store.state.token != ''">Logout</router-link>&nbsp;&nbsp;
+      <router-link class="profile-link" v-bind:to="{ name: 'profile' }" v-if="this.$store.state.token != '' && isUser()">Profile</router-link>
+      <router-link class="employee-link" v-bind:to="{ name: 'employee' }"
         v-if="this.$store.state.token != '' && (isEmployee() || isOwner())">Manage Gym</router-link>
 
     </div>
@@ -86,5 +86,10 @@ export default {
   height: 100vh;
 }
 
-
+.home-link {
+    color: var(--color-blue);
+  }
+.sign-in-link{
+  color: var(--color-blue);
+}
 </style>
