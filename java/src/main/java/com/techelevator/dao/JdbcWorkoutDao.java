@@ -21,12 +21,12 @@ public class JdbcWorkoutDao implements WorkoutDao {
   }
 
   @Override
-  public List<Workout> getWorkouts() {
+  public List<Workout> getWorkouts(int userId) {
     String sql = "select * from workouts where user_id = ?";
     List<Workout> workouts = new ArrayList<>();
 
     try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql,userId);
 
       while (results.next()) {
         workouts.add(mapRowToWorkout(results));

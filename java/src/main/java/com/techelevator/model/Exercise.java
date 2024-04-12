@@ -3,11 +3,27 @@ package com.techelevator.model;
 public class Exercise {
 
   private int exerciseId;
-  private int equipmentId;
+  private int userId;
   private String exerciseName;
   private int exerciseDurationMinutes;
   private int reps;
-  private double weight;
+  private int sets;
+  private double weightLbs;
+
+  public Exercise() {
+
+  }
+
+  public Exercise(int exerciseId, int userId, String exerciseName, int exerciseDurationMinutes, int reps, int sets,
+      double weightLbs) {
+    this.exerciseId = exerciseId;
+    this.userId = userId;
+    this.exerciseName = exerciseName;
+    this.exerciseDurationMinutes = exerciseDurationMinutes;
+    this.reps = reps;
+    this.sets = sets;
+    this.weightLbs = weightLbs;
+  }
 
   public int getExerciseId() {
     return exerciseId;
@@ -17,12 +33,12 @@ public class Exercise {
     this.exerciseId = exerciseId;
   }
 
-  public int getEquipmentId() {
-    return equipmentId;
+  public int getUserId() {
+    return userId;
   }
 
-  public void setEquipmentId(int equipmentId) {
-    this.equipmentId = equipmentId;
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public String getExerciseName() {
@@ -49,26 +65,21 @@ public class Exercise {
     this.reps = reps;
   }
 
-  public double getWeight() {
-    return weight;
+  public int getSets() {
+    return sets;
   }
 
-  public void setWeight(double weight) {
-    this.weight = weight;
+  public void setSets(int sets) {
+    this.sets = sets;
   }
 
-  public Exercise() {
-
+  public double getWeightLbs() {
+    return weightLbs;
   }
 
-  public Exercise(int exerciseId, int equipmentId, String exerciseName, int exerciseDurationMinutes, int reps,
-      double weight) {
-    this.exerciseId = exerciseId;
-    this.equipmentId = equipmentId;
-    this.exerciseName = exerciseName;
-    this.exerciseDurationMinutes = exerciseDurationMinutes;
-    this.reps = reps;
-    this.weight = weight;
+  public void setWeightLbs(double weightLbs) {
+    this.weightLbs = weightLbs;
   }
+
 
 }
