@@ -47,7 +47,7 @@
               />
 
               <label for="equipment">Equipment:</label>
-              <select name="equipment" v-model="dto.equipmentId" >
+              <select name="equipment" v-model="dto.equipmentId">
                 <option v-for="equipment in equipments" :key="equipment.equipmentId" :value="equipment.equipmentId">
                   {{ equipment.equipmentName }}
                 </option>

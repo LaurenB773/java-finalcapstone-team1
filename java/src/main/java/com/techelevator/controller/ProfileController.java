@@ -59,8 +59,12 @@ public class ProfileController {
   }
 
   @PostMapping("/exercises")
-  public Exercise createExercise(@RequestBody CreateExerciseDto dto){
-    return exerciseDao.createExercise(dto);
+  public Exercise createExercise(@RequestBody CreateExerciseDto dto, Principal principal){
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+    int userId = user.getId();
+
+    return exerciseDao.createExercise(dto, userId);
   }
 
   @GetMapping("/workouts/current")

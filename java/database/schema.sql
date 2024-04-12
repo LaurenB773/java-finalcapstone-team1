@@ -29,6 +29,7 @@ CREATE TABLE equipments (
 
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users (user_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes INT,
   sets INT NOT NULL,
