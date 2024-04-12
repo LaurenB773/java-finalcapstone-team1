@@ -47,7 +47,7 @@
               />
 
               <label for="equipment">Equipment:</label>
-              <select name="equipment" v-model="dto.equipmentId">
+              <select name="equipment" v-model="dto.equipmentIds" multiple>
                 <option v-for="equipment in equipments" :key="equipment.equipmentId" :value="equipment.equipmentId">
                   {{ equipment.equipmentName }}
                 </option>
@@ -109,7 +109,7 @@ export default {
       equipments: [],
       selectedEquipment: {},
       dto: {
-        equipmentId: "",
+        equipmentIds: [],
         exercise: {}
       },
     };

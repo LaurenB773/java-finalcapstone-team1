@@ -25,12 +25,15 @@ public class JdbcExerciseDao implements ExerciseDao {
   public Exercise createExercise(CreateExerciseDto dto, int userId) {
     String exerciseSql = "insert into exercises (user_id, exercise_name, exercise_duration_minutes, reps, sets, weight_lbs) values (?, ?, ?, ?, ?, ?) returning exercise_id;";
     String equipmentSql = "update equipments set used_time_minutes = used_time_minutes + ? where equipment_id = ?;";
-    String exerciseEquipmentSql = "insert into exercise_equipment (exercise_id, equipment_id) values (?, ?);";
+    String exerciseEquipmentSql = "insert into exercise_equipments (exercise_id, equipment_id) values (?, ?);";
 
     Exercise exercise = dto.getExercise();
 
     try {
-      int exerciseId = jdbcTemplate.queryForObject(exerciseSql, Integer.class, userId, exercise.getExerciseName(), exercise.getExerciseDurationMinutes(), exercise.getReps(), exercise.getSets(), exercise.getWeightLbs());
+      int exerciseId = jdbcTemplate.queryForObject(exerciseSql, Integer.class,
+       userId,
+       exercise.getExerciseName(), exercise.getExerciseDurationMinutes(),
+       exercise.getReps(), exercise.getSets(), exercise.getWeightLbs());
 
       if (exerciseId == 0) {
         throw new DaoException("Unable to create exercise");
