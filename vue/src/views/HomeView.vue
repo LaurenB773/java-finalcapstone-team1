@@ -12,4 +12,11 @@ export default {
     HomePage,
   },
 };
-</script>
+</script> 
+
+<style>
+
+</style>
+
+
+
