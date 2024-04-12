@@ -3,7 +3,7 @@ import axios from 'axios'
 const url = '/profile/workouts'
 
 export default {
-  
+
   startWorkout() {
     return axios.put(`${url}/start`)
   },
@@ -14,5 +14,12 @@ export default {
 
   getCurrentWorkout() {
     return axios.get(`${url}/current`)
-  }
+  },
+
+  getWorkouts() {
+    return axios.get(url)
+  },
+
+  
+
 }

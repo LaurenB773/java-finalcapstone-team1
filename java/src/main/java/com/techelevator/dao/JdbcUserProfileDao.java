@@ -59,22 +59,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
     return listOfMembers;
   }
 
-  @Override
-  public List<Workout> getWorkouts(int userId) {
-    String sql = "select * from workouts where user_id = ?;";
-    List<Workout> workouts = new ArrayList<>();
 
-    try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-      while (results.next()) {
-        workouts.add(JdbcWorkoutDao.mapRowToWorkout(results));
-      }
-    } catch (CannotGetJdbcConnectionException e) {
-      throw new DaoException("Unable to connect to server or database", e);
-    }
-
-    return workouts;
-  }
 
   @Override
   public UserProfile createProfile(UserProfile newProfile, int id) {

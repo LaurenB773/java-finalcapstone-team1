@@ -83,6 +83,7 @@ export default {
 
 #capstone-app {
   background-image: url("../src/assets/login.png");
+  background-size: cover;
   height: 100vh;
 }
 
