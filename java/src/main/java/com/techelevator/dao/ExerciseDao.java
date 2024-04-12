@@ -11,7 +11,7 @@ public interface ExerciseDao {
    * 
    * @return
    */
-  Exercise createExercise(CreateExerciseDto dto);
+  Exercise createExercise(CreateExerciseDto dto, int userId);
 
   /**
    * user should be able to see all

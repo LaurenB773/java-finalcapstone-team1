@@ -15,11 +15,11 @@
         v-bind:to="{ name: 'logout' }"
         v-if="this.$store.state.token != ''"
         >Logout</router-link
-      >&nbsp;&nbsp;
+      >&nbsp;|&nbsp;
       <router-link
         class="profile-link"
         v-bind:to="{ name: 'profile' }"
-        v-if="this.$store.state.token != '' && isUser()"
+        v-if="this.$store.state.token != '' && (isUser() || isEmployee())"
         >Profile</router-link
       >
       <router-link
@@ -97,6 +97,7 @@ export default {
 
 #capstone-app {
   background-image: url("../src/assets/login.png");
+  background-size: cover;
   height: 100vh;
 }
 

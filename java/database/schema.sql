@@ -10,7 +10,7 @@ CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
   username VARCHAR(50) NOT NULL UNIQUE,
   password_hash VARCHAR(200) NOT NULL,
-  role VARCHAR(50) NOT NULL
+  role VARCHAR(150) NOT NULL
 );
 CREATE TABLE user_profiles (
   user_profile_id SERIAL PRIMARY KEY,
@@ -29,6 +29,7 @@ CREATE TABLE equipments (
 
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users (user_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes INT,
   sets INT NOT NULL,

@@ -31,7 +31,7 @@ import { RouterLink } from "vue-router";
 
 export default {
   components: {
-    WorkoutDetail,
+    // WorkoutDetail,
     RouterLink,
   },
   data() {
