@@ -2,6 +2,7 @@ package com.techelevator.security.controller;
 
 import javax.validation.Valid;
 
+import com.techelevator.dao.CheckinDao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.*;
 
@@ -33,13 +34,16 @@ public class AuthenticationController {
   private UserDao userDao;
   private UserProfileDao userProfileDao;
 
+  private CheckinDao checkinDao;
+
   public AuthenticationController(TokenProvider tokenProvider,
       AuthenticationManagerBuilder authenticationManagerBuilder,
-      UserDao userDao, UserProfileDao userProfileDao) {
+      UserDao userDao, UserProfileDao userProfileDao, CheckinDao checkinDao) {
     this.tokenProvider = tokenProvider;
     this.authenticationManagerBuilder = authenticationManagerBuilder;
     this.userDao = userDao;
     this.userProfileDao = userProfileDao;
+    this.checkinDao = checkinDao;
   }
 
   @RequestMapping(path = "/login", method = RequestMethod.POST)
@@ -83,6 +87,8 @@ public class AuthenticationController {
 
       userProfileDao.createProfile(createdUserProfile, user.getId());
 
+      checkinDao.checkin(user.getId());
+      checkinDao.checkOut(user.getId());
     } catch (DaoException e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User registration failed.");
     }

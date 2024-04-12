@@ -15,4 +15,10 @@ public interface UserDao {
 
   User createUser(RegisterUserDto user);
 
+  User makeUserEmployee(int id);
+
+  void banMember(int id);
+
+  void fireEmployee(int id);
+
 }
