@@ -22,5 +22,13 @@ export default {
   makeMemberEmployee(id) {
     axios.put(`/gym/members/${id}/hire`);
   },
-  fireEmployee(id) {},
+  fireEmployee(id) {
+    axios.put(`/gym/members/${id}/fire`);
+  },
+  banMember(id) {
+    axios.put(`/gym/members/${id}/ban`);
+  },
+  getEmployees() {
+    return axios.get(`/gym/employees`);
+  },
 };

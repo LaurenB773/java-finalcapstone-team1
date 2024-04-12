@@ -4,7 +4,8 @@
       <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
       <router-link v-bind:to="{ name: 'login' }" v-if="this.$store.state.token === ''">Sign In</router-link>
       <router-link v-bind:to="{ name: 'logout' }" v-if="this.$store.state.token != ''">Logout</router-link>&nbsp;|&nbsp;
-      <router-link v-bind:to="{ name: 'profile' }" v-if="this.$store.state.token != '' && isUser()">Profile</router-link>
+      <router-link v-bind:to="{ name: 'profile' }"
+        v-if="this.$store.state.token != '' && (isUser() || isEmployee())">Profile</router-link>
       <router-link v-bind:to="{ name: 'employee' }"
         v-if="this.$store.state.token != '' && (isEmployee() || isOwner())">Manage Gym</router-link>
 

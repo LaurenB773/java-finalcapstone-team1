@@ -91,6 +91,24 @@ public class JdbcUserProfileDao implements UserProfileDao {
     return listOfMembers;
   }
 
+  public List<UserProfile> getEmployees() {
+    List<UserProfile> emp = new ArrayList<>();
+    String sql = "select * from user_profiles where user_id = " +
+            "(select user_id from users where role = 'ROLE_EMPLOYEE');";
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+      while (results.next()) {
+        UserProfile user = mapRowToProfile(results);
+        emp.add(user);
+      }
+      return emp;
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+  }
+
   @Override
   public List<Workout> getWorkouts(int userId) {
     String sql = "select * from workouts where user_id = ?;";

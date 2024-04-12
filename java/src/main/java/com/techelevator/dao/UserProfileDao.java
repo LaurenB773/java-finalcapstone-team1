@@ -57,4 +57,6 @@ public interface UserProfileDao {
    * @return A list of Workout objects for the specified userId.
    */
   List<Workout> getWorkouts(int userId);
+
+  List<UserProfile> getEmployees();
 }

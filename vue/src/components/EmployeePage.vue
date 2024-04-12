@@ -27,11 +27,18 @@
         <p>Add New Equipment</p>
         <p>Remove Equipment</p>
     </div>
+    <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">Manage Employees
+    </h2>
+    <div v-if="isShowing === 'Employees'">
+        <employee-list />
+    </div>
 </template>
 <script>
 import Schedule from './Schedule.vue';
 import EmployeeService from '../services/EmployeeService';
 import Members from './Members.vue'
+import EmployeeList from './EmployeeList.vue';
+import { mapGetters } from 'vuex';
 
 export default {
     data() {
@@ -49,12 +56,26 @@ export default {
     },
     components: {
         Schedule,
-        Members
+        Members,
+        EmployeeList
     },
     methods: {
         createNewSchedule(newSchedule) {
             EmployeeService.createEvent(newSchedule);
+        },
+        isOwner() {
+            let authorities = [];
+            authorities = this.userPermissions;
+
+
+            if (authorities.some(authority => authority.name === 'ROLE_ADMIN')) {
+                return true;
+            }
+            return false;
         }
-    }
+    },
+    computed: {
+        ...mapGetters(['userPermissions'])
+    },
 }
 </script>

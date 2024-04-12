@@ -93,6 +93,7 @@ public class JdbcUserDao implements UserDao {
   }
 
 
+  @Override
   public User makeUserEmployee(int id) {
       User user = getUserById(id);
       user.setAuthorities("ROLE_EMPLOYEE");
@@ -112,6 +113,34 @@ public class JdbcUserDao implements UserDao {
 
   }
 
+  @Override
+  public void fireEmployee(int id) {
+    String sql = "update users set role = ? where user_id = ?";
+
+    try {
+      int rows = jdbcTemplate.update(sql, "ROLE_USER", id);
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("data integridy violation", e);
+    }
+  }
+
+  @Override
+  public void banMember(int id) {
+    User user = getUserById(id);
+    user.setAuthorities("ROLE_BANNED");
+
+    String sql = "update users set role = ? where user_id = ?";
+    try {
+      int rows = jdbcTemplate.update(sql, "ROLE_BANNED", id);
+
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("data integridy violation", e);
+    }
+  }
   private User mapRowToUser(SqlRowSet rs) {
     User user = new User();
     user.setId(rs.getInt("user_id"));

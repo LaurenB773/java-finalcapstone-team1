@@ -17,4 +17,8 @@ public interface UserDao {
 
   User makeUserEmployee(int id);
 
+  void banMember(int id);
+
+  void fireEmployee(int id);
+
 }

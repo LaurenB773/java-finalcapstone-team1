@@ -77,8 +77,23 @@ public class GymController {
     return userDao.makeUserEmployee(id);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PutMapping("/members/{id}/fire")
+  public void fireEmployee(@PathVariable int id) {
+    userDao.fireEmployee(id);
+  }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @GetMapping("/employees")
+  public List<UserProfile> getEmployees() {
+    return userProfileDao.getEmployees();
+  }
 
+  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  @PutMapping("/members/{id}/ban")
+  public void banMember(@PathVariable int id) {
+    userDao.banMember(id);
+  }
   @GetMapping("/schedule")
   public List<Schedule> getAllSchedules() {
     return scheduleDao.getAllSchedules();

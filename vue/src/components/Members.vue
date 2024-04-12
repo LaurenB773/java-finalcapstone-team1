@@ -13,13 +13,14 @@
                 v-if="amICheckedIn(member.latest_checkout, member.latest_checkin)">Check
                 Member
                 Out</button>
-            <button>Revoke Membership</button>
-            <button @click="hireMember(member.userId)">Make Member Employee</button>
+            <button @click="banMember(member.userId)">Revoke Membership</button>
+            <button @click="hireMember(member.userId)" v-if="isOwner()">Make Member Employee</button>
         </div>
     </div>
 </template>
 <script>
 import EmployeeService from '../services/EmployeeService';
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
@@ -51,7 +52,25 @@ export default {
         },
         hireMember(id) {
             EmployeeService.makeMemberEmployee(id);
+            window.location.reload();
+        },
+        banMember(id) {
+            EmployeeService.banMember(id);
+            window.location.reload();
+        },
+        isOwner() {
+            let authorities = [];
+            authorities = this.userPermissions;
+
+
+            if (authorities.some(authority => authority.name === 'ROLE_ADMIN')) {
+                return true;
+            }
+            return false;
         }
+    },
+    computed: {
+        ...mapGetters(['userPermissions'])
     },
 
 }
