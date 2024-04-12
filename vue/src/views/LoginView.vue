@@ -1,27 +1,27 @@
 <template>
-    <div class="container" id="login">
-      <form v-on:submit.prevent="login">
-        <h1 id="sign-in">Please Sign In</h1>
-        <div role="alert" v-if="invalidCredentials">
-          Invalid username and password!
-        </div>
-        <div role="alert" v-if="this.$route.query.registration">
-          Thank you for registering, please sign in.
-        </div>
-        <div class="form-input-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" v-model="user.username" required autofocus />
-        </div>
-        <div class="form-input-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="user.password" required />
-        </div>
-        <button type="submit">Sign in</button>
-        <p>
-          <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link>
-        </p>
-      </form>
-    </div>
+  <div id="login">
+    <form v-on:submit.prevent="login">
+      <h1 id="sign-in">Please Sign In</h1>
+      <div role="alert" v-if="invalidCredentials">
+        Invalid username and password!
+      </div>
+      <div role="alert" v-if="this.$route.query.registration">
+        Thank you for registering, please sign in.
+      </div>
+      <div class="form-input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" v-model="user.username" required autofocus />
+      </div>
+      <div class="form-input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" v-model="user.password" required />
+      </div>
+      <button type="submit">Sign in</button>
+      <p>
+        <router-link v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link>
+      </p>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -63,13 +63,20 @@ export default {
 
 <style scoped>
 .container {
+  width: fit-content;
+  padding: 15px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 50px;
+  margin-top: 50px;
 }
 .form-input-group {
   margin-bottom: 1rem;
+}
+.form-input-group input {
+  outline: none;
 }
 
 label {
@@ -78,6 +85,7 @@ label {
 
 #sign-in {
   color: hsl(202, 49%, 89.8%);
+  font-size: larger;
   padding-bottom: 15px;
 }
 
