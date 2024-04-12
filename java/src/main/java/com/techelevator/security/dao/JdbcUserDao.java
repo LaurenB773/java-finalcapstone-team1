@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.techelevator.exception.DaoException;
+import com.techelevator.security.model.Authority;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -89,6 +90,26 @@ public class JdbcUserDao implements UserDao {
       throw new DaoException("Data integrity violation", e);
     }
     return newUser;
+  }
+
+
+  public User makeUserEmployee(int id) {
+      User user = getUserById(id);
+      user.setAuthorities("ROLE_EMPLOYEE");
+
+      String sql = "update users set role = ? where user_id = ?";
+      try {
+        int rows = jdbcTemplate.update(sql, "ROLE_EMPLOYEE", id);
+        if(rows > 0) {
+          return user;
+        }
+        throw new DaoException("something went wrong");
+      } catch (CannotGetJdbcConnectionException e) {
+        throw new DaoException("Unable to connect", e);
+      } catch (DataIntegrityViolationException e) {
+        throw new DaoException("data integridy violation", e);
+      }
+
   }
 
   private User mapRowToUser(SqlRowSet rs) {

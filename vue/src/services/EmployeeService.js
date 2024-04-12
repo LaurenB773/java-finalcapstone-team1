@@ -19,4 +19,8 @@ export default {
   checkMemberOut(id) {
     axios.put(`/gym/members/${id}`);
   },
+  makeMemberEmployee(id) {
+    axios.put(`/gym/members/${id}/hire`);
+  },
+  fireEmployee(id) {},
 };

@@ -14,7 +14,7 @@
                 Member
                 Out</button>
             <button>Revoke Membership</button>
-            <button>Make Member Employee</button>
+            <button @click="hireMember(member.userId)">Make Member Employee</button>
         </div>
     </div>
 </template>
@@ -48,6 +48,9 @@ export default {
         amICheckedIn(checkout, checkin) {
             console.log(checkout < checkin);
             return (checkout < checkin || checkout === null);
+        },
+        hireMember(id) {
+            EmployeeService.makeMemberEmployee(id);
         }
     },
 

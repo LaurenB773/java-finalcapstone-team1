@@ -39,36 +39,6 @@ public class JdbcUserProfileDao implements UserProfileDao {
     return null;
   }
 
-  /**
-   * SELECT user_profiles.user_id,
-   *        user_profiles.first_name,
-   * 	   user_profiles.last_name,
-   * 	   user_profiles.email,
-   * 	   user_profiles.profile_picture,
-   * 	   user_profiles.goal,
-   *        latest_checkins.latest_checkin_time,
-   *        latest_checkins.checkout_time
-   * FROM user_profiles
-   * JOIN (
-   *     SELECT checkins.user_id,
-   *            latest_checkin_time,
-   *            checkout_time
-   *     FROM (
-   *         SELECT user_id,
-   *         MAX(checkin_time) AS latest_checkin_time
-   *         FROM checkins
-   *         GROUP BY user_id
-   *     ) AS latest_checkins
-   *     JOIN checkins ON checkins.user_id = latest_checkins.user_id
-   *                  AND checkins.checkin_time = latest_checkins.latest_checkin_time
-   * ) AS latest_checkins ON latest_checkins.user_id = user_profiles.user_id
-   * WHERE user_profiles.user_id IN (
-   *     SELECT user_id
-   *     FROM users
-   *     WHERE role = 'ROLE_USER'
-   * );
-   *
-   */
   @Override
   public List<UserProfile> getMembers() {
     List<UserProfile> listOfMembers = new ArrayList<>();

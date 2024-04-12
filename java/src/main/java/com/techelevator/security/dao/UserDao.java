@@ -15,4 +15,6 @@ public interface UserDao {
 
   User createUser(RegisterUserDto user);
 
+  User makeUserEmployee(int id);
+
 }
