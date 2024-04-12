@@ -19,7 +19,4 @@ export default {
   checkMemberOut(id) {
     axios.put(`/gym/members/${id}`);
   },
-  isCheckedIn(id) {
-    return axios.get(`/gym/members/${id}`);
-  },
 };
