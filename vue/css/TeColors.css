@@ -1,5 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
     --color-blue: hsl(198, 100%, 46.7%);
+    --color-blue-o: hsla(198, 100%, 46.7%, 0.7);
     --color-grey: hsl(218, 10%, 34.9%);
     --color-green: hsl(124, 61%, 65.7%);
     --color-red: hsl(3, 100%, 66.7%);
@@ -7,6 +12,6 @@
     --color-dark-blue: hsl(198, 38%, 27.8%);
     --color-purple: hsl(264, 68%, 65.5%);
     --color-yellow: hsl(49, 96%, 62.2%);
-    --color-medium-grey: HSL: hsl(201, 10%, 36.9%);
+    --color-medium-grey: hsl(201, 10%, 36.9%);
     --color-light-grey: hsl(200, 2%, 61.4%);
 }
