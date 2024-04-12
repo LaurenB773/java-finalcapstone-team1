@@ -1,22 +1,17 @@
 <template>
   <div id="capstone-app">
     <div id="nav">
-      <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
-      <router-link v-bind:to="{ name: 'login' }" v-if="this.$store.state.token === ''">Sign In</router-link>
-      <router-link v-bind:to="{ name: 'logout' }" v-if="this.$store.state.token != ''">Logout</router-link>&nbsp;|&nbsp;
-      <router-link v-bind:to="{ name: 'profile' }" v-if="this.$store.state.token != '' && isUser()">Profile</router-link>
-      <router-link v-bind:to="{ name: 'employee' }"
+      <router-link class="home" v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
+      <router-link class="sign-in" v-bind:to="{ name: 'login' }" v-if="this.$store.state.token === ''">Sign In</router-link>
+      <router-link class="logout" v-bind:to="{ name: 'logout' }" v-if="this.$store.state.token != ''">Logout</router-link>&nbsp;|&nbsp;
+      <router-link class="profile" v-bind:to="{ name: 'profile' }" v-if="this.$store.state.token != '' && isUser()">Profile</router-link>
+      <router-link class="employee" v-bind:to="{ name: 'employee' }"
         v-if="this.$store.state.token != '' && (isEmployee() || isOwner())">Manage Gym</router-link>
 
     </div>
     <router-view />
   </div>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
-    rel="stylesheet">
 </template>
 
 <script>
@@ -68,14 +63,28 @@ export default {
 </script>
 
 <style>
-html {
-  background-color: rgb(50, 50, 57);
-}
-#nav {
-  background-color: hsl(218, 10%, 34.9%);
 
+.top-right {
+  top: 0;
+  right: 0;
+}
+
+#nav {
+  background-color: hsl(200, 2%, 61.4%, 0.5);
+  width: 50%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
   gap: 10px;
+  padding-bottom: 20px;
   justify-content: center;
+  margin: auto;
 }
+
+#capstone-app {
+  background-image: url("../src/assets/login.png");
+  height: 100vh;
+}
+
+
 </style>
