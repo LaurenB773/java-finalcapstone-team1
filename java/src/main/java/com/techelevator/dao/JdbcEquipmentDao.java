@@ -42,7 +42,7 @@ public class JdbcEquipmentDao implements EquipmentDao {
     String sql = "select * from equipments where equipment_id = ?;";
 
     try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
       if (results.next()) {
         return mapToRowEquipment(results);
       }

@@ -23,34 +23,24 @@ public class JdbcExerciseDao implements ExerciseDao {
 
   @Override
   public Exercise createExercise(CreateExerciseDto dto) {
-    String getEquipmentSql = "select * from equipment where equipment_id = ?;";
-    String updateEquipmentSql = "update equipment set used_time_minutes = used_time_minutes + ? where equipment_id = ?;";
-    String createExerciseSql = "insert into exercises (exercise_name, exercise_duration_minutes, reps, weight_lbs) values (?, ?, ?, ?) returning exercise_id;";
-    String createExerciseEquipment = "insert into exercise_equipment (exercise_id, equipment_id) values (?, ?);";
+    String exerciseSql = "insert into exercises (exercise_name, exercise_duration_minutes, reps, sets, weight_lbs) values (?, ?, ?, ?, ?) returning exercise_id;";
+    String equipmentSql = "update equipments set used_time_minutes = used_time_minutes + ? where equipment_id = ?;";
 
     Exercise exercise = dto.getExercise();
     int equipmentId = dto.getEquipmentId();
 
     try {
-      SqlRowSet equipmentResults = jdbcTemplate.queryForRowSet(getEquipmentSql, equipmentId);
+      int exerciseId = jdbcTemplate.queryForObject(exerciseSql, Integer.class, exercise.getExerciseName(), exercise.getExerciseDurationMinutes(), exercise.getReps(), exercise.getSets(), exercise.getWeightLbs());
+      jdbcTemplate.update(equipmentSql, exercise.getExerciseDurationMinutes(), equipmentId);
 
-      if (equipmentResults.next()) {
-        Equipment equipment = JdbcEquipmentDao.mapToRowEquipment(equipmentResults);
-        int totalEquipmentTime = equipment.getUserTimeMinutes() + exercise.getExerciseDurationMinutes();
-
-        jdbcTemplate.update(updateEquipmentSql, totalEquipmentTime, equipmentId);
+      if (exerciseId == 0) {
+        throw new DaoException("Unable to create exercise");
       }
 
-      int exerciseId = jdbcTemplate.queryForObject(createExerciseSql, Integer.class, exercise.getExerciseName(), exercise.getExerciseDurationMinutes(), exercise.getReps(), exercise.getWeightLbs());
-
-      jdbcTemplate.update(createExerciseEquipment, exerciseId, equipmentId);
-
       return getExerciseById(exerciseId);
-
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }
-
   }
 
   @Override

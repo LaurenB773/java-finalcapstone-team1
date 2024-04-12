@@ -35,10 +35,20 @@
 
           <div v-if="showForm[index]">
             <h2>Add Exercise Details</h2>
-            <form @submit.prevent="submitExercise(index)">
+            <form @submit.prevent="submitExercise(workout.WorkOut)">
+
+              <label for="duration">Duration: </label>
+              <input
+                type="number"
+                id="duration"
+                v-model.number="dto.exercise.exerciseDurationMinutes"
+                placeholder="minutes"
+                required
+              />
+
               <label for="equipment">Equipment:</label>
-              <select name="equipment">
-                <option v-for="equipment in equipments" :key="equipment.equipmentId" :value="equipment.equipmentName">
+              <select name="equipment" v-model="dto.equipmentId" >
+                <option v-for="equipment in equipments" :key="equipment.equipmentId" :value="equipment.equipmentId">
                   {{ equipment.equipmentName }}
                 </option>
               </select>
@@ -47,7 +57,7 @@
               <input
                 type="number"
                 id="weight"
-                v-model.number="exercise[index].weight"
+                v-model.number="dto.exercise.weightLbs"
                 placeholder="Weight (lbs)"
                 required
               />
@@ -56,7 +66,7 @@
               <input
                 type="number"
                 id="sets"
-                v-model.number="exercise[index].sets"
+                v-model.number="dto.exercise.sets"
                 placeholder="sets"
                 required
               />
@@ -65,7 +75,7 @@
               <input
                 type="number"
                 id="reps"
-                v-model.number="exercise[index].reps"
+                v-model.number="dto.exercise.reps"
                 placeholder="reps"
                 required
               />
@@ -97,6 +107,11 @@ export default {
       showForm: [],
       exercise: [],
       equipments: [],
+      selectedEquipment: {},
+      dto: {
+        equipmentId: "",
+        exercise: {}
+      },
     };
   },
   mounted() {
@@ -139,7 +154,11 @@ export default {
     toggleForm(index) {
       this.showForm[index] = !this.showForm[index];
     },
-    submitExercise(index) {
+
+    submitExercise(exerciseName) {
+      this.dto.exercise.exerciseName = exerciseName
+      console.log(this.dto)
+      ExerciseService.createExercise(this.dto)
     },
   },
 };

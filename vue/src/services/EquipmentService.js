@@ -2,10 +2,10 @@ import axios from 'axios'
 
 export default {
   getEquipment(id) {
-    return axios.get(`/api/equipment/${id}`)
+    return axios.get(`/gym/equipment/${id}`)
   },
 
   getAllEquipment() {
-    return axios.get('/api/equipment')
+    return axios.get('/gym/equipment')
   }
 }
