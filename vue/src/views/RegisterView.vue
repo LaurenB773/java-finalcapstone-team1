@@ -1,29 +1,29 @@
 <template>
   <div id="register" class="text-center">
     <form v-on:submit.prevent="register">
-      <h1>Create Account</h1>
       <div role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
       <div class="form-input-group">
         <label for="username">Username</label>
-        <input type="text" id="username" v-model="user.username" required autofocus />
+        <input placeholder="Username" type="text" id="username" v-model="user.username" required autofocus />
       </div>
       <div class="form-input-group">
         <label for="email">Email</label>
-        <input type="text" name="email" id="email" v-model="user.email">
+        <input placeholder="Email" type="text" name="email" id="email" v-model="user.email">
       </div>
       <div class="form-input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" v-model="user.password" required />
+        <input placeholder="Password" type="password" id="password" v-model="user.password" required />
       </div>
       <div class="form-input-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" v-model="user.confirmPassword" required />
+        <input placeholder="Re-enter Password" type="password" id="confirmPassword" v-model="user.confirmPassword"
+          required />
       </div>
       <div class="form-input-group">
-        <label for="goalSelector">What is your goal with the gym? </label> <!--could put gym name here-->
-        <select id="goalSelector" v-model="user.goal"> 
+        <label for="goalSelector">Gym Goal </label> <!--could put gym name here-->
+        <select id="goalSelector" v-model="user.goal">
           <option value="weight-loss">Weight Loss</option>
           <option value="strength">Strength/Muscle Building</option>
           <option value="aesthetics">Aesthetic Body Building</option>
@@ -33,14 +33,15 @@
       </div>
       <div class="form-input-group">
         <label for="first-name">Preferred First Name</label>
-        <input type="text" id="first-name" v-model="user.firstName">
+        <input placeholder="First name" type="text" id="first-name" v-model="user.firstName">
       </div>
       <div class="form-input-group">
         <label for="last-name">Last Name</label>
-         <input type="text" id="last-name" v-model="user.lastName">
+        <input placeholder="Last name" type="text" id="last-name" v-model="user.lastName">
       </div>
-      <button type="submit">Create Account</button>
-      <p><router-link v-bind:to="{ name: 'login' }">Already have an account? Log in.</router-link></p>
+      <button class="create-user-button" type="submit">Create Account</button>
+      <p><router-link class="signup-to-login-link" v-bind:to="{ name: 'login' }">Already have an account? Log
+          in.</router-link></p>
     </form>
   </div>
 </template>
@@ -99,10 +100,52 @@ export default {
 </script>
 
 <style scoped>
+#register {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: auto;
+  margin-top: 20px;
+}
+
 .form-input-group {
   margin-bottom: 1rem;
+  color: var(--color-light-blue);
+  display: flex;
+  margin: auto;
+  width: 100%;
+  justify-content: space-between;
+  padding: 12px;
 }
+
 label {
   margin-right: 0.5rem;
+}
+
+.create-user-button {
+  background-color: var(--color-blue);
+  display: flex;
+  margin: auto;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
+  transition: background-color 200ms;
+}
+
+.create-user-button:hover {
+  background-color: var(--color-blue-o);
+  cursor: pointer;
+}
+
+.signup-to-login-link {
+  color: hsl(202, 49%, 89.8%);
+  margin: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.signup-to-login-link:hover {
+  text-decoration: underline;
 }
 </style>
