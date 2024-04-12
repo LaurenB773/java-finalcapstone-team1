@@ -42,7 +42,7 @@ public class JdbcEquipmentDao implements EquipmentDao {
     String sql = "select * from equipments where equipment_id = ?;";
 
     try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
       if (results.next()) {
         return mapToRowEquipment(results);
       }
@@ -99,7 +99,7 @@ public class JdbcEquipmentDao implements EquipmentDao {
     return newEquipment;
   }
 
-  private Equipment mapToRowEquipment(SqlRowSet results) {
+  protected static Equipment mapToRowEquipment(SqlRowSet results) {
     Equipment equipment = new Equipment();
     equipment.setEquipmentId(results.getInt("equipment_id"));
     equipment.setEquipmentName(results.getString("equipment_name"));

@@ -122,15 +122,13 @@ public class JdbcUserProfileDao implements UserProfileDao {
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     }
-
     return workouts;
   }
 
   @Override
   public UserProfile createProfile(UserProfile newProfile, int id) {
     UserProfile profileToCreate = null;
-    String sql =
-      "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
+    String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
     try {
       int newId = jdbcTemplate.queryForObject(
         sql,
