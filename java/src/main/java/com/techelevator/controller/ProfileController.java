@@ -53,14 +53,31 @@ public class ProfileController {
     return userProfileDao.getWorkouts(user.getId());
   }
 
+  @GetMapping("/workouts/current")
+  public Workout getCurrentWorkout(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+    int userId = user.getId();
+
+    return workoutDao.getCurrentWorkout(userId);
+  }
+
   @PutMapping("/workouts/start")
-  public void startWorkout(int userProfileId, int workoutId) {
-    workoutDao.startWorkout(userProfileId, workoutId);
+  public void startWorkout(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+    int userId = user.getId();
+
+    workoutDao.startWorkout(userId);
   }
 
   @PutMapping("/workouts/end")
-  public void endWorkout(int userProfileId, int workoutId) {
-    workoutDao.endWorkout(userProfileId, workoutId);
+  public void endWorkout(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+    int userId = user.getId();
+
+    workoutDao.endWorkout(userId);
   }
 
   @GetMapping("/checkin")
@@ -88,10 +105,7 @@ public class ProfileController {
   // userProfileDao.createProfile() is called in the AuthenticationController
 
   @PutMapping
-  public void updateProfile(
-    Principal principal,
-    @Valid @RequestBody UserProfile profileToUpdate
-  ) {
+  public void updateProfile(Principal principal, @Valid @RequestBody UserProfile profileToUpdate) {
     String username = principal.getName();
     User user = userDao.getUserByUsername(username);
 

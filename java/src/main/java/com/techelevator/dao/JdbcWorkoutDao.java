@@ -39,11 +39,11 @@ public class JdbcWorkoutDao implements WorkoutDao {
   }
 
   @Override
-  public Workout getWorkoutById(int id) {
-    String sql = "select * from workouts where workout_id = ?";
+  public Workout getCurrentWorkout(int userId) {
+    String sql = "select * from workouts where end_time is null and user_id = ?;";
 
     try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 
       if (results.next()) {
         return mapRowToWorkout(results);
@@ -55,6 +55,7 @@ public class JdbcWorkoutDao implements WorkoutDao {
     return null;
   }
 
+  // ! doesnt work
   public Workout createWorkout(Workout newWorkout) {
     Workout workoutToCreate = null;
     String sql =
@@ -66,9 +67,9 @@ public class JdbcWorkoutDao implements WorkoutDao {
         int.class,
         newWorkout.getStartTime(),
         newWorkout.getEndTime(),
-        newWorkout.getUserProfileId()
+        newWorkout.getUserId()
       );
-      workoutToCreate = getWorkoutById(id);
+      workoutToCreate = getCurrentWorkout(id);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
@@ -87,7 +88,7 @@ public class JdbcWorkoutDao implements WorkoutDao {
         workoutToUpdate.getWorkoutId(),
         workoutToUpdate.getStartTime(),
         workoutToUpdate.getEndTime(),
-        workoutToUpdate.getUserProfileId()
+        workoutToUpdate.getUserId()
       );
       if (numberOfRowsAffected > 0) {
         return workoutToUpdate;
@@ -101,24 +102,26 @@ public class JdbcWorkoutDao implements WorkoutDao {
     }
   }
 
-  public void startWorkout(int userProfileId, int workoutId) {
-    String sql =
-      "insert into workouts (user_profile_id, workout_id, start_time) values (?, ?, ?)";
+  public void startWorkout(int userId) {
+    String sql = "insert into workouts (user_id, start_time) values (?, ?)";
 
     try {
-      jdbcTemplate.update(sql, userProfileId, workoutId, LocalDateTime.now());
+      jdbcTemplate.update(sql, userId, LocalDateTime.now());
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }
   }
 
   @Override
-  public void endWorkout(int userProfileId, int workoutId) {
-    String sql =
-      "update workouts set end_time = ? where user_profile_id = ? and workout_id = ?";
+  public void endWorkout(int userId) {
+    String sql = "update workouts set end_time = ? where user_id = ? and end_time is null";
 
     try {
-      jdbcTemplate.update(sql, LocalDateTime.now(), userProfileId, workoutId);
+      int rowsAffected = jdbcTemplate.update(sql, LocalDateTime.now(), userId);
+
+      if (rowsAffected == 0) {
+        throw new DaoException("Workout not found");
+      }
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }
@@ -128,13 +131,15 @@ public class JdbcWorkoutDao implements WorkoutDao {
     Workout workout = new Workout();
 
     workout.setWorkoutId(row.getInt("workout_id"));
-    workout.setUserProfileId(row.getInt("user_profile_id"));
+    workout.setUserId(row.getInt("user_id"));
 
     LocalDateTime startTime = row.getTimestamp("start_time").toLocalDateTime();
     workout.setStartTime(startTime);
 
-    LocalDateTime endTime = row.getTimestamp("end_time").toLocalDateTime();
-    workout.setEndTime(endTime);
+    if (row.getTimestamp("end_time") != null) {
+      LocalDateTime endTime = row.getTimestamp("end_time").toLocalDateTime();
+      workout.setEndTime(endTime);
+    }
 
     return workout;
   }

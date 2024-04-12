@@ -9,14 +9,15 @@
 	<router-link v-bind:to="{ name: 'workouts' }"> See Workouts </router-link>
 	<router-link v-bind:to="{ name: 'newWorkout' }">Start New Workout</router-link>
 	<button @click="checkInOrOut">{{ isCheckedIn ? 'check out' : 'check in' }}</button>
-	<!-- <button v-else @click="checkInOrOut">Check Out</button>	 -->
+
+  <button @click="logWorkout">{{ isWorkoutStarted ? 'End Workout' : 'Start Workout' }}</button>
 </template>
+
 
 <script>
 import { mapState } from 'vuex'
-
 import UserService from '../services/UserService'
-import axios from 'axios'
+import WorkoutService from '../services/WorkoutService'
 
 export default {
 	data() {
@@ -30,16 +31,20 @@ export default {
 				goal: '',
 			},
 			isCheckedIn: false,
-
+      isWorkoutStarted: false,
 		}
 	},
+
 	mounted() {
 		UserService.getProfile().then(res => this.userProfile = res.data)
 		UserService.getLastCheckin().then(response => this.isCheckedIn = response.data)
+    WorkoutService.getCurrentWorkout().then(response =>  this.isWorkoutStarted = response.data ? true : false)
 	},
+
 	computed: {
 		...mapState(['user']),
 	},
+
 	methods: {
 		checkInOrOut() {
 			if (this.isCheckedIn) {
@@ -50,7 +55,19 @@ export default {
 				this.isCheckedIn = true;
 			} 
 
-		}
+		},
+
+
+    logWorkout() {
+      if (this.isWorkoutStarted) {
+        WorkoutService.endWorkout();
+        this.isWorkoutStarted = false;
+      } else {
+        WorkoutService.startWorkout();
+        this.isWorkoutStarted = true;
+      }
+    },
+
 		
 	}
 }
