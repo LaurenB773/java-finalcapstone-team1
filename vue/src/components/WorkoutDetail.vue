@@ -32,9 +32,17 @@
             </p>
           </div>
           <button @click="toggleForm(index)">Add Exercise</button>
+
           <div v-if="showForm[index]">
             <h2>Add Exercise Details</h2>
             <form @submit.prevent="submitExercise(index)">
+              <label for="equipment">Equipment:</label>
+              <select name="equipment">
+                <option v-for="equipment in equipments" :key="equipment.equipmentId" :value="equipment.equipmentName">
+                  {{ equipment.equipmentName }}
+                </option>
+              </select>
+
               <label for="weight">Weight:</label>
               <input
                 type="number"
@@ -72,8 +80,10 @@
 </template>
 
 <script>
-import workoutService from "../services/WorkoutService";
+import WorkoutService from "../services/WorkoutService";
 import WorkoutApiService from "../services/WorkoutApiService";
+import EquipmentService from "../services/EquipmentService";
+import ExerciseService from "../services/ExerciseService";
 
 export default {
   data() {
@@ -86,7 +96,13 @@ export default {
       isDescriptionShown: [],
       showForm: [],
       exercise: [],
+      equipments: [],
     };
+  },
+  mounted() {
+    EquipmentService.getAllEquipment().then(response => {
+      this.equipments = response.data
+    })
   },
   methods: {
     async fetchWorkouts() {
@@ -124,15 +140,6 @@ export default {
       this.showForm[index] = !this.showForm[index];
     },
     submitExercise(index) {
-      console.log(this.workouts[index].WorkOut);
-      this.exercise[index].exerciseName = this.workouts[index].WorkOut;
-      workoutService.createExercise(this.exercise[index]);
-      this.exercise = {
-        weight: "",
-        reps: "",
-        sets: "",
-      };
-      this.showForm[index] = false;
     },
   },
 };

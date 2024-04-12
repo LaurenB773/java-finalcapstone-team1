@@ -20,8 +20,6 @@ export default {
     return axios.get(url)
   },
 
-  createExercise(exercise) {
-    return axios.post(url, { ...exercise })
-  }
+  
 
 }

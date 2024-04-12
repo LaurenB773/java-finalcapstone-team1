@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 import com.techelevator.dao.CheckinDao;
+import com.techelevator.dao.CreateExerciseDto;
 import com.techelevator.dao.ExerciseDao;
 import com.techelevator.dao.UserProfileDao;
 import com.techelevator.dao.WorkoutDao;
@@ -24,7 +25,6 @@ public class ProfileController {
   private UserDao userDao;
   private UserProfileDao userProfileDao;
   private WorkoutDao workoutDao;
-
   private CheckinDao checkinDao;
   private ExerciseDao exerciseDao;
 
@@ -57,9 +57,10 @@ public class ProfileController {
 
     return workoutDao.getWorkouts(user.getId());
   }
-  @PostMapping("/workouts")
-  public Exercise addExercise(@RequestBody Exercise exercise){
-    return  exerciseDao.createExercise(exercise);
+
+  @PostMapping("/exercises")
+  public Exercise createExercise(@RequestBody CreateExerciseDto dto){
+    return exerciseDao.createExercise(dto);
   }
 
   @GetMapping("/workouts/current")

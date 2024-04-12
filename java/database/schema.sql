@@ -37,8 +37,8 @@ CREATE TABLE exercises (
 );
 
 CREATE TABLE exercise_equipments (
-    equipment_id INT REFERENCES equipments (equipment_id),
-    exercise_id INT REFERENCES exercises (exercise_id)
+    exercise_id INT REFERENCES exercises (exercise_id),
+    equipment_id INT REFERENCES equipments (equipment_id)
 );
 
 CREATE TABLE workouts (
@@ -51,6 +51,7 @@ CREATE TABLE workout_exercises(
   workout_id INT REFERENCES workouts (workout_id) NOT NULL,
   exercise_id INT REFERENCES exercises (exercise_id) NOT NULL
 );
+
 CREATE TABLE schedules (
   schedule_id SERIAL PRIMARY KEY,
   title VARCHAR(100) default 'title',

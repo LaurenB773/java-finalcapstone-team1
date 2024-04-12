@@ -22,33 +22,35 @@ public class JdbcExerciseDao implements ExerciseDao {
   }
 
   @Override
-  public Exercise createExercise(Exercise exercise) {
-    String getEquipmentSql = "select * from equipments where equipment_id = ?;";
-    String equipmentSql = "update equipments set used_time_minutes = ? where equipment_id = ?;";
-    String sql = "insert into exercises (exercise_name, exercise_duration_minutes, reps, sets, weight_lbs) values (?, ?, ?, ?, ?) returning exercise_id;";
+  public Exercise createExercise(CreateExerciseDto dto) {
+    String getEquipmentSql = "select * from equipment where equipment_id = ?;";
+    String updateEquipmentSql = "update equipment set used_time_minutes = used_time_minutes + ? where equipment_id = ?;";
+    String createExerciseSql = "insert into exercises (exercise_name, exercise_duration_minutes, reps, weight_lbs) values (?, ?, ?, ?) returning exercise_id;";
+    String createExerciseEquipment = "insert into exercise_equipment (exercise_id, equipment_id) values (?, ?);";
+
+    Exercise exercise = dto.getExercise();
+    int equipmentId = dto.getEquipmentId();
 
     try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(getEquipmentSql, exercise.getEquipmentId());
+      SqlRowSet equipmentResults = jdbcTemplate.queryForRowSet(getEquipmentSql, equipmentId);
 
-      if (results.next()) {
-        Equipment equipment = JdbcEquipmentDao.mapToRowEquipment(results);
-        int newEquipmentTime = equipment.getUserTimeMinutes() + exercise.getExerciseDurationMinutes();
+      if (equipmentResults.next()) {
+        Equipment equipment = JdbcEquipmentDao.mapToRowEquipment(equipmentResults);
+        int totalEquipmentTime = equipment.getUserTimeMinutes() + exercise.getExerciseDurationMinutes();
 
-        jdbcTemplate.update(equipmentSql, newEquipmentTime, equipment.getEquipmentId());
-
-        int exerciseId = jdbcTemplate.queryForObject(sql, int.class, exercise.getExerciseName(),exercise.getExerciseDurationMinutes(),
-                exercise.getReps(),exercise.getSets(),exercise.getWeightLbs());
-        if (exerciseId == 0) {
-          throw new DaoException("Unable to create new exercise");
-        }
-
-        return getExerciseById(exerciseId);
+        jdbcTemplate.update(updateEquipmentSql, totalEquipmentTime, equipmentId);
       }
+
+      int exerciseId = jdbcTemplate.queryForObject(createExerciseSql, Integer.class, exercise.getExerciseName(), exercise.getExerciseDurationMinutes(), exercise.getReps(), exercise.getWeightLbs());
+
+      jdbcTemplate.update(createExerciseEquipment, exerciseId, equipmentId);
+
+      return getExerciseById(exerciseId);
+
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException(e.getMessage());
     }
 
-    return null;
   }
 
   @Override
@@ -91,7 +93,6 @@ public class JdbcExerciseDao implements ExerciseDao {
     Exercise exercise = new Exercise();
 
     exercise.setExerciseId(row.getInt("exercise_id"));
-    exercise.setEquipmentId(row.getInt("equipment_id"));
     exercise.setExerciseName(row.getString("exercise_name"));
     exercise.setExerciseDurationMinutes(row.getInt("exercise_duration_minutes"));
     exercise.setReps(row.getInt("reps"));

@@ -3,26 +3,24 @@ package com.techelevator.model;
 public class Exercise {
 
   private int exerciseId;
-  private int equipmentId;
   private String exerciseName;
   private int exerciseDurationMinutes;
   private int reps;
-
   private int sets;
   private double weightLbs;
+
   public Exercise() {
 
   }
 
-  public Exercise(int exerciseId, int equipmentId, String exerciseName, int exerciseDurationMinutes, int reps,
-                  double weightLbs, int sets) {
+  public Exercise(int exerciseId, String exerciseName, int exerciseDurationMinutes, int reps, int sets,
+      double weightLbs) {
     this.exerciseId = exerciseId;
-    this.equipmentId = equipmentId;
     this.exerciseName = exerciseName;
     this.exerciseDurationMinutes = exerciseDurationMinutes;
     this.reps = reps;
-    this.weightLbs = weightLbs;
     this.sets = sets;
+    this.weightLbs = weightLbs;
   }
 
   public int getExerciseId() {
@@ -31,14 +29,6 @@ public class Exercise {
 
   public void setExerciseId(int exerciseId) {
     this.exerciseId = exerciseId;
-  }
-
-  public int getEquipmentId() {
-    return equipmentId;
-  }
-
-  public void setEquipmentId(int equipmentId) {
-    this.equipmentId = equipmentId;
   }
 
   public String getExerciseName() {
@@ -65,6 +55,14 @@ public class Exercise {
     this.reps = reps;
   }
 
+  public int getSets() {
+    return sets;
+  }
+
+  public void setSets(int sets) {
+    this.sets = sets;
+  }
+
   public double getWeightLbs() {
     return weightLbs;
   }
@@ -73,12 +71,5 @@ public class Exercise {
     this.weightLbs = weightLbs;
   }
 
-  public int getSets() {
-    return sets;
-  }
-
-  public void setSets(int sets) {
-    this.sets = sets;
-  }
 
 }
