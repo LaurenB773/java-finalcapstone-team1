@@ -15,6 +15,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @CrossOrigin
@@ -42,97 +43,80 @@ public class ProfileController {
     this.exerciseDao = exerciseDao;
   }
 
+  /************************************* User Profile ******************************** */
   @GetMapping
+  @ResponseStatus(value = HttpStatus.OK, reason = "User profile retrieved")
   public UserProfile getUserProfile(Principal principal) {
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-
-    return userProfileDao.getProfile(user.getId());
+    return userProfileDao.getProfile(getUserId(principal));
   }
-
-  @GetMapping("/workouts")
-  public List<Workout> getWorkouts(Principal principal) {
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-
-    return workoutDao.getWorkouts(user.getId());
-  }
-
-  @PostMapping("/exercises")
-  public Exercise createExercise(@RequestBody CreateExerciseDto dto, Principal principal){
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-    int userId = user.getId();
-
-    return exerciseDao.createExercise(dto, userId);
-  }
-
-  @GetMapping("/workouts/current")
-  public Workout getCurrentWorkout(Principal principal) {
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-    int userId = user.getId();
-
-    return workoutDao.getCurrentWorkout(userId);
-  }
-
-  @PutMapping("/workouts/start")
-  public void startWorkout(Principal principal) {
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-    int userId = user.getId();
-
-    workoutDao.startWorkout(userId);
-  }
-
-  @PutMapping("/workouts/end")
-  public void endWorkout(Principal principal) {
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-    int userId = user.getId();
-
-    workoutDao.endWorkout(userId);
-  }
-
-  @GetMapping("/checkin")
-  public boolean isCheckedIn(Principal principal) {
-    User user = userDao.getUserByUsername(principal.getName());
-    int userId = user.getId();
-    return checkinDao.isCheckin(userId);
-  }
-
-  @PostMapping("/checkin")
-  public void checkUserIn(Principal principal) {
-    User user = userDao.getUserByUsername(principal.getName());
-    int userId = user.getId();
-
-    checkinDao.checkin(userId);
-  }
-
-  @PutMapping("/checkout")
-  public void checkUserOut(Principal principal) {
-    User user = userDao.getUserByUsername(principal.getName());
-    int userId = user.getId();
-    checkinDao.checkOut(userId);
-  }
-
-  // userProfileDao.createProfile() is called in the AuthenticationController
 
   @PutMapping
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Profile updated")
   public void updateProfile(Principal principal, @Valid @RequestBody UserProfile profileToUpdate) {
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-
-    userProfileDao.updateProfile(user.getId(), profileToUpdate);
+    userProfileDao.updateProfile(getUserId(principal), profileToUpdate);
   }
 
   @DeleteMapping
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Profile deleted")
   public void deleteProfile(Principal principal) {
-    String username = principal.getName();
-    User user = userDao.getUserByUsername(username);
-
-    userProfileDao.deleteProfile(user.getId());
+    userProfileDao.deleteProfile(getUserId(principal));
   }
 
+  /************************************* Workouts ******************************** */
+  @GetMapping("/workouts")
+  @ResponseStatus(value = HttpStatus.OK, reason = "Workouts retrieved")
+  public List<Workout> getWorkouts(Principal principal) {
+    return workoutDao.getWorkouts(getUserId(principal));
+  }
+
+  @GetMapping("/workouts/current")
+  @ResponseStatus(value = HttpStatus.OK, reason = "Current workout retrieved")
+  public Workout getCurrentWorkout(Principal principal) {
+    return workoutDao.getCurrentWorkout(getUserId(principal));
+  }
+
+  @PutMapping("/workouts/start")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Workout started")
+  public void startWorkout(Principal principal) {
+    workoutDao.startWorkout(getUserId(principal));
+  }
+
+  @PutMapping("/workouts/end")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Workout ended")
+  public void endWorkout(Principal principal) {
+    workoutDao.endWorkout(getUserId(principal));
+  }
+
+  /************************************* Exercises ******************************** */
+  @PostMapping("/exercises")
+  @ResponseStatus(value = HttpStatus.CREATED, reason = "Exercise created")
+  public Exercise createExercise(@RequestBody CreateExerciseDto dto, Principal principal){
+    return exerciseDao.createExercise(dto, getUserId(principal));
+  }
+
+  /************************************* Checkins ******************************** */
+  @GetMapping("/checkin")
+  @ResponseStatus(value = HttpStatus.OK, reason = "User checked in")
+  public boolean isCheckedIn(Principal principal) {
+    return checkinDao.isCheckin(getUserId(principal));
+  }
+
+  @PostMapping("/checkin")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "User checked in")
+  public void checkUserIn(Principal principal) {
+    checkinDao.checkin(getUserId(principal));
+  }
+
+  @PutMapping("/checkout")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "User checked out")
+  public void checkUserOut(Principal principal) {
+    checkinDao.checkOut(getUserId(principal));
+  }
+
+  private int getUserId(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+    return user.getId();
+  }
 
 }

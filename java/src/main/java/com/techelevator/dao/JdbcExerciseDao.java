@@ -1,7 +1,6 @@
 package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
-import com.techelevator.model.Equipment;
 import com.techelevator.model.Exercise;
 
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -25,7 +24,6 @@ public class JdbcExerciseDao implements ExerciseDao {
   public Exercise createExercise(CreateExerciseDto dto, int userId) {
     String exerciseSql = "insert into exercises (user_id, exercise_name, exercise_duration_minutes, reps, sets, weight_lbs) values (?, ?, ?, ?, ?, ?) returning exercise_id;";
     String equipmentSql = "update equipments set used_time_minutes = used_time_minutes + ? where equipment_id = ?;";
-    String exerciseEquipmentSql = "insert into exercise_equipments (exercise_id, equipment_id) values (?, ?);";
 
     Exercise exercise = dto.getExercise();
 
@@ -39,10 +37,11 @@ public class JdbcExerciseDao implements ExerciseDao {
         throw new DaoException("Unable to create exercise");
       }
 
-
+      // This will run into a performance issue (not a problem for this project)
+      // if there are a lot of equipment ids for each exercise being logged at once by multiple users
+      // because it will update the equipments table for each equipment id
       for (int equipmentId : dto.getEquipmentIds()) {
         jdbcTemplate.update(equipmentSql, exercise.getExerciseDurationMinutes(), equipmentId);
-        jdbcTemplate.update(exerciseEquipmentSql, exerciseId, equipmentId);
       }
 
       return getExerciseById(exerciseId);

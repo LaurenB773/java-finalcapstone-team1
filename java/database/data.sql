@@ -28,18 +28,9 @@ VALUES (
     'Not Sure'
   );
 
-INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
-VALUES (1, 'Barbell', 0);
-
-INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
-VALUES (2, 'Bench', 0);
-
-INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
-VALUES (3, 'Dumbbell', 0);
 
 INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Beginner Class With Gill', 'Gill', 'Gill will stretch you out and show you some beginner lifts. Class is open to all', 90);
 INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Cardio With Max', 'Max', 'Max chases you through the gym', 30);
-
 
 
 COMMIT TRANSACTION;
