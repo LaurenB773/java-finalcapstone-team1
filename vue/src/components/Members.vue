@@ -31,6 +31,7 @@ export default {
     mounted() {
         try {
             EmployeeService.getAllMembers().then(response => {
+                console.log(response.data);
                 this.members = response.data;
             })
         } catch (e) {
