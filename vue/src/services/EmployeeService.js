@@ -31,4 +31,7 @@ export default {
   getEmployees() {
     return axios.get(`/gym/employees`);
   },
+  getMembersInEvent(id) {
+    return axios.get(`/schedule/${id}/members`);
+  },
 };

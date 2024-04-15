@@ -1,6 +1,8 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Schedule;
+import com.techelevator.model.UserProfile;
+import com.techelevator.security.model.User;
 
 import java.util.List;
 
@@ -42,6 +44,14 @@ public interface ScheduleDao {
      * @return createdSchedule
      */
     Schedule createSchedule(Schedule newSchedule);
+
+    void addMemberToScheduledEvent(User principalUser, int id);
+
+    List<UserProfile> getSignedUpMembers(int scheduleId);
+
+    List<Schedule> getSignedUpEvents(int id);
+
+    void removeMemberFromEvent(int userId, int id);
 }
 
 
