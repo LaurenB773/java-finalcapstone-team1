@@ -18,10 +18,6 @@ VALUES (
     'ROLE_EMPLOYEE'
   );
 
-INSERT INTO user_profiles (user_profile_id, user_id, first_name, last_name, email, profile_picture, goal)
-VALUES (1, 1, 'Mihir', 'Patel', 'mihirpatel@gmail.com', '', 'Put on muscle mass');
-
-
 INSERT INTO schedules (title, instructor, description, duration_minutes) 
 VALUES ('Power Lifting with Gill', 'Gill', 'Want to carry the groceries in one go? Learn the basics of bench, squat, and deadlift. It has been proven time and time again that power lifting has increased overall strength in an individual1', 60);
 
