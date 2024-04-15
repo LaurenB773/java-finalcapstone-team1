@@ -90,7 +90,8 @@ export default {
     // this way we can hide the form and submit the exercise from the parent component
     submitExercise() {
       this.dto.exercise.exerciseName = this.workoutName;
-      console.log(this.dto);
+      ExerciseService.createExercise(this.dto);
+
       this.dto = {
         exercise: {
           exerciseDurationMinutes: 0,
@@ -100,7 +101,6 @@ export default {
         },
         equipmentIds: [],
       };
-      ExerciseService.createExercise(this.dto);
     },
   }
 
