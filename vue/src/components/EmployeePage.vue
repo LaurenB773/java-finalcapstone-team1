@@ -40,16 +40,15 @@
                 </div>
             </div>
             <div class="manage-equipment">
-                <h2 @click="(isShowing === 'Equipment' ? isShowing = '' : isShowing = 'Equipment')">Manage Equipment</h2>
+                <h2>Manage Equipment</h2>
                 <div>
-                    <p>View Equipment</p>
-                    <p>Add New Equipment</p>
-                    <p>Remove Equipment</p>
+                    <equipment-list />
                 </div>
             </div>
 
             <div class="Employee List">
-                <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">Manage
+                <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">
+                    Manage
                     Employees
                 </h2>
 
@@ -64,6 +63,7 @@ import EmployeeService from '../services/EmployeeService';
 import Members from './Members.vue'
 import EmployeeList from './EmployeeList.vue';
 import { mapGetters } from 'vuex';
+import EquipmentList from './EquipmentList.vue';
 
 export default {
     data() {
@@ -82,7 +82,8 @@ export default {
     components: {
         Schedule,
         Members,
-        EmployeeList
+        EmployeeList,
+        EquipmentList
     },
     methods: {
         createNewSchedule(newSchedule) {

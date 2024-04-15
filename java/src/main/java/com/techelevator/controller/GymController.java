@@ -46,7 +46,7 @@ public class GymController {
   }
 
   @GetMapping("/equipment/{id}")
-  // @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+   @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
   public Equipment getEquipment(int id) {
     return equipmentDao.getEquipmentById(id);
   }
