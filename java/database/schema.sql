@@ -73,4 +73,9 @@ CREATE TABLE checkins (
   checkout_time TIMESTAMP
 );
 
+CREATE TABLE schedule_members (
+  user_id int references users (user_id),
+  schedule_id int references schedules (schedule_id)
+);
+
 COMMIT TRANSACTION;

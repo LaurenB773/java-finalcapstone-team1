@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.techelevator.dao.CheckinDao;
+import com.techelevator.security.model.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +34,7 @@ public class GymController {
     this.equipmentDao = equipmentDao;
     this.scheduleDao = scheduleDao;
     this.checkinDao = checkinDao;
+    this.userDao = userDao;
   }
 
   // todo: talk about this
@@ -65,11 +67,11 @@ public class GymController {
     checkinDao.checkOut(id);
   }
 
-  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
-  @GetMapping("/members/{id}")
-  public UserProfile getMember(int id) {
-    return userProfileDao.getProfile(id);
-  }
+//  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+//  @GetMapping("/members/{id}")
+//  public UserProfile getMember(int id) {
+//    return userProfileDao.getProfile(id);
+//  }
 
   @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
   @PutMapping("/members/{id}/ban")
@@ -99,11 +101,68 @@ public class GymController {
   }
 
   @DeleteMapping("/schedule/{id}")
+  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
   public void deleteSchedule(@PathVariable int id) {
     scheduleDao.deleteSchedule(id);
 
   }
 
+  @GetMapping("/schedule/{id}/members")
+  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  public List<UserProfile> getMembersInEvent(@PathVariable int id) {
+    return scheduleDao.getSignedUpMembers(id);
+  }
 
+  @PostMapping("/schedule/{id}/join")
+  @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  public void signUpForEvent(Principal principal, @PathVariable int id) {
+    User signedIn = userDao.getUserById(getUserId(principal));
+    scheduleDao.addMemberToScheduledEvent(signedIn, id);
+  }
 
+  @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  @GetMapping("/schedule/me")
+  public List<Schedule> getSignedUpEvents(Principal principal) {
+    int userId = getUserId(principal);
+    return scheduleDao.getSignedUpEvents(userId);
+  }
+
+  @DeleteMapping("/schedule/{id}/join")
+  @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  public void removeMemberFromEvent(Principal principal, @PathVariable int id) {
+    int userId = getUserId(principal);
+    scheduleDao.removeMemberFromEvent(userId, id);
+  }
+
+  // employee commands
+  @GetMapping("/employees")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public List<UserProfile> getEmployees() {
+    return userProfileDao.getEmployees();
+  }
+
+  @GetMapping("/members/{id}")
+  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  public boolean isMemberCheckedIn(@PathVariable int id) {
+    return checkinDao.isCheckin(id);
+  }
+
+  @PutMapping("/members/{id}/hire")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public User hireMemberAsEmployee(@PathVariable int id) {
+    return userDao.makeUserEmployee(id);
+  }
+
+  @PutMapping("/members/{id}/fire")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Employee fired")
+  public void fireEmployee(@PathVariable int id) {
+    userDao.fireEmployee(id);
+  }
+
+  private int getUserId(Principal principal) {
+    String username = principal.getName();
+    User user = userDao.getUserByUsername(username);
+    return user.getId();
+  }
 }
