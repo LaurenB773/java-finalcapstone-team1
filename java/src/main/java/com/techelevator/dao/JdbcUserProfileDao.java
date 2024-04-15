@@ -91,9 +91,10 @@ public class JdbcUserProfileDao implements UserProfileDao {
     return listOfMembers;
   }
 
+  @Override
   public List<UserProfile> getEmployees() {
     List<UserProfile> emp = new ArrayList<>();
-    String sql = "select * from user_profiles where user_id = " +
+    String sql = "select * from user_profiles where user_id in " +
             "(select user_id from users where role = 'ROLE_EMPLOYEE');";
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
