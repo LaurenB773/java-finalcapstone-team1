@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.techelevator.dao.CheckinDao;
+import com.techelevator.exception.DaoException;
 import com.techelevator.security.model.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class GymController {
   }
 
   @GetMapping("/equipment/{id}")
-  // @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+   @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
   public Equipment getEquipment(int id) {
     return equipmentDao.getEquipmentById(id);
   }
@@ -129,9 +130,9 @@ public class GymController {
 
   @DeleteMapping("/schedule/{id}/join")
   @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
-  public void removeMemberFromEvent(Principal principal, @PathVariable int id) {
-    int userId = getUserId(principal);
-    scheduleDao.removeMemberFromEvent(userId, id);
+  public boolean removeMemberFromEvent(Principal principal, @PathVariable int id) {
+      int userId = getUserId(principal);
+      return scheduleDao.removeMemberFromEvent(userId, id);
   }
 
   // employee commands

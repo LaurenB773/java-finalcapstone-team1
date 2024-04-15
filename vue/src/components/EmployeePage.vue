@@ -13,44 +13,45 @@
         <div class="container">
             <div class="schedule-form">
                 <h2 @click="(isShowing === 'Schedule' ? isShowing = '' : isShowing = 'Schedule')">Manage Schedule</h2>
-                <div v-if="isShowing === 'Schedule'">
-                    <p id="p-create-schedule"
-                        @click="(isFormShowing === 'Schedule' ? isFormShowing = '' : isFormShowing = 'Schedule')">Create New
-                        Event</p>
-                    <form id="create-schedule" v-if="isFormShowing === 'Schedule'">
-                        <input placeholder="Title" type="text" v-model="newSchedule.title">
-                        <input placeholder="Instructor" type="text" v-model="newSchedule.instructor">
-                        <!--if theres time make this a dropdown of employees-->
-                        <input placeholder="Description" type="textarea" v-model="newSchedule.description">
-                        <input placeholder="Hour Of Class" type="datetime-local" v-model="newSchedule.classTime">
-                        <input placeholder="Duration Minutes" type="number" v-model="newSchedule.duration">
-                        <button id="create-schedule-button" @click="createNewSchedule(newSchedule)">Create!</button>
-                    </form>
-                    <p id="p-view-schedules"
-                        @click="(isFormShowing === 'RemoveSchedule' ? isFormShowing = '' : isFormShowing = 'RemoveSchedule')">
-                        See Events
-                    </p>
-                    <Schedule v-if="isFormShowing === 'RemoveSchedule'" id="view-schedules" />
-                </div>
+
+                <p id="p-create-schedule"
+                    @click="(isFormShowing === 'Schedule' ? isFormShowing = '' : isFormShowing = 'Schedule')">Create New
+                    Event</p>
+                <form id="create-schedule" v-if="isFormShowing === 'Schedule'">
+                    <input placeholder="Title" type="text" v-model="newSchedule.title">
+                    <input placeholder="Instructor" type="text" v-model="newSchedule.instructor">
+                    <!--if theres time make this a dropdown of employees-->
+                    <input placeholder="Description" type="textarea" v-model="newSchedule.description">
+                    <input placeholder="Hour Of Class" type="datetime-local" v-model="newSchedule.classTime">
+                    <input placeholder="Duration Minutes" type="number" v-model="newSchedule.duration">
+                    <button id="create-schedule-button" @click="createNewSchedule(newSchedule)">Create!</button>
+                </form>
+                <p id="p-view-schedules"
+                    @click="(isFormShowing === 'RemoveSchedule' ? isFormShowing = '' : isFormShowing = 'RemoveSchedule')">
+                    See Events
+                </p>
+                <Schedule v-if="isFormShowing === 'RemoveSchedule'" id="view-schedules" />
+
             </div>
             <div class="manage-members">
-                <h2 @click="(isShowing === 'Members' ? isShowing = '' : isShowing = 'Members')">Manage Members</h2>
-                <div v-if="isShowing === 'Members'">
+                <h2>Manage Members</h2>
+                <div>
                     <Members />
                 </div>
             </div>
             <div class="manage-equipment">
-                <h2 @click="(isShowing === 'Equipment' ? isShowing = '' : isShowing = 'Equipment')">Manage Equipment</h2>
-                <div v-if="isShowing === 'Equipment'">
-                    <p>View Equipment</p>
-                    <p>Add New Equipment</p>
-                    <p>Remove Equipment</p>
+                <h2>Manage Equipment</h2>
+                <div>
+                    <equipment-list />
                 </div>
             </div>
-            <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">Manage
-                Employees
-            </h2>
-            <div v-if="isShowing === 'Employees'">
+
+            <div class="Employee List">
+                <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">
+                    Manage
+                    Employees
+                </h2>
+
                 <employee-list />
             </div>
         </div>
@@ -62,6 +63,7 @@ import EmployeeService from '../services/EmployeeService';
 import Members from './Members.vue'
 import EmployeeList from './EmployeeList.vue';
 import { mapGetters } from 'vuex';
+import EquipmentList from './EquipmentList.vue';
 
 export default {
     data() {
@@ -80,7 +82,8 @@ export default {
     components: {
         Schedule,
         Members,
-        EmployeeList
+        EmployeeList,
+        EquipmentList
     },
     methods: {
         createNewSchedule(newSchedule) {
@@ -95,7 +98,8 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
+
     },
     computed: {
         ...mapGetters(['userPermissions'])
@@ -111,6 +115,10 @@ export default {
     padding: 15px;
 }
 
+.schedule-form {
+    max-width: 40%;
+}
+
 #title {
     justify-content: center;
     width: 100%;
@@ -123,6 +131,7 @@ export default {
     width: 100%;
     padding: 50px;
     background-color: var(--color-medium-grey-o);
+    flex-grow: 1;
 }
 
 .container h2:hover {
@@ -180,7 +189,7 @@ export default {
 #view-schedules {
     background-color: none;
     margin: 0%;
-    width: 100%;
+    padding: 0%;
     align-items: center;
     justify-content: center;
 }
@@ -207,4 +216,5 @@ export default {
 #p-view-schedules:hover {
     color: var(--color-blue);
     cursor: pointer;
-}</style>
+}
+</style>
