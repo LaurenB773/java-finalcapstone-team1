@@ -51,7 +51,7 @@ public interface ScheduleDao {
 
     List<Schedule> getSignedUpEvents(int id);
 
-    void removeMemberFromEvent(int userId, int id);
+    boolean removeMemberFromEvent(int userId, int id);
 }
 
 
