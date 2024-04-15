@@ -2,16 +2,18 @@
   <div id="capstone-app">
     <div id="nav">
       <router-link class="home-link" v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
-      <router-link class="sign-in-link" v-bind:to="{ name: 'login' }" v-if="this.$store.state.token === ''">Sign In</router-link>
-      <router-link class="logout-link" v-bind:to="{ name: 'logout' }" v-if="this.$store.state.token != ''">Logout</router-link>&nbsp;&nbsp;
-      <router-link class="profile-link" v-bind:to="{ name: 'profile' }" v-if="this.$store.state.token != '' && isUser()">Profile</router-link>
+      <router-link class="sign-in-link" v-bind:to="{ name: 'login' }" v-if="this.$store.state.token === ''">Sign
+        In</router-link>
+      <router-link class="logout-link" v-bind:to="{ name: 'logout' }"
+        v-if="this.$store.state.token != ''">Logout</router-link>&nbsp;&nbsp;
+      <router-link class="profile-link" v-bind:to="{ name: 'profile' }"
+        v-if="this.$store.state.token != '' && isUser()">Profile</router-link>
       <router-link class="employee-link" v-bind:to="{ name: 'employee' }"
         v-if="this.$store.state.token != '' && (isEmployee() || isOwner())">Manage Gym</router-link>
 
     </div>
     <router-view />
   </div>
-
 </template>
 
 <script>
@@ -63,7 +65,6 @@ export default {
 </script>
 
 <style>
-
 .top-right {
   top: 0;
   right: 0;
@@ -71,12 +72,12 @@ export default {
 
 #nav {
   background-color: hsl(200, 2%, 61.4%, 0.5);
-  width: 50%;
+  width: 60%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   display: flex;
   gap: 10px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   justify-content: center;
   margin: auto;
 }
@@ -84,12 +85,14 @@ export default {
 #capstone-app {
   background-image: url("../src/assets/login.png");
   height: 100vh;
+  background-size: cover;
 }
 
 .home-link {
-    color: var(--color-blue);
-  }
-.sign-in-link{
+  color: var(--color-blue);
+}
+
+.sign-in-link {
   color: var(--color-blue);
 }
 </style>
