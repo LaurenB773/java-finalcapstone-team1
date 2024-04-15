@@ -1,7 +1,7 @@
 <template>
     <div class="main">
 
-        <div id="title">
+        <div id="gym-manager-title">
             <h1>GYM MANAGER
                 <div id="divider-container">
                     <div class="divider" style="width: 70px"></div>
@@ -114,6 +114,9 @@ export default {
     flex-wrap: wrap;
     padding: 15px;
 }
+#gym-manager-title{
+    margin-top: 50px;
+}
 
 .schedule-form {
     max-width: 40%;
@@ -174,9 +177,8 @@ export default {
 #divider-container {
     display: flex;
     gap: 10px;
-    width: fit-content;
+    width: 100%;
     margin-top: 10px;
-    margin-left: 75px;
 }
 
 .divider {

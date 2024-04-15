@@ -162,13 +162,15 @@ main {
 h1 {
     font-size: 50px;
 }
-
 .event-container {
     background-color: var(--color-light-blue);
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
     width: 50%;
+}
+.event-container:hover{
+    background-color: var(--color-light-blue-o);
 }
 
 .event-container-emp {

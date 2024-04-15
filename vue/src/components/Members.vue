@@ -6,15 +6,15 @@
         <p>User ID: {{ member.userId }}</p>
         <p>Last Visit: {{ timeFormatter(member.latest_checkin) }}</p>
         <p>Checked In: {{ (amICheckedIn(member.latest_checkout, member.latest_checkin)) }}</p>
-        <div>
-            <button @click="checkMemberIn(member.userId)"
+        <div class="member-buttons">
+            <button id="check-member-in-button" @click="checkMemberIn(member.userId)"
                 v-if="!amICheckedIn(member.latest_checkout, member.latest_checkin)">Check Member In</button>
-            <button @click="checkMemberOut(member.userId)"
+            <button id="check-member-out-button" @click="checkMemberOut(member.userId)"
                 v-if="amICheckedIn(member.latest_checkout, member.latest_checkin)">Check
                 Member
                 Out</button>
-            <button @click="banMember(member.userId)">Revoke Membership</button>
-            <button @click="hireMember(member.userId)" v-if="isOwner()">Make Member Employee</button>
+            <button id="revoke-button" @click="banMember(member.userId)">Revoke Membership</button>
+            <button id="hire-button" @click="hireMember(member.userId)" v-if="isOwner()">Make Member Employee</button>
         </div>
     </div>
 </template>
@@ -90,3 +90,29 @@ export default {
 
 }
 </script>
+
+<style>
+div{
+    font-family: "M PLUS 1 Code", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+.member-buttons button{
+    font-family: "M PLUS 1 Code", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--color-light-blue);
+    background-color: var(--color-medium-grey);
+    width: fit-content;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+}
+.member-buttons button:hover{
+    color: var(--color-blue);
+    cursor: pointer;
+}
+
+</style>
