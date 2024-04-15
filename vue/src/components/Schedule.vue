@@ -120,7 +120,9 @@ export default {
             return false;
         },
         removeEvent() {
+
             EmployeeService.removeEvent(this.selectedEventId);
+
             window.location.reload();
         },
         updateEvent() {

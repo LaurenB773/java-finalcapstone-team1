@@ -13,7 +13,7 @@
         <div class="container">
             <div class="schedule-form">
                 <h2 @click="(isShowing === 'Schedule' ? isShowing = '' : isShowing = 'Schedule')">Manage Schedule</h2>
-                <div v-if="isShowing === 'Schedule'">
+                <div>
                     <p id="p-create-schedule"
                         @click="(isFormShowing === 'Schedule' ? isFormShowing = '' : isFormShowing = 'Schedule')">Create New
                         Event</p>
@@ -34,14 +34,14 @@
                 </div>
             </div>
             <div class="manage-members">
-                <h2 @click="(isShowing === 'Members' ? isShowing = '' : isShowing = 'Members')">Manage Members</h2>
-                <div v-if="isShowing === 'Members'">
+                <h2>Manage Members</h2>
+                <div>
                     <Members />
                 </div>
             </div>
             <div class="manage-equipment">
                 <h2 @click="(isShowing === 'Equipment' ? isShowing = '' : isShowing = 'Equipment')">Manage Equipment</h2>
-                <div v-if="isShowing === 'Equipment'">
+                <div>
                     <p>View Equipment</p>
                     <p>Add New Equipment</p>
                     <p>Remove Equipment</p>
@@ -50,7 +50,7 @@
             <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">Manage
                 Employees
             </h2>
-            <div v-if="isShowing === 'Employees'">
+            <div class="Employee List">
                 <employee-list />
             </div>
         </div>
@@ -207,4 +207,5 @@ export default {
 #p-view-schedules:hover {
     color: var(--color-blue);
     cursor: pointer;
-}</style>
+}
+</style>
