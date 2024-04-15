@@ -78,11 +78,16 @@ public class JdbcScheduleDao implements ScheduleDao {
 
   @Override
   public void deleteSchedule(int id) {
+    String firstSql = "delete from schedule_members where schedule_id = ? ";
     String sql = "delete from schedules where schedule_id = ?;";
     try {
+      int browsAffected = jdbcTemplate.update(firstSql, id);
+      if (browsAffected == 0) {
+        throw new DaoException("Cannot find schedule");
+      }
       int rowsAffected = jdbcTemplate.update(sql, id);
       if (rowsAffected == 0) {
-        throw new DaoException("Cannot find the user profile!");
+        throw new DaoException("Cannot find the schedule!");
       }
 
     } catch (CannotGetJdbcConnectionException e) {
@@ -111,7 +116,8 @@ public class JdbcScheduleDao implements ScheduleDao {
   }
 
   @Override
-  public void removeMemberFromEvent(int userId, int scheduleId) {
+  public boolean removeMemberFromEvent(int userId, int scheduleId) {
+
     String sql = "delete from schedule_members " +
             "where user_id = ? and schedule_id = ?;";
 
@@ -120,6 +126,7 @@ public class JdbcScheduleDao implements ScheduleDao {
       if (rows == 0) {
         throw new DaoException("Cannot find the user profile or schedule!");
       }
+      return true;
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to server or database", e);
     } catch (DataIntegrityViolationException e) {
