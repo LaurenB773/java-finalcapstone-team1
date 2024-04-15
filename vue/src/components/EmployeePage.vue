@@ -97,7 +97,8 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
+
     },
     computed: {
         ...mapGetters(['userPermissions'])

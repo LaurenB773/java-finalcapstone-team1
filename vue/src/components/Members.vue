@@ -4,7 +4,7 @@
         <p>Last Name: {{ member.lastName }}</p>
         <p>Email: {{ member.email }}</p>
         <p>User ID: {{ member.userId }}</p>
-        <p>Last Visit: {{ member.latest_checkin }}</p>
+        <p>Last Visit: {{ timeFormatter(member.latest_checkin) }}</p>
         <p>Checked In: {{ (amICheckedIn(member.latest_checkout, member.latest_checkin)) }}</p>
         <div>
             <button @click="checkMemberIn(member.userId)"
@@ -68,7 +68,21 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
+        timeFormatter(time) {
+            let dateTime = new Date(time);
+
+            let formattedDate = dateTime.toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+            });
+
+            return formattedDate;
+        },
     },
     computed: {
         ...mapGetters(['userPermissions'])
