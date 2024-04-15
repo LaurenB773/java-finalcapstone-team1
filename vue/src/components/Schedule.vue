@@ -30,7 +30,9 @@
                 </button>
             </div>
 
-            <button v-if="isMember() && selectedEventId === event.scheduleId">Sign Up!(TODO)</button>
+            <button v-if="isMember() && selectedEventId === event.scheduleId"
+                @click="amISignedUp(event) ? signOut(selectedEventId) : signUp(selectedEventId)">{{
+                    amISignedUp(event) ? 'Cancel' : 'Sign Up' }}</button>
         </div>
 
     </main>
@@ -55,12 +57,18 @@ export default {
                 duration: 30,
             },
             isFormShowing: '',
+            signedUp: [],
+
         };
     },
     created() {
         UserService.getSchedule().then(response => this.events = response.data);
+
     },
 
+    mounted() {
+        UserService.getEventsSignedUpFor().then(response => this.signedUp = response.data);
+    },
     methods: {
         selectEvent(id) {
             this.selectedEventId = id;
@@ -119,10 +127,22 @@ export default {
             EmployeeService.updateEvent(this.editSchedule, this.selectedEventId);
             window.location.reload();
         },
+        signUp(id) {
+            UserService.signUpForEvent(id);
+            window.location.reload();
+        },
+        amISignedUp(event) {
+            return this.signedUp.some(steve => { return steve.scheduleId === event.scheduleId });
+        },
+        signOut(id) {
+            UserService.leaveEvent(id);
+            window.location.reload();
+        }
 
     },
     computed: {
         ...mapGetters(["userPermissions"]),
+
     },
 };
 </script>
