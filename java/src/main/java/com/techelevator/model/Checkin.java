@@ -41,7 +41,7 @@ public class Checkin {
         return checkinTime;
     }
 
-    public void setCheckinTime() {
+    public void setCheckinTime(LocalDateTime checkinTime) {
         this.checkinTime = LocalDateTime.now();
     }
 
@@ -49,7 +49,7 @@ public class Checkin {
         return checkoutTime;
     }
 
-    public void setCheckoutTime() {
+    public void setCheckoutTime(LocalDateTime checkoutTime) {
         this.checkoutTime = LocalDateTime.now();
     }
 }
