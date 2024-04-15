@@ -152,7 +152,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
   @Override
   public void updateProfile(int userId, UserProfile profileToUpdate) {
     String sql =
-      "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? returning user_profile_id;";
+      "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? ";
 
     try {
       int rowsAffected = jdbcTemplate.update(
