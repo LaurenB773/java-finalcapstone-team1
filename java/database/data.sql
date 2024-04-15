@@ -11,26 +11,11 @@ VALUES (
     '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC',
     'ROLE_ADMIN'
   );
-INSERT INTO user_profiles (
-    user_id,
-    first_name,
-    last_name,
-    email,
-    profile_picture,
-    goal
-  )
-VALUES (
-    1,
-    'first',
-    'last',
-    'email',
-    '""',
-    'Not Sure'
-  );
 
+INSERT INTO schedules (title, instructor, description, duration_minutes) 
+VALUES ('Power Lifting with Gill', 'Gill', 'Want to carry the groceries in one go? Learn the basics of bench, squat, and deadlift. It has been proven time and time again that power lifting has increased overall strength in an individual1', 60);
 
-INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Beginner Class With Gill', 'Gill', 'Gill will stretch you out and show you some beginner lifts. Class is open to all', 90);
-INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Cardio With Max', 'Max', 'Max chases you through the gym', 30);
-
+INSERT INTO schedules (title, instructor, description, duration_minutes)
+VALUES ('Cardio With Max', 'Max', 'Skipping your cardio? Want to shred body fat? Learn the ropes with our beginner friendly anaerobic and aerobic exercises to help you with your fitness goals!', 60);
 
 COMMIT TRANSACTION;

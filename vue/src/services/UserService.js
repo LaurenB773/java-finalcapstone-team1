@@ -4,9 +4,11 @@ export default {
   getProfile(userId) {
     return axios.get("/profile", { params: { userId } });
   },
-  getAllSchedule() {
+
+  getSchedule() {
     return axios.get("/gym/schedule");
   },
+
   checkIn() {
     return axios.post("/profile/checkin");
   },

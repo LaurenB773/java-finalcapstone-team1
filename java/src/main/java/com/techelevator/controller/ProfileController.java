@@ -45,7 +45,6 @@ public class ProfileController {
 
   /************************************* User Profile ******************************** */
   @GetMapping
-  @ResponseStatus(value = HttpStatus.OK, reason = "User profile retrieved")
   public UserProfile getUserProfile(Principal principal) {
     return userProfileDao.getProfile(getUserId(principal));
   }
@@ -64,13 +63,11 @@ public class ProfileController {
 
   /************************************* Workouts ******************************** */
   @GetMapping("/workouts")
-  @ResponseStatus(value = HttpStatus.OK, reason = "Workouts retrieved")
   public List<Workout> getWorkouts(Principal principal) {
     return workoutDao.getWorkouts(getUserId(principal));
   }
 
   @GetMapping("/workouts/current")
-  @ResponseStatus(value = HttpStatus.OK, reason = "Current workout retrieved")
   public Workout getCurrentWorkout(Principal principal) {
     return workoutDao.getCurrentWorkout(getUserId(principal));
   }
@@ -88,15 +85,18 @@ public class ProfileController {
   }
 
   /************************************* Exercises ******************************** */
+  @GetMapping("/exercises")
+  public List<Exercise> getExercises(Principal principal) {
+    return exerciseDao.getExercises(getUserId(principal));
+  }
+
   @PostMapping("/exercises")
-  @ResponseStatus(value = HttpStatus.CREATED, reason = "Exercise created")
   public Exercise createExercise(@RequestBody CreateExerciseDto dto, Principal principal){
     return exerciseDao.createExercise(dto, getUserId(principal));
   }
 
   /************************************* Checkins ******************************** */
   @GetMapping("/checkin")
-  @ResponseStatus(value = HttpStatus.OK, reason = "User checked in")
   public boolean isCheckedIn(Principal principal) {
     return checkinDao.isCheckin(getUserId(principal));
   }

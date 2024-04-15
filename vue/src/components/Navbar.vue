@@ -1,11 +1,11 @@
 <template>
   <nav>
-    <router-link class="link" v-bind:to="{ name: 'home' }">
+    <router-link class="link font" v-bind:to="{ name: 'home' }">
       Home
     </router-link>
 
     <router-link
-      class="link"
+      class="link font"
       v-bind:to="{ name: this.$route.path === '/register' ? 'login' : 'register' }"
       v-if="this.$store.state.token === ''"
     >
@@ -13,7 +13,7 @@
     </router-link>
 
     <router-link
-      class="link"
+      class="link font"
       v-bind:to="{ name: 'logout' }"
       v-if="this.$store.state.token != ''"
     >
@@ -21,7 +21,7 @@
     </router-link>
 
     <router-link
-      class="link"
+      class="link font"
       v-bind:to="{ name: 'profile' }"
       v-if="this.$store.state.token != '' && (isUser() || isEmployee())"
     >
@@ -29,7 +29,7 @@
     </router-link>
 
     <router-link
-      class="link"
+      class="link font"
       v-bind:to="{ name: 'employee' }"
       v-if="this.$store.state.token != '' && (isEmployee() || isOwner())"
     >

@@ -80,17 +80,6 @@ export default {
 </script>
 
 <style scoped>
-.font {
-  font-family: "M PLUS 1 Code", monospace;
-  font-optical-sizing: auto;
-  font-size: 20px;
-  font-weight: 600;
-  font-style: normal;
-
-  color: var(--color-light-blue);
-  text-align: center;
-}
-
 .title-container {
   width: fit-content;
   margin: auto;
