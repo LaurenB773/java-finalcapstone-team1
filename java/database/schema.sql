@@ -33,12 +33,16 @@ CREATE TABLE equipments (
 
 CREATE TABLE exercises (
   exercise_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users (user_id),
   exercise_name varchar(100) NOT NULL,
   exercise_duration_minutes INT NOT NULL,
   sets INT NOT NULL,
   reps INT NOT NULL,
   weight_lbs NUMERIC(5, 2) NOT NULL
+);
+
+CREATE TABLE user_exercises (
+  user_id INT REFERENCES users (user_id) NOT NULL,
+  exercise_id INT REFERENCES exercises (exercise_id) NOT NULL
 );
 
 CREATE TABLE workouts (
@@ -67,6 +71,11 @@ CREATE TABLE checkins (
   user_id INT REFERENCES users (user_id),
   checkin_time TIMESTAMP,
   checkout_time TIMESTAMP
+);
+
+CREATE TABLE schedule_members (
+  user_id int references users (user_id),
+  schedule_id int references schedules (schedule_id)
 );
 
 COMMIT TRANSACTION;

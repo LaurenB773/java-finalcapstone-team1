@@ -1,19 +1,19 @@
 <template>
-    <div>
-        <schedule/>
-    </div>
+    <schedule />
 </template>
 
 <script>
 import Schedule from '../components/Schedule.vue';
 export default {
 
-   
+
     components: {
-        Schedule       
+        Schedule
     },
     methods: {
-        
+
     }
 }
 </script>
+
+<style></style>

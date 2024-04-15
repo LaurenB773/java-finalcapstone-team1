@@ -8,15 +8,17 @@
       <button @click="fetchWorkouts">Fetch Exercises</button>
     </div>
 
-    <h3>Filter by Intensity Level:</h3>
-    <div class="filter-button-container">
-      <button
-        v-for="level in intensityLevels"
-        :key="level"
-        @click="filterByIntensity(level)"
-      >
-        {{ level }}
-      </button>
+    <div v-if="copyOfWorkouts.length > 0">
+      <h3>Filter by Intensity Level</h3>
+      <div class="filter-button-container">
+        <button
+          v-for="level in intensityLevels"
+          :key="level"
+          @click="filterByIntensity(level)"
+        >
+          {{ level }}
+        </button>
+      </div>
     </div>
 
     <!-- todo: put this into a new component -->

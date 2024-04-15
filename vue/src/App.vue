@@ -12,6 +12,11 @@ export default {
 </script>
 
 <style>
+body {
+  background-image: url("../src/assets/login.png");
+  background-size: cover;
+}
+
 .font {
   font-family: "M PLUS 1 Code", monospace;
   font-optical-sizing: auto;

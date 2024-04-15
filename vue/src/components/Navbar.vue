@@ -4,35 +4,22 @@
       Home
     </router-link>
 
-    <router-link
-      class="link font"
-      v-bind:to="{ name: this.$route.path === '/register' ? 'login' : 'register' }"
-      v-if="this.$store.state.token === ''"
-    >
+    <router-link class="link font" v-bind:to="{ name: this.$route.path === '/register' ? 'login' : 'register' }"
+      v-if="this.$store.state.token === ''">
       {{ this.$route.path === '/register' ? 'Sign in' : 'Sign up' }}
     </router-link>
 
-    <router-link
-      class="link font"
-      v-bind:to="{ name: 'logout' }"
-      v-if="this.$store.state.token != ''"
-    >
+    <router-link class="link font" v-bind:to="{ name: 'logout' }" v-if="this.$store.state.token != ''">
       Logout
     </router-link>
 
-    <router-link
-      class="link font"
-      v-bind:to="{ name: 'profile' }"
-      v-if="this.$store.state.token != '' && (isUser() || isEmployee())"
-    >
+    <router-link class="link font" v-bind:to="{ name: 'profile' }"
+      v-if="this.$store.state.token != '' && (isUser() || isEmployee())">
       Profile
     </router-link>
 
-    <router-link
-      class="link font"
-      v-bind:to="{ name: 'employee' }"
-      v-if="this.$store.state.token != '' && (isEmployee() || isOwner())"
-    >
+    <router-link class="link font" v-bind:to="{ name: 'employee' }"
+      v-if="this.$store.state.token != '' && (isEmployee() || isOwner())">
       Manage Gym
     </router-link>
   </nav>
