@@ -18,6 +18,7 @@ export default {
         try {
             EmployeeService.getEmployees().then(response => {
                 this.employees = response.data;
+                console.log(this.employees)
             })
         } catch (e) {
             console.log(e);
