@@ -9,27 +9,24 @@ import HomePage from "../components/HomePage.vue";
 
 export default {
   beforeCreate() {
-    document.body.classList.add('home')
+    document.body.classList.add("home");
   },
 
   beforeUnmount() {
-    document.body.classList.remove('home')
+    document.body.classList.remove("home");
   },
 
   components: {
     HomePage,
   },
-
-
 };
-</script> 
+</script>
 
-<style >
+<style>
 body.home {
-  background-image: url('../assets/home.jpg');
+  background-image: url("../assets/home.jpg");
   background-size: cover;
 }
 </style>
 
-
-
+<style></style>
