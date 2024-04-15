@@ -1,7 +1,5 @@
 package com.techelevator.dao;
 
-import com.techelevator.model.Checkin;
-
 public interface CheckinDao {
 
     /**

@@ -11,35 +11,26 @@ VALUES (
     '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC',
     'ROLE_ADMIN'
   );
-INSERT INTO user_profiles (
-    user_id,
-    first_name,
-    last_name,
-    email,
-    profile_picture,
-    goal
-  )
+INSERT INTO users (username, password_hash, role)
 VALUES (
-    1,
-    'first',
-    'last',
-    'email',
-    '""',
-    'Not Sure'
+    'employee',
+    '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC',
+    'ROLE_EMPLOYEE'
   );
 
-INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
-VALUES (1, 'Barbell', 0);
-
-INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
-VALUES (2, 'Bench', 0);
-
-INSERT INTO equipments (equipment_id, equipment_name, used_time_minutes)
-VALUES (3, 'Dumbbell', 0);
-
-INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Beginner Class With Gill', 'Gill', 'Gill will stretch you out and show you some beginner lifts. Class is open to all', 90);
-INSERT INTO schedules (title, instructor, description, duration_minutes) VALUES ('Cardio With Max', 'Max', 'Max chases you through the gym', 30);
+INSERT INTO user_profiles (user_profile_id, user_id, first_name, last_name, email, profile_picture, goal)
+VALUES (1, 1, 'Mihir', 'Patel', 'mihirpatel@gmail.com', '', 'Put on muscle mass');
 
 
+INSERT INTO exercises (exercise_id, user_id, exercise_name, exercise_duration_minutes, sets, reps, weight_lbs)
+VALUES (1, 1, 'Bench Press', 30, 4, 10, 135),
+(2, 1, 'Squats', 30, 4, 10, 135),
+(3, 1, 'Deadlift', 30, 4, 10, 135);
+
+INSERT INTO schedules (title, instructor, description, duration_minutes) 
+VALUES ('Power Lifting with Gill', 'Gill', 'Want to carry the groceries in one go? Learn the basics of bench, squat, and deadlift. It has been proven time and time again that power lifting has increased overall strength in an individual1', 60);
+
+INSERT INTO schedules (title, instructor, description, duration_minutes)
+VALUES ('Cardio With Max', 'Max', 'Skipping your cardio? Want to shred body fat? Learn the ropes with our beginner friendly anaerobic and aerobic exercises to help you with your fitness goals!', 60);
 
 COMMIT TRANSACTION;

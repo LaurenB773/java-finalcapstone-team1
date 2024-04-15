@@ -1,45 +1,45 @@
 <template>
-    <div>
-        <form v-if="isFormShowing === true">
-            <p>Edit Event with id: {{ selectedEventId }}</p>
-            <input placeholder="title" type="text" v-model="editSchedule.title">
-            <input placeholder="instructor" type="text" v-model="editSchedule.instructor">
-            <!--if theres time make this a dropdown of employees-->
-            <input placeholder="description" type="textarea" v-model="editSchedule.description">
-            <input placeholder="Hour Of Class" type="datetime-local" v-model="editSchedule.classTime">
-            <input placeholder="Duration Minutes" type="number" v-model="editSchedule.duration">
-            <p @click="updateEvent()">Confirm Edit</p>
-        </form>
-        <h1>Today's Events</h1>
-        <div class="event-container" v-for="event in events" :key="event.scheduleId" @click="selectEvent(event.scheduleId)"
-            style="cursor: pointer">
-            <p>Title: {{ event.title }}</p>
-            <p>Instructor: {{ event.instructor }}</p>
-            <p>Date: {{ timeFormatter(event.classTime) }}</p>
-            <p v-if="selectedEventId === event.scheduleId">
-                Details: {{ event.description }}
-            </p>
-            <p v-if="selectedEventId === event.scheduleId">
-                Duration: {{ event.duration }} minutes
-            </p>
-            <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())"
-                @click="(isFormShowing = true) && (this.editSchedule = event)">
+  <main>
+      <form v-if="isFormShowing === true">
+          <p>Edit Event with id: {{ selectedEventId }}</p>
+          <input placeholder="title" type="text" v-model="editSchedule.title">
+          <input placeholder="instructor" type="text" v-model="editSchedule.instructor">
+          <!--if theres time make this a dropdown of employees-->
+          <input placeholder="description" type="textarea" v-model="editSchedule.description">
+          <input placeholder="Hour Of Class" type="datetime-local" v-model="editSchedule.classTime">
+          <input placeholder="Duration Minutes" type="number" v-model="editSchedule.duration">
+          <p @click="updateEvent()">Confirm Edit</p>
+      </form>
+
+      <h1 class="font">Today's Events</h1>
+      <div class="event-container" v-for="event in events" :key="event.scheduleId" @click="selectEvent(event.scheduleId)">
+          <p class="font event-text">Title: {{ event.title }}</p>
+          <p class="font event-text">Instructor: {{ event.instructor }}</p>
+          <p class="font event-text">Date: {{ timeFormatter(event.classTime) }}</p>
+
+          <div v-if="selectedEvent(event.scheduleId)">
+            <p class="font event-text">Details: {{ event.description }}</p>
+            <p class="font event-text">Duration: {{ event.duration }} minutes</p>
+
+            <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner())" @click="(isFormShowing = true) && (this.editSchedule = event)">
                 Edit
             </button>
-            <button v-if="selectedEventId === event.scheduleId && (isEmployee() || isOwner())" @click="removeEvent()">
+            <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner())" @click="removeEvent()">
                 Remove
             </button>
-            <button v-if="isMember() && selectedEventId === event.scheduleId">Sign Up!(TODO)</button>
+          </div>
 
-        </div>
+          <button v-if="isMember() && selectedEventId === event.scheduleId">Sign Up!(TODO)</button>
+      </div>
 
-    </div>
+    </main>
 </template>
 
 <script>
 import EmployeeService from "../services/EmployeeService";
 import UserService from "../services/UserService";
 import { mapGetters } from "vuex";
+
 export default {
     data() {
         return {
@@ -56,15 +56,23 @@ export default {
             isFormShowing: '',
         };
     },
-    mounted() {
-        UserService.getAllSchedule().then(
-            (response) => (this.events = response.data)
-        );
+    created() {
+        UserService.getSchedule().then(response => this.events = response.data);
     },
+
     methods: {
         selectEvent(id) {
+          if (this.selectedEventId === id) {
+            this.selectedEventId = 0;
+          } else {
             this.selectedEventId = id;
+          }
         },
+
+        selectedEvent(id) {
+            return this.selectedEventId === id;
+        },
+
         timeFormatter(time) {
             let dateTime = new Date(time);
 
@@ -122,8 +130,28 @@ export default {
 };
 </script>
 
-<style>
-.event-container:hover {
-    background-color: aliceblue;
-}
+<style scoped>
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 50px;
+  }
+
+  .event-container {
+    background-color: var(--color-light-blue);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    width: 50%;
+  }
+
+  .event-text {
+    color: black;
+    text-align: start;
+  }
+
 </style>
