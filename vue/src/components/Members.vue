@@ -52,7 +52,7 @@ export default {
         },
         hireMember(id) {
             EmployeeService.makeMemberEmployee(id);
-            window.location.reload();
+            // window.location.reload();
         },
         banMember(id) {
             EmployeeService.banMember(id);
