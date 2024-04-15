@@ -89,8 +89,10 @@ public class JdbcExerciseDao implements ExerciseDao {
     Exercise exercise = new Exercise();
 
     exercise.setExerciseId(row.getInt("exercise_id"));
+    exercise.setUserId(row.getInt("user_id"));
     exercise.setExerciseName(row.getString("exercise_name"));
-    exercise.setExerciseDurationMinutes(row.getInt("exercise_duration_minutes"));
+    exercise.setExerciseDurationMinutes(row.getInt("exercise_duration_minutes")); 
+    exercise.setSets(row.getInt("sets"));
     exercise.setReps(row.getInt("reps"));
     exercise.setWeightLbs(row.getDouble("weight_lbs"));
 

@@ -1,9 +1,11 @@
 <template>
   <div>
-    <header>Exercises</header>
+    <header v-if="exercises">Exercises</header>
     <div v-for="exercise in exercises" :key="exercise.exerciseId">
       <p>{{ exercise.exerciseName }}</p>
-      <p>{{ exercise.exerciseDurationMinutes }}</p>
+      <p>{{ exercise.exerciseDurationMinutes }} minutes</p>
+      <p>{{ exercise.sets }} Sets</p>
+      <p>{{ exercise.reps }} Reps</p>
     </div>
   </div>
 </template>
@@ -22,6 +24,7 @@ export default {
   mounted() {
     ExerciseService.getExercises().then((response) => {
       this.exercises = response.data;
+      console.log(this.exercises)
     });
   },
 };
