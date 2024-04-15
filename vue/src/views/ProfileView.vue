@@ -1,38 +1,46 @@
 <template>
-  <h1>{{ this.userProfile.firstName }} {{ this.userProfile.lastName }}</h1>
-  <img src="" alt="Profile-Picture" />
-  <!--TODO-->
-  <p>Your goals are: {{ this.userProfile.goal }}</p>
-  <router-link
-    v-bind:to="{ name: 'workouts' }"
-    style="margin-right: 5px"
-    @click="showWorkouts"
-    >Show Workouts</router-link
-  >
+  <div class="profile-container">
+    <h2>
+      Name: {{ this.userProfile.firstName }} {{ this.userProfile.lastName }}
+    </h2>
 
-  <router-link v-bind:to="{ name: 'newWorkout' }"
-    >Start New Workout</router-link
-  >
-  <button @click="checkInOrOut">
-    {{ isCheckedIn ? "check out" : "check in" }}
-  </button>
+    <!-- TODO <img src="" alt="Profile-Picture" /> -->
 
-  <button v-if="isCheckedIn" @click="logWorkout">
-    {{ isWorkoutStarted ? "End Workout" : "Start Workout" }}
-  </button>
+    <h2>Goals: {{ this.userProfile.goal }}</h2>
+
+    <div class="options-container">
+      <router-link
+        v-bind:to="{ name: 'workouts' }"
+        @click="searchWorkouts"
+      >
+        <button>Search Exercises</button>
+      </router-link>
+
+      <button @click="checkInOrOut">
+        {{ isCheckedIn ? "check out" : "check in" }}
+      </button>
+
+      <button v-if="isCheckedIn" @click="logWorkout">
+        {{ isWorkoutStarted ? "End Workout" : "Start Workout" }}
+      </button>
+    </div>
+
+    <Exercises />
+    
+  </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import UserService from "../services/UserService";
 import WorkoutService from "../services/WorkoutService";
-import WorkoutDetail from "../components/WorkoutDetail.vue";
 import { RouterLink } from "vue-router";
+import Exercises from "../components/Exercises.vue";
 
 export default {
   components: {
-    // WorkoutDetail,
     RouterLink,
+    Exercises
   },
   data() {
     return {
@@ -51,12 +59,8 @@ export default {
 
   mounted() {
     UserService.getProfile().then((res) => (this.userProfile = res.data));
-    UserService.getLastCheckin().then(
-      (response) => (this.isCheckedIn = response.data)
-    );
-    WorkoutService.getCurrentWorkout().then(
-      (response) => (this.isWorkoutStarted = response.data ? true : false)
-    );
+    UserService.getLastCheckin().then((response) => (this.isCheckedIn = response.data));
+    WorkoutService.getCurrentWorkout().then((response) => (this.isWorkoutStarted = response.data ? true : false));
   },
 
   computed: {
@@ -87,4 +91,35 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.profile-container {
+  color: var(--color-light-blue);
+  width: 50%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.profile-container h2 {
+  font-weight: 400;
+}
+
+.options-container {
+  display: flex;
+  gap: 20px;
+}
+
+button {
+  background-color: var(--color-grey);
+  color: var(--color-light-blue);
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 200ms;
+}
+
+button:hover {
+  background-color: var(--color-light-blue);
+  color: var(--color-grey);
+}
+</style>

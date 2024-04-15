@@ -5,31 +5,7 @@ import com.techelevator.model.Exercise;
 import java.util.List;
 
 public interface ExerciseDao {
-
-  /**
-   * create new exercise for user
-   * 
-   * @return
-   */
+  List<Exercise> getExercises(int userId);
   Exercise createExercise(CreateExerciseDto dto, int userId);
-
-  /**
-   * user should be able to see all
-   * exercises in workout
-   * 
-   * @return
-   */
-  List<Exercise> getAllUserExercisesByWorkoutId(int workoutId);
-
-  /**
-   * finds exercise by id
-   * 
-   * @return exercise with given id
-   */
-  Exercise getExerciseById(int id);
-
-  /**
-   *
-   */
-
+  Exercise getExerciseById(int exerciseId);
 }
