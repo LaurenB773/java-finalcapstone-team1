@@ -6,7 +6,8 @@ equipments,
 exercises,
 workouts,
 workout_exercises,
-schedules;
+schedules,
+schedule_members;
 
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
