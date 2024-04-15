@@ -1,15 +1,15 @@
 <template>
   <workout-detail />
-  <workout-list />
+  <!-- <workout-list /> -->
 </template>
 
 <script>
-import WorkoutList from "../components/WorkoutList.vue";
+// import WorkoutList from "../components/WorkoutList.vue";
 import WorkoutDetail from "../components/WorkoutDetail.vue";
 
 export default {
   components: {
-    WorkoutList,
+    // WorkoutList,
     WorkoutDetail,
   },
 };

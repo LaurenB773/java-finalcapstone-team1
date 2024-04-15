@@ -23,7 +23,7 @@ public class JdbcExerciseDao implements ExerciseDao {
   @Override
   public List<Exercise> getExercises(int userId) {
     List<Exercise> exercises = new ArrayList<>();
-    String sql = "select * from exercises where user_id = ?;";
+    String sql = "select * from exercises join user_exercises on exercises.exercise_id = user_exercises.exercise_id where user_id = ?;";
 
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
@@ -57,20 +57,22 @@ public class JdbcExerciseDao implements ExerciseDao {
 
   @Override
   public Exercise createExercise(CreateExerciseDto dto, int userId) {
-    String exerciseSql = "insert into exercises (user_id, exercise_name, exercise_duration_minutes, reps, sets, weight_lbs) values (?, ?, ?, ?, ?, ?) returning exercise_id;";
+    String exerciseSql = "insert into exercises (exercise_name, exercise_duration_minutes, reps, sets, weight_lbs) values (?, ?, ?, ?, ?) returning exercise_id;";
+    String userExerciseSql = "insert into user_exercises (user_id, exercise_id) values (?, ?);";
     String equipmentSql = "update equipments set used_time_minutes = used_time_minutes + ? where equipment_id = ?;";
 
     Exercise exercise = dto.getExercise();
 
     try {
       int exerciseId = jdbcTemplate.queryForObject(exerciseSql, Integer.class,
-          userId,
           exercise.getExerciseName(), exercise.getExerciseDurationMinutes(),
           exercise.getReps(), exercise.getSets(), exercise.getWeightLbs());
 
       if (exerciseId == 0) {
         throw new DaoException("Unable to create exercise");
       }
+
+      jdbcTemplate.update(userExerciseSql, userId, exerciseId);
 
       // This will run into a performance issue (not a problem for this project)
       // if there are a lot of equipment ids for each exercise being logged at once by
@@ -89,7 +91,6 @@ public class JdbcExerciseDao implements ExerciseDao {
     Exercise exercise = new Exercise();
 
     exercise.setExerciseId(row.getInt("exercise_id"));
-    exercise.setUserId(row.getInt("user_id"));
     exercise.setExerciseName(row.getString("exercise_name"));
     exercise.setExerciseDurationMinutes(row.getInt("exercise_duration_minutes")); 
     exercise.setSets(row.getInt("sets"));
