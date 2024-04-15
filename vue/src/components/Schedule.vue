@@ -11,8 +11,8 @@
             <p @click="updateEvent()">Confirm Edit</p>
         </form>
         <h1>Today's Events</h1>
-        <div class="event-container" v-for="event in    events   " :key="event.scheduleId"
-            @click="selectEvent(event.scheduleId)" style="cursor: pointer">
+        <div class="event-container" v-for="event in events" :key="event.scheduleId" @click="selectEvent(event.scheduleId)"
+            style="cursor: pointer">
             <p>Title: {{ event.title }}</p>
             <p>Instructor: {{ event.instructor }}</p>
             <p>Date: {{ timeFormatter(event.classTime) }}</p>

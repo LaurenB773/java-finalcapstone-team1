@@ -2,6 +2,8 @@ package com.techelevator.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDateTime;
+
 public class UserProfile {
   private String firstName;
   private String lastName;
@@ -13,6 +15,26 @@ public class UserProfile {
 
   private int userId;
   private String profilePicture;
+
+  private LocalDateTime latest_checkin;
+
+  private LocalDateTime latest_checkout;
+
+  public LocalDateTime getLatest_checkin() {
+    return latest_checkin;
+  }
+
+  public void setLatest_checkin(LocalDateTime latest_checkin) {
+    this.latest_checkin = latest_checkin;
+  }
+
+  public LocalDateTime getLatest_checkout() {
+    return latest_checkout;
+  }
+
+  public void setLatest_checkout(LocalDateTime latest_checkout) {
+    this.latest_checkout = latest_checkout;
+  }
 
   public String getFirstName() {
     return firstName;
