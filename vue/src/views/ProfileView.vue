@@ -9,6 +9,14 @@
     <h2>Goals: {{ this.userProfile.goal }}</h2>
 
     <div class="options-container">
+      <button @click="checkInOrOut">
+        {{ isCheckedIn ? "Check Out" : "Check In" }}
+      </button>
+
+      <button v-if="isCheckedIn" @click="logWorkout">
+        {{ isWorkoutStarted ? "End Workout" : "Start Workout" }}
+      </button>
+
       <router-link
         v-bind:to="{ name: 'workouts' }"
         @click="searchWorkouts"
@@ -16,16 +24,17 @@
         <button>Search Exercises</button>
       </router-link>
 
-      <button @click="checkInOrOut">
-        {{ isCheckedIn ? "check out" : "check in" }}
+      <button @click="isShowingPreviousExercises = !isShowingPreviousExercises">
+        Previous Exercises
       </button>
 
-      <button v-if="isCheckedIn" @click="logWorkout">
-        {{ isWorkoutStarted ? "End Workout" : "Start Workout" }}
+      <button @click="isShowingSignedUpEvents = !isShowingSignedUpEvents">
+        Signed Up Events
       </button>
+
     </div>
 
-    <Exercises />
+    <PreviousExercises v-if="isShowingPreviousExercises" />
     
   </div>
 </template>
@@ -35,12 +44,12 @@ import { mapState } from "vuex";
 import UserService from "../services/UserService";
 import WorkoutService from "../services/WorkoutService";
 import { RouterLink } from "vue-router";
-import Exercises from "../components/Exercises.vue";
+import PreviousExercises from "../components/PreviousExercises.vue";
 
 export default {
   components: {
     RouterLink,
-    Exercises
+    PreviousExercises
   },
   data() {
     return {
@@ -54,6 +63,8 @@ export default {
       },
       isCheckedIn: false,
       isWorkoutStarted: false,
+      isShowingPreviousExercises: false,
+      isShowingSignedUpEvents: false,
     };
   },
 
