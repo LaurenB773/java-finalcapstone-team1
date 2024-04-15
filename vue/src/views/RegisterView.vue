@@ -40,8 +40,6 @@
         <input placeholder="Last name" type="text" id="last-name" v-model="user.lastName">
       </div>
       <button class="create-user-button" type="submit">Create Account</button>
-      <p><router-link class="signup-to-login-link" v-bind:to="{ name: 'login' }">Already have an account? Log
-          in.</router-link></p>
     </form>
   </div>
 </template>
@@ -135,17 +133,5 @@ label {
 .create-user-button:hover {
   background-color: var(--color-blue-o);
   cursor: pointer;
-}
-
-.signup-to-login-link {
-  color: hsl(202, 49%, 89.8%);
-  margin: 10px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-}
-
-.signup-to-login-link:hover {
-  text-decoration: underline;
 }
 </style>
