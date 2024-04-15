@@ -13,25 +13,25 @@
         <div class="container">
             <div class="schedule-form">
                 <h2 @click="(isShowing === 'Schedule' ? isShowing = '' : isShowing = 'Schedule')">Manage Schedule</h2>
-                <div>
-                    <p id="p-create-schedule"
-                        @click="(isFormShowing === 'Schedule' ? isFormShowing = '' : isFormShowing = 'Schedule')">Create New
-                        Event</p>
-                    <form id="create-schedule" v-if="isFormShowing === 'Schedule'">
-                        <input placeholder="Title" type="text" v-model="newSchedule.title">
-                        <input placeholder="Instructor" type="text" v-model="newSchedule.instructor">
-                        <!--if theres time make this a dropdown of employees-->
-                        <input placeholder="Description" type="textarea" v-model="newSchedule.description">
-                        <input placeholder="Hour Of Class" type="datetime-local" v-model="newSchedule.classTime">
-                        <input placeholder="Duration Minutes" type="number" v-model="newSchedule.duration">
-                        <button id="create-schedule-button" @click="createNewSchedule(newSchedule)">Create!</button>
-                    </form>
-                    <p id="p-view-schedules"
-                        @click="(isFormShowing === 'RemoveSchedule' ? isFormShowing = '' : isFormShowing = 'RemoveSchedule')">
-                        See Events
-                    </p>
-                    <Schedule v-if="isFormShowing === 'RemoveSchedule'" id="view-schedules" />
-                </div>
+
+                <p id="p-create-schedule"
+                    @click="(isFormShowing === 'Schedule' ? isFormShowing = '' : isFormShowing = 'Schedule')">Create New
+                    Event</p>
+                <form id="create-schedule" v-if="isFormShowing === 'Schedule'">
+                    <input placeholder="Title" type="text" v-model="newSchedule.title">
+                    <input placeholder="Instructor" type="text" v-model="newSchedule.instructor">
+                    <!--if theres time make this a dropdown of employees-->
+                    <input placeholder="Description" type="textarea" v-model="newSchedule.description">
+                    <input placeholder="Hour Of Class" type="datetime-local" v-model="newSchedule.classTime">
+                    <input placeholder="Duration Minutes" type="number" v-model="newSchedule.duration">
+                    <button id="create-schedule-button" @click="createNewSchedule(newSchedule)">Create!</button>
+                </form>
+                <p id="p-view-schedules"
+                    @click="(isFormShowing === 'RemoveSchedule' ? isFormShowing = '' : isFormShowing = 'RemoveSchedule')">
+                    See Events
+                </p>
+                <Schedule v-if="isFormShowing === 'RemoveSchedule'" id="view-schedules" />
+
             </div>
             <div class="manage-members">
                 <h2>Manage Members</h2>
@@ -47,10 +47,12 @@
                     <p>Remove Equipment</p>
                 </div>
             </div>
-            <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">Manage
-                Employees
-            </h2>
+
             <div class="Employee List">
+                <h2 @click="(isShowing === 'Employees' ? isShowing = '' : isShowing = 'Employees')" v-if="isOwner()">Manage
+                    Employees
+                </h2>
+
                 <employee-list />
             </div>
         </div>
@@ -111,6 +113,10 @@ export default {
     padding: 15px;
 }
 
+.schedule-form {
+    max-width: 40%;
+}
+
 #title {
     justify-content: center;
     width: 100%;
@@ -123,6 +129,7 @@ export default {
     width: 100%;
     padding: 50px;
     background-color: var(--color-medium-grey-o);
+    flex-grow: 1;
 }
 
 .container h2:hover {
@@ -180,7 +187,7 @@ export default {
 #view-schedules {
     background-color: none;
     margin: 0%;
-    width: 100%;
+    padding: 0%;
     align-items: center;
     justify-content: center;
 }

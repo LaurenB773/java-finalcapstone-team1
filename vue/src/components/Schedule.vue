@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main :class="[isEmployeeView ? 'main-container' : '']">
         <form v-if="isFormShowing === true">
             <p>Edit Event with id: {{ selectedEventId }}</p>
             <input placeholder="title" type="text" v-model="editSchedule.title">
@@ -11,8 +11,9 @@
             <p @click="updateEvent()">Confirm Edit</p>
         </form>
 
-        <h1 class="font">Today's Events</h1>
-        <div class="event-container" v-for="event in events" :key="event.scheduleId" @click="selectEvent(event.scheduleId)">
+        <h1 class="font">Schedule</h1>
+        <div :class="[isEmployeeView ? 'event-container-emp' : 'event-container']" v-for="event in events"
+            :key="event.scheduleId" @click="selectEvent(event.scheduleId)">
             <p class="font event-text">Title: {{ event.title }}</p>
             <p class="font event-text">Instructor: {{ event.instructor }}</p>
             <p class="font event-text">Date: {{ timeFormatter(event.classTime) }}</p>
@@ -144,7 +145,9 @@ export default {
     },
     computed: {
         ...mapGetters(["userPermissions"]),
-
+        isEmployeeView() {
+            return this.$route.name === 'employee'
+        }
     },
 };
 </script>
@@ -166,6 +169,20 @@ h1 {
     margin: 10px;
     padding: 10px;
     width: 50%;
+}
+
+.event-container-emp {
+    background-color: var(--color-light-blue);
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-shrink: 0;
 }
 
 .event-text {
