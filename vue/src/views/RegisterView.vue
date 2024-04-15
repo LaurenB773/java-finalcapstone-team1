@@ -116,6 +116,13 @@ export default {
   padding: 12px;
 }
 
+.form-input-group input{
+  outline: none;
+  background-color: hsl(204, 5%, 79%);
+  border-radius: 8px;
+  padding: 10px;
+}
+
 label {
   margin-right: 0.5rem;
 }
