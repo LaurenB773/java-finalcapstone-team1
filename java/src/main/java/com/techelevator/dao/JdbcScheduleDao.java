@@ -2,6 +2,8 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Schedule;
+import com.techelevator.model.UserProfile;
+import com.techelevator.security.model.User;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -91,6 +93,80 @@ public class JdbcScheduleDao implements ScheduleDao {
 
   }
 
+  @Override
+  public void addMemberToScheduledEvent(User principalUser, int scheduleId) {
+    String sql = "insert into schedule_members (user_id, schedule_id) " +
+            "values (?,?) returning schedule_id;";
+
+    try {
+        int id = jdbcTemplate.queryForObject(sql, int.class, principalUser.getId(), scheduleId);
+
+
+
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+  }
+
+  @Override
+  public void removeMemberFromEvent(int userId, int scheduleId) {
+    String sql = "delete from schedule_members " +
+            "where user_id = ? and schedule_id = ?;";
+
+    try {
+      int rows = jdbcTemplate.update(sql, userId, scheduleId);
+      if (rows == 0) {
+        throw new DaoException("Cannot find the user profile or schedule!");
+      }
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+
+
+  }
+
+  @Override
+  public List<UserProfile> getSignedUpMembers(int id) {
+    String sql = "select * from user_profiles where user_id in " +
+            "(select user_id from schedule_members where schedule_id = ?);";
+    List<UserProfile> Members = new ArrayList<>();
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+      while (results.next()) {
+        Members.add(mapRowToProfile(results));
+      }
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+
+    return Members;
+  }
+
+  @Override
+  public List<Schedule> getSignedUpEvents(int id) {
+    String sql = "select * from schedules where schedule_id in " +
+            " (select schedule_id from schedule_members where user_id = ?);";
+
+    List<Schedule> steve = new ArrayList();
+
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+      while (results.next()) {
+        steve.add(mapToRowSchedules(results));
+      }
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to server or database", e);
+    } catch (DataIntegrityViolationException e) {
+      throw new DaoException("Data integrity violation", e);
+    }
+    return steve;
+  }
 
   @Override
   public Schedule createSchedule(Schedule newSchedule) {
@@ -125,5 +201,17 @@ public class JdbcScheduleDao implements ScheduleDao {
     schedule.setDuration(results.getInt("duration_minutes"));
 
     return schedule;
+  }
+
+  private UserProfile mapRowToProfile(SqlRowSet results) {
+    UserProfile profile = new UserProfile();
+    profile.setProfileId(results.getInt("user_profile_id"));
+    profile.setUserId(results.getInt("user_id"));
+    profile.setFirstName(results.getString("first_name"));
+    profile.setLastName(results.getString("last_name"));
+    profile.setGoal(results.getString("goal"));
+    profile.setEmail(results.getString("email"));
+    profile.setProfilePicture("");
+    return profile;
   }
 }

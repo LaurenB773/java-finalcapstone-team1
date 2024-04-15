@@ -18,4 +18,13 @@ export default {
   getLastCheckin() {
     return axios.get("/profile/checkin");
   },
+  getEventsSignedUpFor() {
+    return axios.get("/gym/schedule/me");
+  },
+  signUpForEvent(id) {
+    axios.post(`/gym/schedule/${id}/join`);
+  },
+  leaveEvent(id) {
+    axios.delete(`/gym/schedule/${id}/join`);
+  },
 };
