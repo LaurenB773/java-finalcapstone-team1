@@ -137,11 +137,6 @@ export default {
     flex-grow: 1;
 }
 
-.container h2:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 #create-schedule {
     flex-wrap: wrap;
     width: 12rem;
