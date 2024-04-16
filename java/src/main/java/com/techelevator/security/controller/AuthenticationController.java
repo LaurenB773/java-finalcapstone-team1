@@ -84,6 +84,7 @@ public class AuthenticationController {
       createdUserProfile.setLastName(newUser.getLastName());
       createdUserProfile.setEmail(newUser.getEmail());
       createdUserProfile.setGoal(newUser.getGoal());
+      createdUserProfile.setProfilePicture(newUser.getProfilePicture());
 
       userProfileDao.createProfile(createdUserProfile, user.getId());
 
