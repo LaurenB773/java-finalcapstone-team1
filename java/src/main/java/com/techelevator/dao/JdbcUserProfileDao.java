@@ -164,8 +164,10 @@ public class JdbcUserProfileDao implements UserProfileDao {
     String deleteUserProfileSQL =
       "delete from user_profiles where user_id = ?;";
     String deleteUserSQL = "delete from users where user_id = ?;";
+    String deleteCheckinSql = "delete from checkins where user_id = ?;";
 
     try {
+      jdbcTemplate.update(deleteCheckinSql, userId);
       jdbcTemplate.update(deleteUserProfileSQL, userId);
       jdbcTemplate.update(deleteUserSQL, userId);
     } catch (CannotGetJdbcConnectionException e) {

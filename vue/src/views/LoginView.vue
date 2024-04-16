@@ -88,7 +88,7 @@ export default {
   align-items: center;
   margin-top: 50px;
 
-  font-size: 50px;
+  font-size: 69px;
 }
 
 #divider-container {
@@ -101,8 +101,8 @@ export default {
 
 .divider {
   height: 3px;
-  border: 1px solid white;
-  background-color: white;
+  border: 1px solid var(--color-light-blue);
+  background-color: var(--color-light-blue);
   border-radius: 10px;
 }
 
