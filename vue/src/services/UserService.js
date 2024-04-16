@@ -5,6 +5,10 @@ export default {
     return axios.get("/profile", { params: { userId } });
   },
 
+  editProfile(profile) {
+    axios.put('/profile', profile)
+  },
+
   getSchedule() {
     return axios.get("/gym/schedule");
   },

@@ -138,7 +138,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
   @Override
   public void updateProfile(int userId, UserProfile profileToUpdate) {
     String sql =
-      "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ? where user_id = ? ";
+      "update user_profiles set first_name = ?, last_name = ?, email = ?, goal = ?, profile_picture = ? where user_id = ? ";
 
     try {
       int rowsAffected = jdbcTemplate.update(
@@ -147,6 +147,7 @@ public class JdbcUserProfileDao implements UserProfileDao {
         profileToUpdate.getLastName(),
         profileToUpdate.getEmail(),
         profileToUpdate.getGoal(),
+        profileToUpdate.getProfilePicture(),
         userId
       );
 
