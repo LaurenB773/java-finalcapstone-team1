@@ -17,10 +17,7 @@
         {{ isWorkoutStarted ? "End Workout" : "Start Workout" }}
       </button>
 
-      <router-link
-        v-bind:to="{ name: 'workouts' }"
-        @click="searchWorkouts"
-      >
+      <router-link v-bind:to="{ name: 'workouts' }" @click="searchWorkouts">
         <button>Search Exercises</button>
       </router-link>
 
@@ -35,7 +32,7 @@
     </div>
 
     <PreviousExercises v-if="isShowingPreviousExercises" />
-    
+
   </div>
 </template>
 
@@ -65,6 +62,9 @@ export default {
       isWorkoutStarted: false,
       isShowingPreviousExercises: false,
       isShowingSignedUpEvents: false,
+      workouts: [],
+      signedUp: [],
+
     };
   },
 
@@ -72,6 +72,7 @@ export default {
     UserService.getProfile().then((res) => (this.userProfile = res.data));
     UserService.getLastCheckin().then((response) => (this.isCheckedIn = response.data));
     WorkoutService.getCurrentWorkout().then((response) => (this.isWorkoutStarted = response.data ? true : false));
+    UserService.getWorkouts().then((response) => (this.workouts = response.data));
   },
 
   computed: {

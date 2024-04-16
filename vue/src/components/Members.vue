@@ -99,6 +99,8 @@ div {
     font-style: normal;
 }
 
+
+
 .member-buttons button {
     font-family: "M PLUS 1 Code", monospace;
     font-optical-sizing: auto;
@@ -112,12 +114,15 @@ div {
     border-radius: 5px;
 }
 
+
+
 .member-buttons button:hover {
     color: var(--color-blue);
     background-color: var(--color-medium-grey);
     cursor: pointer;
 }
-#revoke-button:hover{
-    color:rgb(248, 55, 55);
+
+#revoke-button:hover {
+    color: rgb(248, 55, 55);
 }
 </style>
