@@ -92,13 +92,14 @@ export default {
 </script>
 
 <style>
-div{
+div {
     font-family: "M PLUS 1 Code", monospace;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
 }
-.member-buttons button{
+
+.member-buttons button {
     font-family: "M PLUS 1 Code", monospace;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -110,9 +111,9 @@ div{
     border: none;
     border-radius: 5px;
 }
-.member-buttons button:hover{
+
+.member-buttons button:hover {
     color: var(--color-blue);
     cursor: pointer;
 }
-
 </style>

@@ -1,7 +1,8 @@
 <template>
+    <input type="text" v-model="search" placeholder="search for equipment">
     <input placeholder="New Equipment Name" type="text" v-model="newEquipment.equipmentName">
     <button @click="createEquipment(this.newEquipment)">Add</button>
-    <div class="equipment-item" v-for="item in equipment" :key="item.equipmentId">
+    <div class="equipment-item" v-for="item in filteredEquipment" :key="item.equipmentId">
         <p>Item Name: {{ item.equipmentName }}</p>
         <p>Time Used: {{ item.userTimeMinutes }} Minutes</p>
         <button class="delete-equipment" @click="removeEquipment(item.equipmentId)">Delete</button>
@@ -20,14 +21,18 @@ export default {
                 userTimeMinutes: 0,
                 nextEquipmentId: 0
             },
-
+            search: '',
 
 
         }
     },
     mounted() {
-        EmployeeService.getAllEquipment().then(response => this.equipment = response.data);
+        EmployeeService.getAllEquipment().then(response => {
+            this.equipment = response.data;
+            this.equipment.sort((a, b) => { return b.userTimeMinutes - a.userTimeMinutes });
+        });
     },
+
     methods: {
         removeEquipment(id) {
             EquipmentService.deleteEquipment(id);
@@ -53,7 +58,13 @@ export default {
         }
 
     },
+    computed: {
+        filteredEquipment() {
+            return this.equipment.filter(item => item.equipmentName.toLowerCase().includes(this.search.toLowerCase()));
+        }
+    }
 }
+
 </script>
 <style> .equipment-item {
      padding-bottom: 1%;
