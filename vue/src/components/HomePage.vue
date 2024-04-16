@@ -10,7 +10,7 @@
     <ol>
      <ul>- Equipment Usage Tracking: Gain valuable insights into which equipment is most and least utilized in your gym.</ul>
      <ul>- Streamlined Employee and Member Management: Effortlessly manage your staff and gym members with our user-friendly platform.</ul>
-     <ul>- Simplified Communication with Members: Stay connected with your members through easy-to-use communication tools.</ul>
+     <ul>- Simplified Communication with Members: Stay connected with your members through easy-to-use gym updating tools.</ul>
      <ul>- Workout and Goal Tracking: Keeps members motivated by allowing them to set goals and see progress</ul>
     </ol>
 </div>
@@ -37,7 +37,7 @@ export default {
     font-weight: 400;
     font-style: normal;
     border: 2px solid white;
-    background-color: rgba(0, 0, 0, 0.475);
+    background-color: rgba(0, 0, 0, 0.5);
     margin: 15px;
     color: var(--color-light-blue);
 }
