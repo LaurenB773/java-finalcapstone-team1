@@ -13,7 +13,8 @@
 
         <h1 class="font">Schedule</h1>
         <div :class="[isEmployeeView ? 'event-container-emp' : 'event-container']" v-for="event in events"
-            :key="event.scheduleId" @click="selectEvent(event.scheduleId)">
+            :key="event.scheduleId"
+            @click="(selectedEventId === event.scheduleId ? selectedEventId = 0 : selectEvent(event.scheduleId))">
             <p class="font event-text">Title: {{ event.title }}</p>
             <p class="font event-text">Instructor: {{ event.instructor }}</p>
             <p class="font event-text">Date: {{ timeFormatter(event.classTime) }}</p>
@@ -162,6 +163,7 @@ main {
 h1 {
     font-size: 50px;
 }
+
 .event-container {
     background-color: var(--color-light-blue);
     border-radius: 10px;
@@ -169,7 +171,8 @@ h1 {
     padding: 10px;
     width: 50%;
 }
-.event-container:hover{
+
+.event-container:hover {
     background-color: var(--color-light-blue-o);
 }
 
@@ -178,6 +181,12 @@ h1 {
     width: 100%;
     border-radius: 5px;
     padding: 10px;
+    margin-bottom: 15px;
+}
+
+.event-container-emp:hover {
+    background-color: var(--color-light-blue-o);
+    cursor: pointer;
 }
 
 .main-container {
