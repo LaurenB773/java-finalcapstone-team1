@@ -9,5 +9,9 @@ export default {
 
   createExercise(dto) {
     return axios.post(url, dto)
+  },
+
+  deleteExercise(id) {
+    return axios.delete(`${url}/${id}`)
   }
 }
