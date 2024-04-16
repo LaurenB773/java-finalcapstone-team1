@@ -1,27 +1,23 @@
 <template>
-  <div v-if="!isShowingProfile" class="edit-profile-container">
-    <h1>Edit Profile</h1>
+	<div v-if="!isShowingProfile" class="edit-profile-container">
+		<h1>Edit Profile</h1>
 
-    <svg @click="isShowingProfile = true; isShowingSettings = false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left go-back-icon"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+		<svg @click="isShowingProfile = true; isShowingSettings = false" xmlns="http://www.w3.org/2000/svg" width="24"
+			height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+			stroke-linejoin="round" class="feather feather-arrow-left go-back-icon">
+			<line x1="19" y1="12" x2="5" y2="12"></line>
+			<polyline points="12 19 5 12 12 5"></polyline>
+		</svg>
 
-    <form @submit.prevent="updateProfile">
+		<form @submit.prevent="updateProfile">
 			<div class="form-input-group">
 				<label for="email">Email:</label>
-				<input
-					placeholder="Email"
-					type="text"
-					name="email"
-					id="email"
-					v-model="editProfile.email"
-				/>
-      </div>
+				<input placeholder="Email" type="text" name="email" id="email" v-model="editProfile.email" />
+			</div>
 
-      <div class="form-input-group">
+			<div class="form-input-group">
 				<label for="goalSelector">Gym Goal:</label>
-				<select
-					id="goalSelector"
-					v-model="editProfile.goal"
-				>
+				<select id="goalSelector" v-model="editProfile.goal">
 					<option value="Weight Loss">Weight Loss</option>
 					<option value="Strength/Muscle Building">Strength/Muscle Building</option>
 					<option value="Aesthetic Body Building">Aesthetic Body Building</option>
@@ -32,87 +28,65 @@
 
 			<div class="form-input-group">
 				<label for="first-name">First Name:</label>
-				<input
-					placeholder="First name"
-					type="text"
-					id="first-name"
-					v-model="editProfile.firstName"
-				/>
+				<input placeholder="First name" type="text" id="first-name" v-model="editProfile.firstName" />
 			</div>
 			<div class="form-input-group">
 				<label for="last-name">Last Name:</label>
-				<input
-					placeholder="Last name"
-					type="text"
-					id="last-name"
-					v-model="editProfile.lastName"
-				/>
+				<input placeholder="Last name" type="text" id="last-name" v-model="editProfile.lastName" />
 			</div>
 
 			<div class="form-input-group">
 				<label for="photo">Profile Picture:</label>
-				<input
-					type="button"
-					id="photo"
-					@click="uploadFile"
-					style="width: 200px"
-          :class="editProfile.profilePicture ? 'upload' : ''"
-				/>
+				<input type="button" id="photo" @click="uploadFile" style="width: 200px"
+					:class="editProfile.profilePicture ? 'upload' : ''" />
 			</div>
 
-			<button
-				class="create-user-button"
-				type="submit"
-			>
+			<button class="create-user-button" type="submit">
 				Edit Account
 			</button>
-    </form>
-  </div>
+		</form>
+	</div>
 
 	<div class="profile-container" v-if="isShowingProfile">
 		<h2>Name: {{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
 
-    <svg @click="isShowingSettings = !isShowingSettings" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings settings-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+		<svg @click="isShowingSettings = !isShowingSettings" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+			viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+			stroke-linejoin="round" class="feather feather-settings settings-icon">
+			<circle cx="12" cy="12" r="3"></circle>
+			<path
+				d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+			</path>
+		</svg>
 
-    <div class="settings-container" v-if="isShowingSettings">
-      <div @click="isShowingProfile = false" class="settings-option">Edit Profile</div>
-      <hr>
-      <div @click="deleteProfile(userProfile.userId)" class="settings-option">Delete Profile</div>
-    </div>
+		<div class="settings-container" v-if="isShowingSettings">
+			<div @click="isShowingProfile = false" class="settings-option">Edit Profile</div>
+			<hr>
+			<div @click="deleteProfile" class="settings-option">Delete Profile</div>
+		</div>
 
-		<img
-			:src="userProfile.profilePicture"
-			alt="Profile-Picture"
-		/>
+		<img :src="userProfile.profilePicture" alt="Profile-Picture" />
 
 		<h2>Goals: {{ userProfile.goal }}</h2>
 
 		<h2>Average Gym Time: {{ calculateAverageTimeSpent() }} minutes</h2>
-		<h2 v-if="checkins[checkins.length - 1]">Last Visit: {{ formatTimestamp(checkins[checkins.length - 1].checkinTime) }}</h2>
+		<h2 v-if="checkins[checkins.length - 1]">Last Visit: {{ formatTimestamp(checkins[checkins.length - 1].checkinTime)
+		}}</h2>
 
 		<div class="options-container">
 			<button @click="checkInOrOut">
 				{{ isCheckedIn ? 'Check Out' : 'Check In' }}
 			</button>
 
-			<router-link
-				v-bind:to="{ name: 'workouts' }"
-				@click="searchWorkouts"
-			>
+			<router-link v-bind:to="{ name: 'workouts' }" @click="searchWorkouts">
 				<button>Search Exercises</button>
 			</router-link>
 
-			<button
-				:class="isShowingPreviousExercises && 'selected'"
-				@click="showPreviousExercises"
-			>
+			<button :class="isShowingPreviousExercises && 'selected'" @click="showPreviousExercises">
 				Previous Exercises
 			</button>
 
-			<button
-				:class="isShowingSchedule && 'selected'"
-				@click="showSchedule"
-			>
+			<button :class="isShowingSchedule && 'selected'" @click="showSchedule">
 				My Schedule
 			</button>
 		</div>
@@ -135,8 +109,8 @@ import { formatTimestamp } from '../utils/formatter'
 import { openUploadModal } from "@bytescale/upload-widget-vue";
 
 const options = {
-  apiKey: "free", // Get API key: https://www.bytescale.com/get-started
-  maxFileCount: 1
+	apiKey: "free", // Get API key: https://www.bytescale.com/get-started
+	maxFileCount: 1
 };
 
 export default {
@@ -156,21 +130,21 @@ export default {
 				goal: '',
 			},
 
-      editProfile: {},
+			editProfile: {},
 			checkins: [],
 			isCheckedIn: false,
 			isShowingPreviousExercises: true,
 			isShowingSchedule: false,
-      isShowingSettings: false,
-      isShowingProfile: true
+			isShowingSettings: false,
+			isShowingProfile: true
 		}
 	},
 
 	mounted() {
 		UserService.getProfile().then(response => {
-      this.userProfile = response.data
-      this.editProfile = response.data
-    })
+			this.userProfile = response.data
+			this.editProfile = response.data
+		})
 		UserService.getLastCheckin().then(response => (this.isCheckedIn = response.data))
 		UserService.getCheckins().then(response => (this.checkins = response.data))
 	},
@@ -180,7 +154,7 @@ export default {
 	},
 
 	methods: {
-    formatTimestamp,
+		formatTimestamp,
 		checkInOrOut() {
 			if (this.isCheckedIn) {
 				UserService.checkOut()
@@ -208,8 +182,8 @@ export default {
 			this.checkins.filter(checkin => checkin.checkoutTime !== null).forEach(checkin => {
 				const checkinTime = new Date(checkin.checkinTime)
 				const checkoutTime = new Date(checkin.checkoutTime)
-        const timeDifference =  checkoutTime - checkinTime
-        totalMinutes += timeDifference / (1000 * 60) // converting milliseconds to minutes
+				const timeDifference = checkoutTime - checkinTime
+				totalMinutes += timeDifference / (1000 * 60) // converting milliseconds to minutes
 			})
 
 			// Calculate average time spent in minutes
@@ -218,15 +192,16 @@ export default {
 			return averageMinutes ? averageMinutes.toFixed(2) : 0
 		},
 
-    updateProfile() {
-      UserService.editProfile(this.editProfile)
-      this.isShowingProfile = true
-      this.isShowingSettings = false;
-    },
+		updateProfile() {
+			UserService.editProfile(this.editProfile)
+			this.isShowingProfile = true
+			this.isShowingSettings = false;
+		},
 
-    deleteProfile(userId) {
-
-    },
+		deleteProfile() {
+			UserService.deleteProfile()
+			this.$router.push('/logout')
+		},
 
 		uploadFile(event) {
 			openUploadModal({
@@ -241,47 +216,47 @@ export default {
 				},
 			})
 		},
-    
+
 	},
 }
 </script>
 
 <style scoped>
 .profile-container {
-  background-color: var(--color-medium-grey-o);
-  border: 2px solid white;
+	background-color: var(--color-medium-grey-o);
+	border: 2px solid white;
 	color: var(--color-light-blue);
 	width: 50%;
 	margin: auto;
 	margin-top: 50px;
-  padding: 10px;
+	padding: 10px;
 
 	font-family: 'M PLUS 1p', monospace;
 
-  position: relative
+	position: relative
 }
 
 .settings-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
 
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .settings-icon:hover {
-  color: var(--color-grey);
+	color: var(--color-grey);
 }
 
 .settings-container {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
 
-  background-color: var(--color-grey);
-  border: 1px solid transparent;
-  border-radius: 5px;
-  padding: 10px;
+	background-color: var(--color-grey);
+	border: 1px solid transparent;
+	border-radius: 5px;
+	padding: 10px;
 }
 
 .profile-container h2 {
@@ -294,11 +269,11 @@ export default {
 }
 
 .settings-option {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .settings-option:hover {
-  color: var(--color-blue);
+	color: var(--color-blue);
 }
 
 button {
@@ -324,28 +299,28 @@ button.selected {
 }
 
 .edit-profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-  margin: auto;
-  margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 50%;
+	margin: auto;
+	margin-top: 20px;
 
-  color: var(--color-light-blue);
+	color: var(--color-light-blue);
 
-  position: relative;
+	position: relative;
 }
 
 .go-back-icon {
-  position: absolute;
-  top: 0;
-  left: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
 
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .go-back-icon:hover {
-  color: var(--color-grey);
+	color: var(--color-grey);
 }
 
 .form-input-group {
@@ -354,7 +329,7 @@ button.selected {
 	display: flex;
 	justify-content: space-between;
 	padding: 12px;
-  align-items: center;
+	align-items: center;
 }
 
 .form-input-group input {
@@ -369,20 +344,19 @@ label {
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .create-user-button {
-  background-color: var(--color-blue);
-  width: 50%;
-  margin: auto;
+	background-color: var(--color-blue);
+	width: 50%;
+	margin: auto;
 }
 
 .create-user-button:hover {
-  background-color: var(--color-blue-o);
-  color: var(--color-light-blue);
+	background-color: var(--color-blue-o);
+	color: var(--color-light-blue);
 }
-
 </style>
