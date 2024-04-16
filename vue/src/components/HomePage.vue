@@ -2,7 +2,7 @@
     <schedule />
     <div class="welcome">
     <h1>Welcome to Fitness Elevator!</h1>
-    <p id="description">
+    <p class= "description">
         At Fitness Elevator, we're more than just a gym; we're dedicated to elevating each individual to their highest potential. Established on April 5th, 2024, Fitness Elevator boasts a rich history of providing gym owners 
         and members with cutting-edge technology to achieve their fitness goals.
     </p>
@@ -44,7 +44,7 @@ export default {
 h1 {
     margin-left: 10px;
 }
-#description {
+.description {
     margin-left: 10px;
 }
 
