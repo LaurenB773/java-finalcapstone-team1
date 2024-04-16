@@ -9,6 +9,10 @@ export default {
     axios.put('/profile', profile)
   },
 
+  deleteProfile() {
+    axios.delete('/profile')
+  },
+
   getSchedule() {
     return axios.get("/gym/schedule");
   },
