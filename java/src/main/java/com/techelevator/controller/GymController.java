@@ -166,4 +166,14 @@ public class GymController {
     User user = userDao.getUserByUsername(username);
     return user.getId();
   }
+  @PostMapping("/equipment")
+  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  public void createEquipment(@RequestBody Equipment newEquipment){
+    equipmentDao.createEquipment(newEquipment);
+  }
+  @DeleteMapping("/equipment/{id}")
+  @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_ADMIN')")
+  public void deleteEquipment(@PathVariable int id){
+    equipmentDao.deleteEquipment(id);
+  }
 }
