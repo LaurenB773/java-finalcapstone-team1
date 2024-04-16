@@ -34,4 +34,7 @@ export default {
   leaveEvent(id) {
     axios.delete(`/gym/schedule/${id}/join`);
   },
+  getWorkouts() {
+    return axios.get("/profile/workouts");
+  },
 };

@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <router-link class="link font" v-bind:to="{ name: 'home' }">
+    <router-link v-if="this.$store.state.token != ''" class="link font" v-bind:to="{ name: 'home' }">
       Home
     </router-link>
 
