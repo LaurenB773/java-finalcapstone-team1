@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import com.techelevator.model.Checkin;
+
 @Component
 public class JdbcCheckinDao implements CheckinDao {
 
@@ -66,5 +71,36 @@ public class JdbcCheckinDao implements CheckinDao {
         }catch(CannotGetJdbcConnectionException e) {
             throw new DaoException(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Checkin> getCheckins(int userId) {
+        String sql = "select * from checkins where user_id = ?;";
+        List<Checkin> checkins = new ArrayList<>();
+        try {
+          SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+
+          while (results.next()) {
+            checkins.add(mapRowToCheckin(results));
+          }
+        } catch (CannotGetJdbcConnectionException e) {
+          throw new DaoException("Cannot connect to database");
+        }
+
+        return checkins;
+    }
+
+    private Checkin mapRowToCheckin(SqlRowSet results) {
+        Checkin checkin = new Checkin();
+
+        checkin.setCheckinId(results.getInt("checkin_id"));
+        checkin.setUserId(results.getInt("user_id"));
+
+        checkin.setCheckinTime(results.getTimestamp("checkin_time").toLocalDateTime());
+        if (results.getTimestamp("checkout_time") != null) {
+          checkin.setCheckoutTime(results.getTimestamp("checkout_time").toLocalDateTime());
+        }
+        return checkin;
+
     }
 }

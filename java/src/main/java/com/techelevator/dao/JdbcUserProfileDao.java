@@ -2,7 +2,6 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.UserProfile;
-import com.techelevator.model.Workout;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,26 +109,11 @@ public class JdbcUserProfileDao implements UserProfileDao {
     }
   }
 
-  @Override
-  public List<Workout> getWorkouts(int userId) {
-    String sql = "select * from workouts where user_id = ?;";
-    List<Workout> workouts = new ArrayList<>();
-
-    try {
-      SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-      while (results.next()) {
-        workouts.add(JdbcWorkoutDao.mapRowToWorkout(results));
-      }
-    } catch (CannotGetJdbcConnectionException e) {
-      throw new DaoException("Unable to connect to server or database", e);
-    }
-    return workouts;
-  }
 
   @Override
   public UserProfile createProfile(UserProfile newProfile, int id) {
     UserProfile profileToCreate = null;
-    String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal) values((select user_id from users where user_id = ?),?,?,?,?) returning user_profile_id; ";
+    String sql = "insert into user_profiles (user_id,first_name, last_name, email, goal, profile_picture) values((select user_id from users where user_id = ?),?,?,?,?,?) returning user_profile_id; ";
     try {
       int newId = jdbcTemplate.queryForObject(
         sql,
@@ -138,7 +122,8 @@ public class JdbcUserProfileDao implements UserProfileDao {
         newProfile.getFirstName(),
         newProfile.getLastName(),
         newProfile.getEmail(),
-        newProfile.getGoal()
+        newProfile.getGoal(),
+        newProfile.getProfilePicture()
       );
       profileToCreate = getProfile(newId);
     } catch (CannotGetJdbcConnectionException e) {
@@ -189,13 +174,15 @@ public class JdbcUserProfileDao implements UserProfileDao {
 
   private UserProfile mapRowToProfile(SqlRowSet results) {
     UserProfile profile = new UserProfile();
+
     profile.setProfileId(results.getInt("user_profile_id"));
     profile.setUserId(results.getInt("user_id"));
     profile.setFirstName(results.getString("first_name"));
     profile.setLastName(results.getString("last_name"));
     profile.setGoal(results.getString("goal"));
     profile.setEmail(results.getString("email"));
-    profile.setProfilePicture("");
+    profile.setProfilePicture(results.getString("profile_picture"));
+
     return profile;
   }
 }

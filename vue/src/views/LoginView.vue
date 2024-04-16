@@ -1,42 +1,44 @@
 <template>
-  <div
-    style="display: flex; width: fit-content; flex-direction: column; line-height: 1; margin: auto; height: auto; margin-top:50px; margin-bottom: 10px;">
+  <main>
+    <div class="title-container font">
+      <div>FITNESS</div>
+      <div>ELEVATOR</div>
+    </div>
 
-    <h1 id="title">FITNESS</h1>
-    <h1 id="title2">ELEVATOR</h1>
-  </div>
-  <div style="display: flex; gap: 10px; width: fit-content; margin: auto;">
-    <div style="height: 3px; width: 40px; border: 1px solid white; background-color: white; border-radius: 10px;">
+    <div id="divider-container">
+      <div class="divider" style="width: 40px"></div>
+      <div class="divider" style="width: 20px"></div>
     </div>
-    <div style="height: 3px; width: 20px; border: 1px solid white; background-color: white; border-radius: 10px;">
-    </div>
-  </div>
-  <h2 id="slogan">RISE TO GREATNESS</h2>
-  <div id="login">
+
+    <h2 class="font">RISE TO GREATNESS</h2>
+
     <form v-on:submit.prevent="login">
-      <h1 id="sign-in"></h1>
       <div role="alert" v-if="invalidCredentials">
         Invalid username and password!
       </div>
       <div role="alert" v-if="this.$route.query.registration">
         Thank you for registering, please sign in.
       </div>
-      <div class="form-input-group">
-        <input placeholder="Username" type="text" id="username" v-model="user.username" required autofocus />
-      </div>
-      <div class="form-input-group">
-        <input placeholder="Password" type="password" id="password" v-model="user.password" required />
-      </div>
-      <button class="sign-in-button" type="submit">Sign in</button>
-      <p>
-        <router-link class="register" v-bind:to="{ name: 'register' }">Need an account? Sign up.</router-link>
-      </p>
-    </form>
-  </div>
+        <input
+          placeholder="Username"
+          type="text"
+          id="username"
+          v-model="user.username"
+          required
+          autofocus
+        />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap" rel="stylesheet">
+        <input
+          placeholder="Password"
+          type="password"
+          id="password"
+          v-model="user.password"
+          required
+          />
+
+      <button type="submit">Sign in</button>
+    </form>
+  </main>
 </template>
 
 <script>
@@ -49,128 +51,94 @@ export default {
       user: {
         username: "",
         password: "",
-        role: '',
+        role: "",
       },
-      invalidCredentials: false
+      invalidCredentials: false,
     };
   },
   methods: {
     login() {
       authService
         .login(this.user)
-        .then(response => {
+        .then((response) => {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
             this.$router.push("/");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           const response = error.response;
 
           if (response.status === 401) {
             this.invalidCredentials = true;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-#title {
-  font-family: "M PLUS 1 Code", monospace;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-  display: flex;
-  color: hsl(202, 49%, 89.8%);
-  font-size: 50px;
-  justify-content: center;
-  /* margin-top: 50px; */
-}
-
-#title2 {
-  font-family: "M PLUS 1 Code", monospace;
-  font-weight: 600;
-  font-style: normal;
-  display: flex;
-  color: hsl(202, 49%, 89.8%);
-  font-size: 50px;
-  justify-content: center;
-  padding: 0;
-}
-
-#slogan {
-  font-family: "M PLUS 1 Code", monospace;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-  display: flex;
-  color: hsl(202, 49%, 89.8%);
-  font-size: medium;
-  justify-content: center;
-  margin-top: 15px;
-}
-
-#login {
-  display: flex;
-  margin: auto;
+.title-container {
   width: fit-content;
-  padding: 30px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+
+  font-size: 50px;
 }
 
-.form-input-group {
+#divider-container {
+  display: flex;
+  gap: 10px;
+  width: fit-content;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.divider {
+  height: 3px;
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: auto;
+  margin-top: 30px;
+}
+
+input {
+  outline: none;
+  background-color: var(--color-light-blue);
+  border-radius: 8px;
+  padding: 10px;
   margin-bottom: 1rem;
 }
 
-.form-input-group input {
-  outline: none;
-  background-color: hsl(204, 5%, 79%);
-  border-radius: 8px;
-  padding: 10px;
+input::placeholder {
+  color: var(--color-grey);
 }
 
-.form-input-group input::placeholder {
-  color: hsl(200, 2%, 61.4%)
-}
-
-label {
-  margin-right: 0.5rem;
-}
-
-#sign-in {
-  color: hsl(202, 49%, 89.8%);
-  font-size: larger;
-  padding-bottom: 15px;
-}
-
-.form-input-group label {
-  color: hsl(202, 49%, 89.8%);
-}
-
-.register {
-  color: hsl(202, 49%, 89.8%);
-  margin: 10px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-}
-
-.register:hover {
-  text-decoration: underline;
-}
-
-.sign-in-button:hover {
-  background-color: var(--color-blue-o);
-  cursor: pointer;
-}
-
-.sign-in-button {
+button {
   width: 100%;
   background-color: var(--color-blue);
   border-radius: 8px;
   padding: 5px;
+  font-weight: 600;
   transition: background-color 200ms;
 }
+
+button:hover {
+  background-color: var(--color-blue-o);
+  cursor: pointer;
+}
+
 </style>
+  

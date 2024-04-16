@@ -4,15 +4,18 @@ import com.techelevator.dao.CheckinDao;
 import com.techelevator.dao.CreateExerciseDto;
 import com.techelevator.dao.ExerciseDao;
 import com.techelevator.dao.UserProfileDao;
-import com.techelevator.dao.WorkoutDao;
+
 import com.techelevator.model.Exercise;
 import com.techelevator.model.UserProfile;
-import com.techelevator.model.Workout;
+import com.techelevator.model.Checkin;
+
 import com.techelevator.security.dao.UserDao;
 import com.techelevator.security.model.User;
+
 import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -25,20 +28,17 @@ public class ProfileController {
 
   private UserDao userDao;
   private UserProfileDao userProfileDao;
-  private WorkoutDao workoutDao;
   private CheckinDao checkinDao;
   private ExerciseDao exerciseDao;
 
   public ProfileController(
     UserDao userDao,
     UserProfileDao userProfileDao,
-    WorkoutDao workoutDao,
     CheckinDao checkinDao,
     ExerciseDao exerciseDao
   ) {
     this.userDao = userDao;
     this.userProfileDao = userProfileDao;
-    this.workoutDao = workoutDao;
     this.checkinDao = checkinDao;
     this.exerciseDao = exerciseDao;
   }
@@ -61,29 +61,6 @@ public class ProfileController {
     userProfileDao.deleteProfile(getUserId(principal));
   }
 
-  /************************************* Workouts ******************************** */
-  @GetMapping("/workouts")
-  public List<Workout> getWorkouts(Principal principal) {
-    return workoutDao.getWorkouts(getUserId(principal));
-  }
-
-  @GetMapping("/workouts/current")
-  public Workout getCurrentWorkout(Principal principal) {
-    return workoutDao.getCurrentWorkout(getUserId(principal));
-  }
-
-  @PutMapping("/workouts/start")
-  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Workout started")
-  public void startWorkout(Principal principal) {
-    workoutDao.startWorkout(getUserId(principal));
-  }
-
-  @PutMapping("/workouts/end")
-  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Workout ended")
-  public void endWorkout(Principal principal) {
-    workoutDao.endWorkout(getUserId(principal));
-  }
-
   /************************************* Exercises ******************************** */
   @GetMapping("/exercises")
   public List<Exercise> getExercises(Principal principal) {
@@ -95,7 +72,18 @@ public class ProfileController {
     return exerciseDao.createExercise(dto, getUserId(principal));
   }
 
+  @DeleteMapping("/exercises/{id}")
+  @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Exercise deleted")
+  public void deleteExercise(@PathVariable int id) {
+    exerciseDao.deleteExercise(id);
+  }
+
   /************************************* Checkins ******************************** */
+  @GetMapping("/checkins")
+  public List<Checkin> getCheckins(Principal principal) {
+    return checkinDao.getCheckins(getUserId(principal));
+  }
+
   @GetMapping("/checkin")
   public boolean isCheckedIn(Principal principal) {
     return checkinDao.isCheckin(getUserId(principal));
