@@ -3,7 +3,6 @@ package com.techelevator.model;
 public class Exercise {
 
   private int exerciseId;
-  private int userId;
   private String exerciseName;
   private int exerciseDurationMinutes;
   private int reps;
@@ -14,10 +13,9 @@ public class Exercise {
 
   }
 
-  public Exercise(int exerciseId, int userId, String exerciseName, int exerciseDurationMinutes, int reps, int sets,
+  public Exercise(int exerciseId, String exerciseName, int exerciseDurationMinutes, int reps, int sets,
       double weightLbs) {
     this.exerciseId = exerciseId;
-    this.userId = userId;
     this.exerciseName = exerciseName;
     this.exerciseDurationMinutes = exerciseDurationMinutes;
     this.reps = reps;
@@ -33,13 +31,6 @@ public class Exercise {
     this.exerciseId = exerciseId;
   }
 
-  public int getUserId() {
-    return userId;
-  }
-
-  public void setUserId(int userId) {
-    this.userId = userId;
-  }
 
   public String getExerciseName() {
     return exerciseName;
