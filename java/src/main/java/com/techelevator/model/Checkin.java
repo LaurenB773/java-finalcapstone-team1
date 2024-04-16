@@ -3,53 +3,41 @@ package com.techelevator.model;
 import java.time.LocalDateTime;
 
 public class Checkin {
-    private int id;
-
+    private int checkinId;
     private int userId;
-
     private LocalDateTime checkinTime;
-
     private LocalDateTime checkoutTime;
-
     public Checkin() {
-    }
 
-    public Checkin(int id, int userId, LocalDateTime checkinTime, LocalDateTime checkoutTime) {
-        this.id = id;
-        this.userId = userId;
-        this.checkinTime = checkinTime;
-        this.checkoutTime = checkoutTime;
     }
-
-    public int getId() {
-        return id;
+    public Checkin(int checkinId, int userId, LocalDateTime checkinTime, LocalDateTime checkoutTime) {
+      this.checkinId = checkinId;
+      this.userId = userId;
+      this.checkinTime = checkinTime;
+      this.checkoutTime = checkoutTime;
     }
-
-    public void setId(int id) {
-        this.id = id;
+    public int getCheckinId() {
+      return checkinId;
     }
-
+    public void setCheckinId(int checkinId) {
+      this.checkinId = checkinId;
+    }
     public int getUserId() {
-        return userId;
+      return userId;
     }
-
     public void setUserId(int userId) {
-        this.userId = userId;
+      this.userId = userId;
     }
-
     public LocalDateTime getCheckinTime() {
-        return checkinTime;
+      return checkinTime;
     }
-
     public void setCheckinTime(LocalDateTime checkinTime) {
-        this.checkinTime = LocalDateTime.now();
+      this.checkinTime = checkinTime;
     }
-
     public LocalDateTime getCheckoutTime() {
-        return checkoutTime;
+      return checkoutTime;
     }
-
     public void setCheckoutTime(LocalDateTime checkoutTime) {
-        this.checkoutTime = LocalDateTime.now();
+      this.checkoutTime = checkoutTime;
     }
 }

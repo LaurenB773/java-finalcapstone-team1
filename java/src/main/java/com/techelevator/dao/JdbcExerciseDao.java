@@ -87,6 +87,19 @@ public class JdbcExerciseDao implements ExerciseDao {
     }
   }
 
+  @Override
+  public void deleteExercise(int id) {
+    String userExerciseSql = "delete from user_exercises where exercise_id = ?;";
+    String exerciseSql = "delete from exercises where exercise_id = ?;";
+
+    try {
+      jdbcTemplate.update(userExerciseSql, id);
+      jdbcTemplate.update(exerciseSql, id);
+    } catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to database");
+    } 
+  }
+
   private Exercise mapToRowExercise(SqlRowSet row) {
     Exercise exercise = new Exercise();
 

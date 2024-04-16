@@ -46,18 +46,6 @@ CREATE TABLE user_exercises (
   exercise_id INT REFERENCES exercises (exercise_id) NOT NULL
 );
 
-CREATE TABLE workouts (
-  workout_id SERIAL PRIMARY KEY,
-  start_time TIMESTAMP NOT NULL,
-  end_time TIMESTAMP,
-  user_id INT REFERENCES users (user_id)
-);
-
-CREATE TABLE workout_exercises(
-  workout_id INT REFERENCES workouts (workout_id) NOT NULL,
-  exercise_id INT REFERENCES exercises (exercise_id) NOT NULL
-);
-
 CREATE TABLE schedules (
   schedule_id SERIAL PRIMARY KEY,
   title VARCHAR(100) default 'title',

@@ -5,6 +5,10 @@ export default {
     return axios.get("/profile", { params: { userId } });
   },
 
+  editProfile(profile) {
+    axios.put('/profile', profile)
+  },
+
   getSchedule() {
     return axios.get("/gym/schedule");
   },
@@ -14,6 +18,9 @@ export default {
   },
   checkOut() {
     return axios.put("/profile/checkout");
+  },
+  getCheckins() {
+    return axios.get("/profile/checkins")
   },
   getLastCheckin() {
     return axios.get("/profile/checkin");
@@ -26,5 +33,8 @@ export default {
   },
   leaveEvent(id) {
     axios.delete(`/gym/schedule/${id}/join`);
+  },
+  getWorkouts() {
+    return axios.get("/profile/workouts");
   },
 };
