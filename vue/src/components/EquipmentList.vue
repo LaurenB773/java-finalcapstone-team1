@@ -1,6 +1,6 @@
 <template>
     <input placeholder="New Equipment Name" type="text" v-model="newEquipment.equipmentName">
-    <button @click="createEquipment(this.newEquipment)">Add</button>
+    <button class="add-button" @click="createEquipment(this.newEquipment)">Add</button>
     <div class="equipment-item" v-for="item in equipment" :key="item.equipmentId">
         <p>Item Name: {{ item.equipmentName }}</p>
         <p>Time Used: {{ item.userTimeMinutes }} Minutes</p>
@@ -71,8 +71,26 @@ export default {
      border: none;
      border-radius: 5px;
  }
-
  .delete-equipment:hover {
-     color: var(--color-red);
+    color: var(--color-red);
+ }
+ input {
+    margin-bottom: 10px;
+    margin-right: 5px;
+    outline: none;
+    background-color: var(--color-light-blue);
+    border-radius: 8px;
+    padding: 10px;
+ }
+ .add-button {
+    background-color: var(--color-blue);
+    border-radius: 8px;
+    padding: 5px;
+    font-weight: 600;
+    transition: background-color 200ms;
+ }
+ .add-button:hover{
+    background-color: var(--color-blue-o);
+    cursor: pointer;
  }
 </style>

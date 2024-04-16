@@ -1,5 +1,5 @@
 <template>
-  <img class="logo-pic" src="./assets/logo(3).png" alt="logo">
+  <img class="logo-pic" src="./assets/OfficialLogo(1).png" alt="logo">
   <navbar />
   <router-view />
 </template>
@@ -27,10 +27,13 @@ body {
   color: var(--color-light-blue);
   text-align: center;
 }
+
 .logo-pic {
+  margin-top: -15px;
   position: absolute;
   left: 0;
   top: 0;
-
+  width: 150px;
+  height: 170px;
 }
 </style>
