@@ -1,7 +1,11 @@
 <template>
-    <input type="text" v-model="search" placeholder="search for equipment">
-    <input placeholder="New Equipment Name" type="text" v-model="newEquipment.equipmentName">
-    <button @click="createEquipment(this.newEquipment)">Add</button>
+    <div class="inputs">
+        <input type="text" v-model="search" placeholder="Search for equipment">
+        <div>
+            <input placeholder="New Equipment Name" type="text" v-model="newEquipment.equipmentName">
+            <button class="add-button" @click="createEquipment(this.newEquipment)">Add</button>
+        </div>
+    </div>
     <div class="equipment-item" v-for="item in filteredEquipment" :key="item.equipmentId">
         <p>Item Name: {{ item.equipmentName }}</p>
         <p>Time Used: {{ item.userTimeMinutes }} Minutes</p>
@@ -19,7 +23,6 @@ export default {
             newEquipment: {
                 equipmentName: '',
                 userTimeMinutes: 0,
-                nextEquipmentId: 0
             },
             search: '',
 
@@ -40,9 +43,9 @@ export default {
         },
 
         createEquipment(equipment) {
-            alert('Create Equipment Called');
 
             let newId = this.findNextId();
+            console.log(newId);
             equipment.equipmentId = newId;
             EquipmentService.addEquipment(equipment);
             window.location.reload();
@@ -52,9 +55,10 @@ export default {
             this.equipment.forEach(element => {
                 if (element.equipmentId > bigId) {
                     bigId = element.equipmentId;
+                    console.log(bigId);
                 }
             });
-            return bigId;
+            return bigId + 1;
         }
 
     },
@@ -85,5 +89,32 @@ export default {
 
  .delete-equipment:hover {
      color: var(--color-red);
+ }
+
+ input {
+     margin-bottom: 10px;
+     margin-right: 5px;
+     outline: none;
+     background-color: var(--color-light-blue);
+     border-radius: 8px;
+     padding: 10px;
+ }
+
+ .add-button {
+     background-color: var(--color-blue);
+     border-radius: 8px;
+     padding: 5px;
+     font-weight: 600;
+     transition: background-color 200ms;
+ }
+
+ .add-button:hover {
+     background-color: var(--color-blue-o);
+     cursor: pointer;
+ }
+
+ .inputs {
+     display: flex;
+     flex-direction: column;
  }
 </style>

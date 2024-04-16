@@ -24,7 +24,7 @@
                     <input placeholder="Description" type="textarea" v-model="newSchedule.description">
                     <input placeholder="Hour Of Class" type="datetime-local" v-model="newSchedule.classTime">
                     <input placeholder="Duration Minutes" type="number" v-model="newSchedule.duration">
-                    <button id="create-schedule-button" @click="createNewSchedule(newSchedule)">Create!</button>
+                    <button id="create-schedule-button" @click="createNewSchedule(newSchedule)">Create</button>
                 </form>
                 <p id="p-view-schedules"
                     @click="(isFormShowing === 'RemoveSchedule' ? isFormShowing = '' : isFormShowing = 'RemoveSchedule')">

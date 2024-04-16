@@ -7,9 +7,9 @@
         <p>Last Visit: {{ timeFormatter(member.latest_checkin) }}</p>
         <p>Checked In: {{ (amICheckedIn(member.latest_checkout, member.latest_checkin)) }}</p>
         <div class="member-buttons">
-            <button id="check-member-in-button" @click="checkMemberIn(member.userId)"
+            <button @click="checkMemberIn(member.userId)"
                 v-if="!amICheckedIn(member.latest_checkout, member.latest_checkin)">Check Member In</button>
-            <button id="check-member-out-button" @click="checkMemberOut(member.userId)"
+            <button @click="checkMemberOut(member.userId)"
                 v-if="amICheckedIn(member.latest_checkout, member.latest_checkin)">Check
                 Member
                 Out</button>
@@ -99,6 +99,8 @@ div {
     font-style: normal;
 }
 
+
+
 .member-buttons button {
     font-family: "M PLUS 1 Code", monospace;
     font-optical-sizing: auto;
@@ -112,8 +114,15 @@ div {
     border-radius: 5px;
 }
 
+
+
 .member-buttons button:hover {
     color: var(--color-blue);
+    background-color: var(--color-medium-grey);
     cursor: pointer;
+}
+
+#revoke-button:hover {
+    color: rgb(248, 55, 55);
 }
 </style>
