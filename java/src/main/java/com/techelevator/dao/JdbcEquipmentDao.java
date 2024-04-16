@@ -85,10 +85,10 @@ public class JdbcEquipmentDao implements EquipmentDao {
 
   @Override
   public Equipment createEquipment(Equipment newEquipment) {
-    String sql = "insert into equipments (equipment_name, used_time_minutes) values (?, ?) returning equipment_id";
+    String sql = "insert into equipments (equipment_id, equipment_name, used_time_minutes) values (?, ?, ?) returning equipment_id";
 
     try {
-      int newId = jdbcTemplate.queryForObject(sql, Integer.class,
+      int newId = jdbcTemplate.queryForObject(sql, Integer.class, newEquipment.getEquipmentId(),
           newEquipment.getEquipmentName(), newEquipment.getUserTimeMinutes());
 
       newEquipment.setEquipmentId(newId);
