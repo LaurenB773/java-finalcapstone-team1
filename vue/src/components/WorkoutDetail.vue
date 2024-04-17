@@ -2,54 +2,66 @@
   <main>
     <h1>Search Exercises</h1>
 
-    <!-- todo improve search to be by any muscle, workoutName, equipment -->
-    <div class="search-container">
-      <input type="text" v-model="muscle" placeholder="Enter muscle" />
+    <!-- <div class="search-container">
+      <input type="text" v-model="exerciseName" placeholder="Enter Exercise Name" />
       <button @click="fetchWorkouts">Fetch Exercises</button>
-    </div>
+    </div> -->
+    <div class="exercise-container">
+      <img @click="fetchWorkouts('Biceps')" src="../../public/CAPSTONE MUSCLE ICONS/1.png" alt="">
+      <img @click="fetchWorkouts('Triceps')" src="../../public/CAPSTONE MUSCLE ICONS/2.png" alt="">
+      <img @click="fetchWorkouts('Trapezius')" src="../../public/CAPSTONE MUSCLE ICONS/3.png" alt="">
 
+      <img @click="fetchWorkouts('Lats')" src="../../public/CAPSTONE MUSCLE ICONS/5.png" alt="">
+      <img @click="fetchWorkouts('Chest')" src="../../public/CAPSTONE MUSCLE ICONS/8.png" alt="">
+      <img @click="fetchWorkouts('Quadriceps')" src="../../public/CAPSTONE MUSCLE ICONS/4.png" alt="">
+      <img @click="fetchWorkouts('Hamstring')" src="../../public/CAPSTONE MUSCLE ICONS/6.png" alt="">
+
+
+      <img @click="fetchWorkouts('Glutes')" src="../../public/CAPSTONE MUSCLE ICONS/10.png" alt="">
+      <img @click="fetchWorkouts('Abs')" src="../../public/CAPSTONE MUSCLE ICONS/9.png" alt="">
+
+      <img @click="fetchWorkouts('Calves')" src="../../public/CAPSTONE MUSCLE ICONS/7.png" alt="">
+      <img @click="fetchWorkouts('Warm up')" src="../../public/CAPSTONE MUSCLE ICONS/11.png" alt="">
+      <img @click="fetchWorkouts('Stretching')" src="../../public/CAPSTONE MUSCLE ICONS/12.png" alt="">
+    </div>
     <div v-if="copyOfWorkouts.length > 0">
       <h3>Filter by Intensity Level</h3>
       <div class="filter-button-container">
-        <button
-          v-for="level in intensityLevels"
-          :key="level"
-          @click="filterByIntensity(level)"
-        >
+        <button v-for="level in intensityLevels" :key="level" @click="filterByIntensity(level)">
           {{ level }}
         </button>
       </div>
     </div>
 
     <!-- todo: put this into a new component -->
-      <div v-if="copyOfWorkouts" class="workout-container">
-        <div v-for="(workout, index) in copyOfWorkouts" :key="index" class="workout-card">
-          <h3>{{ workout.WorkOut }}</h3>
-          <p v-if="workout.Equipment"><strong>Equipment:</strong> {{ workout.Equipment }}</p>
-          <p><strong>Muscle:</strong> {{ workout.Muscles }}</p>
-          <p><strong>Intensity Level:</strong> {{ workout.Intensity_Level }}</p>
-          <p v-if="workout[intensityLevel + ' Sets']">
-            {{ intensityLevel }} Sets: {{ workout[intensityLevel + " Sets"] }}
+    <div v-if="copyOfWorkouts" class="workout-container">
+      <div v-for="(workout, index) in copyOfWorkouts" :key="index" class="workout-card">
+        <h3>{{ workout.WorkOut }}</h3>
+        <p v-if="workout.Equipment"><strong>Equipment:</strong> {{ workout.Equipment }}</p>
+        <p><strong>Muscle:</strong> {{ workout.Muscles }}</p>
+        <p><strong>Intensity Level:</strong> {{ workout.Intensity_Level }}</p>
+        <p v-if="workout[intensityLevel + ' Sets']">
+          {{ intensityLevel }} Sets: {{ workout[intensityLevel + " Sets"] }}
+        </p>
+
+        <button @click="toggleDescription(index)">Show Description</button>
+        <div v-if="isDescriptionShown[index]">
+          <p>Description: {{ workout["Long Explanation"] }}</p>
+          <p>
+            Video:
+            <a :href="workout.Video" target="_blank">
+              {{ workout.WorkOut }}
+            </a>
           </p>
+        </div>
 
-          <button @click="toggleDescription(index)">Show Description</button>
-          <div v-if="isDescriptionShown[index]">
-            <p>Description: {{ workout["Long Explanation"] }}</p>
-            <p>
-              Video:
-              <a :href="workout.Video" target="_blank">
-                {{ workout.WorkOut }}
-              </a>
-            </p>
-          </div>
+        <button @click="toggleForm(index)">Add Exercise</button>
 
-          <button @click="toggleForm(index)">Add Exercise</button>
-
-          <div v-if="showForm[index]">
-            <CreateExerciseForm :workoutName="workout.WorkOut" :equipments="equipments" />
-          </div>
+        <div v-if="showForm[index]">
+          <CreateExerciseForm :workoutName="workout.WorkOut" :equipments="equipments" />
         </div>
       </div>
+    </div>
 
   </main>
 </template>
@@ -66,7 +78,7 @@ export default {
 
   data() {
     return {
-      muscle: "",
+      exerciseName: "",
       workouts: [],
       copyOfWorkouts: [],
       intensityLevels: ["Beginner", "Intermediate", "Expert"],
@@ -86,14 +98,11 @@ export default {
   },
 
   methods: {
-    async fetchWorkouts() {
+    async fetchWorkouts(muscle) {
       try {
-        if (!this.muscle) {
-          console.error("Muscle parameter is required");
-          return;
-        }
+
         this.workouts = await WorkoutApiService.fetchWorkoutsByMuscle(
-          this.muscle
+          muscle
         );
         this.copyOfWorkouts = [...this.workouts];
 
@@ -108,6 +117,7 @@ export default {
         console.error("Error fetching workouts:", error);
       }
     },
+
     filterByIntensity(intensityLevel) {
       this.intensityLevel = intensityLevel;
       this.copyOfWorkouts = this.workouts.filter(
@@ -232,9 +242,30 @@ main {
   background-color: var(--color-light-blue-o);
 }
 
-@media screen and (max-width: 720px){
+@media screen and (max-width: 720px) {
   .workout-card {
     width: 100%;
   }
+}
+
+.exercise-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.exercise-container img {
+  width: 100%;
+  height: 100%;
+
+}
+
+.exercise-container img:hover {
+  filter: invert(100%) grayscale(100%);
+  cursor: pointer;
+
 }
 </style>
