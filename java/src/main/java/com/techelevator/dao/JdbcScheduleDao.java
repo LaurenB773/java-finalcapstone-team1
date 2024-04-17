@@ -82,7 +82,6 @@ public class JdbcScheduleDao implements ScheduleDao {
     String sql = "delete from schedules where schedule_id = ?;";
     try {
       int browsAffected = jdbcTemplate.update(firstSql, id);
-      
       int rowsAffected = jdbcTemplate.update(sql, id);
       if (rowsAffected == 0) {
         throw new DaoException("Cannot find the schedule!");
