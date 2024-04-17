@@ -1,63 +1,32 @@
 <template>
-	<div
-		id="register"
-		class="text-center"
-	>
+	<div id="register" class="text-center">
 		<form v-on:submit.prevent="register">
-			<div
-				role="alert"
-				v-if="registrationErrors"
-			>
+			<div role="alert" v-if="registrationErrors">
 				{{ registrationErrorMsg }}
 			</div>
 			<div class="form-input-group">
 				<label for="username">Username</label>
-				<input
-					placeholder="Username"
-					type="text"
-					id="username"
-					v-model="user.username"
-					required
-					autofocus
-				/>
+				<input placeholder="Username" type="text" id="username" v-model="user.username" required autofocus />
 			</div>
 			<div class="form-input-group">
 				<label for="email">Email</label>
-				<input
-					placeholder="Email"
-					type="text"
-					name="email"
-					id="email"
-					v-model="user.email"
-				/>
+				<input placeholder="Email" type="text" name="email" id="email" v-model="user.email" />
 			</div>
 			<div class="form-input-group">
 				<label for="password">Password</label>
-				<input
-					placeholder="Password"
-					type="password"
-					id="password"
-					v-model="user.password"
-					required
-				/>
+				<input placeholder="Password" type="password" id="password" v-model="user.password" required />
 			</div>
 			<div class="form-input-group">
 				<label for="confirmPassword">Confirm Password</label>
-				<input
-					placeholder="Re-enter Password"
-					type="password"
-					id="confirmPassword"
-					v-model="user.confirmPassword"
-					required
-				/>
+				<input placeholder="Re-enter Password" type="password" id="confirmPassword" v-model="user.confirmPassword"
+					required />
 			</div>
 			<div class="form-input-group">
 				<label for="goalSelector">Gym Goal </label>
 				<!--could put gym name here-->
-				<select
-					id="goalSelector"
-					v-model="user.goal"
-				>
+
+				<select id="goalSelector" v-model="user.goal">
+					<option value="" disabled selected hidden>Goal</option>
 					<option value="Weight Loss">Weight Loss</option>
 					<option value="Strength/Muscle Building">Strength/Muscle Building</option>
 					<option value="Aesthetic Body Building">Aesthetic Body Building</option>
@@ -67,37 +36,26 @@
 			</div>
 			<div class="form-input-group">
 				<label for="first-name">Preferred First Name</label>
-				<input
-					placeholder="First name"
-					type="text"
-					id="first-name"
-					v-model="user.firstName"
-				/>
+				<input placeholder="First name" type="text" id="first-name" v-model="user.firstName" />
 			</div>
 			<div class="form-input-group">
 				<label for="last-name">Last Name</label>
-				<input
-					placeholder="Last name"
-					type="text"
-					id="last-name"
-					v-model="user.lastName"
-				/>
+				<input placeholder="Last name" type="text" id="last-name" v-model="user.lastName" />
 			</div>
 
 			<div class="form-input-group">
 				<label for="photo">Profile Picture</label>
-				<input
-					type="button"
-					id="photo"
-					@click="uploadFile"
-					style="width: 200px"
-          :class="user.profilePicture ? 'upload' : ''"
-				/>
+				<button id="photo" @click="uploadFile" class="upload-button" style="cursor: pointer;"
+					:style="user.profilePicture ? 'background-color: var(--color-green);' : ''">{{ user.profilePicture ?
+						'Successfully Uploaded!' : 'Upload Image...' }}</button>
 			</div>
-			<button
-				class="create-user-button"
-				type="submit"
-			>
+
+			<div v-if="user.profilePicture" class="form-input-group">
+				Preview:
+				<img :src="user.profilePicture" alt="profile-picture" />
+			</div>
+
+			<button class="create-user-button" type="submit">
 				Create Account
 			</button>
 		</form>
@@ -111,8 +69,8 @@ import authService from '../services/AuthService'
 import { openUploadModal } from "@bytescale/upload-widget-vue";
 
 const options = {
-  apiKey: "free", // Get API key: https://www.bytescale.com/get-started
-  maxFileCount: 1
+	apiKey: "free", // Get API key: https://www.bytescale.com/get-started
+	maxFileCount: 1
 };
 
 export default {
@@ -225,6 +183,22 @@ label {
 }
 
 .upload {
-  background-color: var(--color-blue);
+	background-color: var(--color-blue);
+}
+
+#goalSelector {
+	outline: none;
+	background-color: hsl(204, 5%, 79%);
+	border-radius: 8px;
+	padding: 10px;
+	width: 195px;
+}
+
+.upload-button {
+	outline: none;
+	background-color: hsl(204, 5%, 79%);
+	border-radius: 8px;
+	padding: 10px;
+	width: 200px;
 }
 </style>

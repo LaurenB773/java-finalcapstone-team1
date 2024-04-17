@@ -49,6 +49,11 @@
         </select>
       </div>
 
+      <div v-if="user.profilePicture" class="form-input-group">
+        Preview:
+        <img :src="user.profilePicture" alt="profile-picture" />
+      </div>
+
       <div class="form-input-group">
         <label for="first-name">First Name:</label>
         <input
@@ -70,13 +75,23 @@
 
       <div class="form-input-group">
         <label for="photo">Profile Picture:</label>
-        <input
-          type="button"
+        <button
           id="photo"
           @click="uploadFile"
-          style="width: 200px"
-          :class="editProfile.profilePicture ? 'upload' : ''"
-        />
+          class="upload-button"
+          style="cursor: pointer; color: black"
+          :style="
+            editProfile.profilePicture
+              ? 'background-color: var(--color-green);'
+              : ''
+          "
+        >
+          {{
+            editProfile.profilePicture
+              ? "Successfully Uploaded!"
+              : "Upload Image..."
+          }}
+        </button>
       </div>
 
       <button class="create-user-button" type="submit">Edit Account</button>
@@ -435,5 +450,12 @@ form {
 .create-user-button:hover {
   background-color: var(--color-blue-o);
   color: var(--color-light-blue);
+}
+#goalSelector {
+  outline: none;
+  background-color: hsl(204, 5%, 79%);
+  border-radius: 8px;
+  padding: 10px;
+  width: 195px;
 }
 </style>

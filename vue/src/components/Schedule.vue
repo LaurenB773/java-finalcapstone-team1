@@ -1,6 +1,6 @@
 <template>
     <main :class="[isEmployeeView ? 'main-container' : '']">
-        <form v-if="isFormShowing === true">
+        <form class="form" v-if="isFormShowing === true">
             <p>Edit Event with id: {{ selectedEventId }}</p>
             <input placeholder="title" type="text" v-model="editSchedule.title">
             <input placeholder="instructor" type="text" v-model="editSchedule.instructor">
@@ -12,9 +12,10 @@
         </form>
 
         <h1 class="font">Schedule</h1>
-        <div :class="[isEmployeeView ? 'event-container-emp' : 'event-container']" v-for="event in events"
-            :key="event.scheduleId"
-            @click="(selectedEventId === event.scheduleId ? selectedEventId = 0 : selectEvent(event.scheduleId))">
+        <label for="date">Every Event After This Date: </label>
+        <input v-model="selectedDate" type="date" name="date" style="cursor:pointer">
+        <div :class="[isEmployeeView ? 'event-container-emp' : 'event-container']" v-for="event in filteredSchedule"
+            :key="event.scheduleId" @click="this.selectedEventId = event.scheduleId">
             <p class="font event-text">Title: {{ event.title }}</p>
             <p class="font event-text">Instructor: {{ event.instructor }}</p>
             <p class="font event-text">Date: {{ timeFormatter(event.classTime) }}</p>
@@ -23,11 +24,12 @@
                 <p class="font event-text">Details: {{ event.description }}</p>
                 <p class="font event-text">Duration: {{ event.duration }} minutes</p>
 
-                <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner())"
+                <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner()) && (isEmployeeView)"
                     @click="(isFormShowing = true) && (this.editSchedule = event)">
                     Edit
                 </button>
-                <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner())" @click="removeEvent()">
+                <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner()) && (isEmployeeView)"
+                    @click="removeEvent() && (isEmployeeView)">
                     Remove
                 </button>
             </div>
@@ -60,7 +62,7 @@ export default {
             },
             isFormShowing: '',
             signedUp: [],
-
+            selectedDate: null
         };
     },
     created() {
@@ -148,6 +150,13 @@ export default {
         ...mapGetters(["userPermissions"]),
         isEmployeeView() {
             return this.$route.name === 'employee'
+        },
+        filteredSchedule() {
+            if (this.selectedDate === null) {
+                return this.events;
+            } else {
+                return this.events.filter(event => event.classTime > this.selectedDate);
+            }
         }
     },
 };
