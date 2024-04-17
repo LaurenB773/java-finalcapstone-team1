@@ -26,7 +26,7 @@ public class JdbcScheduleDao implements ScheduleDao {
   @Override
   public List<Schedule> getAllSchedules() {
     List<Schedule> schedules = new ArrayList<>();
-    String sql = "select * from schedules order by class_time asc;";
+    String sql = "select * from schedules where class_time > CURRENT_TIMESTAMP order by class_time asc;";
 
     try {
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
@@ -82,9 +82,7 @@ public class JdbcScheduleDao implements ScheduleDao {
     String sql = "delete from schedules where schedule_id = ?;";
     try {
       int browsAffected = jdbcTemplate.update(firstSql, id);
-      if (browsAffected == 0) {
-        throw new DaoException("Cannot find schedule");
-      }
+      
       int rowsAffected = jdbcTemplate.update(sql, id);
       if (rowsAffected == 0) {
         throw new DaoException("Cannot find the schedule!");
