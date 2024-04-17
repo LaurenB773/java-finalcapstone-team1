@@ -44,18 +44,40 @@ export default {
 
         createEquipment(equipment) {
 
-            let newId = this.findNextId();
-            console.log(newId);
-            equipment.equipmentId = newId;
-            EquipmentService.addEquipment(equipment);
-            window.location.reload();
+            let found = false;
+            let empty = false;
+
+
+            this.equipment.forEach(item => {
+                if (item.equipmentName.toLowerCase() === equipment.equipmentName.toLowerCase().trim()) {
+                    // alert('Equipment with same name foundkkk');
+                    // return true;
+                    found = true
+                }
+                if (equipment.equipmentName.trim() === '') {
+                    empty = true;
+                }
+            })
+
+
+
+            if (found) {
+                alert('Equipment with this name already exists!');
+            } else if (empty) {
+                alert(`Equipment name can't be empty!`);
+            }
+            else {
+                let newId = this.findNextId();
+                equipment.equipmentId = newId;
+                EquipmentService.addEquipment(equipment);
+                window.location.reload();
+            }
         },
         findNextId() {
             let bigId = 0;
             this.equipment.forEach(element => {
                 if (element.equipmentId > bigId) {
                     bigId = element.equipmentId;
-                    console.log(bigId);
                 }
             });
             return bigId + 1;
