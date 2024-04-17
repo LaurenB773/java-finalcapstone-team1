@@ -13,8 +13,7 @@ public class JdbcCheckinDaoTests extends BaseDaoTests{
     private JdbcCheckinDao sut;
 
     private final Checkin CHECKIN_1 = new Checkin(1, 1, LocalDateTime.now(), LocalDateTime.now().plusHours(1));
-
-    private final Checkin CHECKIN_3 = new Checkin(3, 2, LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(1).plusHours(2));
+    private final Checkin CHECKIN_2 = new Checkin(3, 2, LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(1).plusHours(2));
 
     @Before
     public void setup() {
@@ -33,9 +32,9 @@ public class JdbcCheckinDaoTests extends BaseDaoTests{
 
     @Test
     public void isCheckin_returns_false_no_Checkin_exists() {
-        Assert.assertFalse(sut.isCheckin(CHECKIN_3.getUserId()));
+        Assert.assertFalse(sut.isCheckin(CHECKIN_2.getUserId()));
 
-        Assert.assertFalse(sut.isCheckin(CHECKIN_3.getUserId()));
+        Assert.assertFalse(sut.isCheckin(CHECKIN_2.getUserId()));
     }
 
 }
