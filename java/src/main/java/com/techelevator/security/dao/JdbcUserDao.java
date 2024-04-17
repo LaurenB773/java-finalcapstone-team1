@@ -131,9 +131,15 @@ public class JdbcUserDao implements UserDao {
     User user = getUserById(id);
     user.setAuthorities("ROLE_BANNED");
 
-    String sql = "update users set role = ? where user_id = ?";
+    String sql = "delete from users where user_id = ?";
+   String deleteUserSQL = "delete from user_profiles where user_id = ?;";
+    String deleteCheckinSql = "delete from checkins where user_id = ?;";
+
     try {
-      int rows = jdbcTemplate.update(sql, "ROLE_BANNED", id);
+      jdbcTemplate.update(deleteCheckinSql, id);
+      jdbcTemplate.update(deleteUserSQL,id);
+      int rows = jdbcTemplate.update(sql, id);
+
 
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect", e);
