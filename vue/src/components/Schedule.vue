@@ -6,13 +6,17 @@
             <input placeholder="instructor" type="text" v-model="editSchedule.instructor">
             <!--if theres time make this a dropdown of employees-->
             <input placeholder="description" type="textarea" v-model="editSchedule.description">
-            <input placeholder="Hour Of Class" type="datetime-local" v-model="editSchedule.classTime">
+            <p v-if="checkClassTime" style="color: var(--color-red); font-size: 14px; margin: 0;">
+                Please select a future date
+            </p>
+            <input :style="checkClassTime ? 'border: 1px solid red;' : ''" placeholder="Hour Of Class" type="datetime-local"
+                v-model="editSchedule.classTime">
             <input placeholder="Duration Minutes" type="number" v-model="editSchedule.duration">
-            <p @click="updateEvent()">Confirm Edit</p>
+            <p id="confirm-edit" @click="updateEvent()">Confirm Edit</p>
         </form>
 
         <h1 class="font">Schedule</h1>
-        <label for="date">Every Event After This Date: </label>
+        <label style="margin-bottom: 5px;" for="date">Events After Date: </label>
         <input v-model="selectedDate" type="date" name="date" style="cursor:pointer">
         <div :class="[isEmployeeView ? 'event-container-emp' : 'event-container']" v-for="event in filteredSchedule"
             :key="event.scheduleId" @click="this.selectedEventId = event.scheduleId">
@@ -24,11 +28,13 @@
                 <p class="font event-text">Details: {{ event.description }}</p>
                 <p class="font event-text">Duration: {{ event.duration }} minutes</p>
 
-                <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner()) && (isEmployeeView)"
+                <button class="schedule-edit-button"
+                    v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner()) && (isEmployeeView)"
                     @click="(isFormShowing = true) && (this.editSchedule = event)">
                     Edit
                 </button>
-                <button v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner()) && (isEmployeeView)"
+                <button class="schedule-remove-button"
+                    v-if="selectedEvent(event.scheduleId) && (isEmployee() || isOwner()) && (isEmployeeView)"
                     @click="removeEvent() && (isEmployeeView)">
                     Remove
                 </button>
@@ -46,6 +52,7 @@
 import EmployeeService from "../services/EmployeeService";
 import UserService from "../services/UserService";
 import { mapGetters } from "vuex";
+import getCurrentDate from '../utils/currentDate'
 
 export default {
     data() {
@@ -62,7 +69,8 @@ export default {
             },
             isFormShowing: '',
             signedUp: [],
-            selectedDate: null
+            selectedDate: null,
+            checkClassTime: false
         };
     },
     created() {
@@ -74,6 +82,7 @@ export default {
         UserService.getEventsSignedUpFor().then(response => this.signedUp = response.data);
     },
     methods: {
+        getCurrentDate,
         selectEvent(id) {
             this.selectedEventId = id;
         },
@@ -130,8 +139,16 @@ export default {
             window.location.reload();
         },
         updateEvent() {
-            EmployeeService.updateEvent(this.editSchedule, this.selectedEventId);
-            window.location.reload();
+            if (this.editSchedule.classTime <= this.getCurrentDate()) {
+                this.checkClassTime = true;
+            } else {
+                this.checkClassTime = false;
+            }
+
+            if (!this.checkClassTime) {
+                EmployeeService.updateEvent(this.editSchedule, this.selectedEventId);
+                window.location.reload();
+            }
         },
         signUp(id) {
             UserService.signUpForEvent(id);
@@ -208,5 +225,47 @@ h1 {
 .event-text {
     color: black;
     text-align: start;
+}
+
+.schedule-edit-button {
+    background-color: var(--color-blue);
+    border-radius: 8px;
+    border: none;
+    padding: 5px;
+    font-weight: 600;
+    transition: background-color 200ms;
+    margin-right: 3px;
+}
+
+.schedule-edit-button {
+    background-color: var(--color-blue-o);
+    cursor: pointer;
+}
+
+.schedule-remove-button {
+    background-color: var(--color-blue);
+    border-radius: 8px;
+    border: none;
+    padding: 5px;
+    font-weight: 600;
+    transition: background-color 200ms;
+}
+
+.schedule-remove-button {
+    background-color: var(--color-blue-o);
+    cursor: pointer;
+}
+
+#confirm-edit {
+    background-color: var(--color-medium-grey);
+    width: fit-content;
+    margin: auto;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#confirm-edit:hover {
+    color: var(--color-blue);
+    cursor: pointer;
 }
 </style>

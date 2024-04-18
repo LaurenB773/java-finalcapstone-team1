@@ -17,14 +17,18 @@
                 <p id="p-create-schedule"
                     @click="(isFormShowing === 'Schedule' ? isFormShowing = '' : isFormShowing = 'Schedule')">Create New
                     Event</p>
-                <form id="create-schedule" v-if="isFormShowing === 'Schedule'">
+                <form id="create-schedule" v-if="isFormShowing === 'Schedule'" @submit.prevent="createNewSchedule">
                     <input placeholder="Title" type="text" v-model="newSchedule.title">
                     <input placeholder="Instructor" type="text" v-model="newSchedule.instructor">
                     <!--if theres time make this a dropdown of employees-->
                     <input placeholder="Description" type="textarea" v-model="newSchedule.description">
-                    <input placeholder="Hour Of Class" type="datetime-local" v-model="newSchedule.classTime">
+                    <p v-if="checkClassTime" style="color: var(--color-red); font-size: 14px; margin: 0;">
+                        Please select a future date
+                    </p>
+                    <input :style="checkClassTime ? 'border: 1px solid red;' : ''" placeholder="Hour Of Class"
+                        type="datetime-local" v-model="newSchedule.classTime">
                     <input placeholder="Duration Minutes" type="number" v-model="newSchedule.duration">
-                    <button id="create-schedule-button" @click="createNewSchedule(newSchedule)">Create</button>
+                    <button id="create-schedule-button" type="submit">Create</button>
                 </form>
                 <p id="p-view-schedules"
                     @click="(isFormShowing === 'RemoveSchedule' ? isFormShowing = '' : isFormShowing = 'RemoveSchedule')">
@@ -64,6 +68,7 @@ import Members from './Members.vue'
 import EmployeeList from './EmployeeList.vue';
 import { mapGetters } from 'vuex';
 import EquipmentList from './EquipmentList.vue';
+import getCurrentDate from '../utils/currentDate';
 
 export default {
     data() {
@@ -74,9 +79,12 @@ export default {
                 title: '',
                 instructor: '',
                 description: '',
-                classTime: null,
+                classTime: '',
                 duration: 30,
-            }
+            },
+            signedUp: [],
+            selectedDate: null,
+            checkClassTime: false
         }
     },
     components: {
@@ -86,8 +94,20 @@ export default {
         EquipmentList
     },
     methods: {
-        createNewSchedule(newSchedule) {
-            EmployeeService.createEvent(newSchedule);
+        getCurrentDate,
+
+        createNewSchedule() {
+
+            if (this.newSchedule.classTime <= this.getCurrentDate()) {
+                this.checkClassTime = true;
+            } else {
+                this.checkClassTime = false;
+            }
+
+            if (!this.checkClassTime) {
+                EmployeeService.createEvent(this.newSchedule);
+                window.location.reload()
+            }
         },
         isOwner() {
             let authorities = [];
@@ -99,11 +119,15 @@ export default {
             }
             return false;
         },
+        selectedEvent(id) {
+            return this.selectedEventId === id;
+        },
 
     },
     computed: {
         ...mapGetters(['userPermissions'])
     },
+
 }
 </script>
 
@@ -114,7 +138,8 @@ export default {
     flex-wrap: wrap;
     padding: 15px;
 }
-#gym-manager-title{
+
+#gym-manager-title {
     margin-top: 50px;
 }
 
