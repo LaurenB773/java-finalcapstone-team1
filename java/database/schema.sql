@@ -45,7 +45,10 @@ CREATE TABLE user_exercises (
   user_id INT REFERENCES users (user_id) NOT NULL,
   exercise_id INT REFERENCES exercises (exercise_id) NOT NULL
 );
-
+CREATE TABLE exercise_equipment (
+equipment_id INT REFERENCES equipments (equipment_id) NOT NULL,
+exercise_id INT REFERENCES exercises (exercise_id) NOT NULL
+);
 CREATE TABLE schedules (
   schedule_id SERIAL PRIMARY KEY,
   title VARCHAR(100) default 'title',

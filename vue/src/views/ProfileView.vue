@@ -2,9 +2,11 @@
 	<div v-if="!isShowingProfile" class="edit-profile-container">
 		<h1>Edit Profile</h1>
 
-		<svg @click="isShowingProfile = true; isShowingSettings = false" xmlns="http://www.w3.org/2000/svg" width="24"
-			height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-			stroke-linejoin="round" class="feather feather-arrow-left go-back-icon">
+		<svg @click="
+			isShowingProfile = true;
+		isShowingSettings = false;
+		" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+			stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left go-back-icon">
 			<line x1="19" y1="12" x2="5" y2="12"></line>
 			<polyline points="12 19 5 12 12 5"></polyline>
 		</svg>
@@ -19,8 +21,12 @@
 				<label for="goalSelector">Gym Goal:</label>
 				<select id="goalSelector" v-model="editProfile.goal">
 					<option value="Weight Loss">Weight Loss</option>
-					<option value="Strength/Muscle Building">Strength/Muscle Building</option>
-					<option value="Aesthetic Body Building">Aesthetic Body Building</option>
+					<option value="Strength/Muscle Building">
+						Strength/Muscle Building
+					</option>
+					<option value="Aesthetic Body Building">
+						Aesthetic Body Building
+					</option>
 					<option value="Health & Enjoyment">Health & Enjoyment</option>
 					<option value="Not Sure">Not Sure</option>
 				</select>
@@ -42,14 +48,19 @@
 
 			<div class="form-input-group">
 				<label for="photo">Profile Picture:</label>
-				<button id="photo" @click="uploadFile" class="upload-button" style="cursor: pointer; color: black;"
-					:style="editProfile.profilePicture ? 'background-color: var(--color-green);' : ''">{{ editProfile.profilePicture ?
-						'Successfully Uploaded!' : 'Upload Image...' }}</button>
+				<button id="photo" @click="uploadFile" class="upload-button" style="cursor: pointer; color: black" :style="editProfile.profilePicture
+					? 'background-color: var(--color-green);'
+					: ''
+					">
+					{{
+						editProfile.profilePicture
+						? "Successfully Uploaded!"
+						: "Upload Image..."
+					}}
+				</button>
 			</div>
 
-			<button class="create-user-button" type="submit">
-				Edit Account
-			</button>
+			<button class="create-user-button" type="submit">Edit Account</button>
 		</form>
 	</div>
 
@@ -66,10 +77,12 @@
 		</svg>
 
 		<div class="settings-container" v-if="isShowingSettings">
-			<div @click="isShowingProfile = false" class="settings-option">Edit Profile</div>
-			<hr>
-			<!-- id="delete-profile" @click="confirmDelete" -->
-			<div class="settings-option">Delete Profile</div>
+			<div @click="isShowingProfile = false" class="settings-option">
+				Edit Profile
+			</div>
+			<hr />
+
+			<div id="delete-profile" @click="confirmDelete" class="settings-option">Delete Profile</div>
 		</div>
 
 		<img :src="userProfile.profilePicture" alt="Profile-Picture" />
@@ -77,12 +90,16 @@
 		<h2>Goals: {{ userProfile.goal }}</h2>
 
 		<h2>Average Gym Time: {{ calculateAverageTimeSpent() }} minutes</h2>
-		<h2 v-if="checkins[checkins.length - 1]">Last Visit: {{ formatTimestamp(checkins[checkins.length - 1].checkinTime)
-		}}</h2>
+		<h2 v-if="checkins[checkins.length - 1]">
+			Last Visit:
+			{{ formatTimestamp(checkins[checkins.length - 1].checkinTime) }}
+		</h2>
+
+		<h2>Total Gym Time: {{ calculateTotalTimeSpent() }}</h2>
 
 		<div class="options-container">
 			<button @click="checkInOrOut">
-				{{ isCheckedIn ? 'Check Out' : 'Check In' }}
+				{{ isCheckedIn ? "Check Out" : "Check In" }}
 			</button>
 
 			<router-link v-bind:to="{ name: 'workouts' }" @click="searchWorkouts">
@@ -105,19 +122,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import UserService from '../services/UserService'
-import { RouterLink } from 'vue-router'
-import PreviousExercises from '../components/PreviousExercises.vue'
-import MySchedule from '../components/MySchedule.vue'
-import { formatTimestamp } from '../utils/formatter'
+import { mapState } from "vuex";
+import UserService from "../services/UserService";
+import { RouterLink } from "vue-router";
+import PreviousExercises from "../components/PreviousExercises.vue";
+import MySchedule from "../components/MySchedule.vue";
+import { formatTimestamp } from "../utils/formatter";
 // DO NOT REMOVE THIS ESLINT DISABLE LINE BELOW
 // eslint-disable-next-line import/no-unresolved
 import { openUploadModal } from "@bytescale/upload-widget-vue";
 
+
 const options = {
 	apiKey: "free", // Get API key: https://www.bytescale.com/get-started
-	maxFileCount: 1
+	maxFileCount: 1,
 };
 
 export default {
@@ -130,11 +148,11 @@ export default {
 		return {
 			userProfile: {
 				userId: 0,
-				firstName: '',
-				lastName: '',
-				email: '',
-				profilePicture: '',
-				goal: '',
+				firstName: "",
+				lastName: "",
+				email: "",
+				profilePicture: "",
+				goal: "",
 			},
 
 			editProfile: {},
@@ -143,101 +161,120 @@ export default {
 			isShowingPreviousExercises: true,
 			isShowingSchedule: false,
 			isShowingSettings: false,
-			isShowingProfile: true
-		}
+			isShowingProfile: true,
+		};
 	},
 
 	mounted() {
-		UserService.getProfile().then(response => {
-			this.userProfile = response.data
-			this.editProfile = response.data
-		})
-		UserService.getLastCheckin().then(response => (this.isCheckedIn = response.data))
-		UserService.getCheckins().then(response => (this.checkins = response.data))
+		UserService.getProfile().then((response) => {
+			this.userProfile = response.data;
+			this.editProfile = response.data;
+		});
+		UserService.getLastCheckin().then(
+			(response) => (this.isCheckedIn = response.data)
+		);
+		UserService.getCheckins().then(
+			(response) => (this.checkins = response.data)
+		);
 	},
 
 	computed: {
-		...mapState(['user']),
+		...mapState(["user"]),
 	},
 
 	methods: {
 		formatTimestamp,
 		checkInOrOut() {
 			if (this.isCheckedIn) {
-				UserService.checkOut()
-				this.isCheckedIn = false
+				UserService.checkOut();
+				this.isCheckedIn = false;
 			} else {
-				UserService.checkIn()
-				this.isCheckedIn = true
+				UserService.checkIn();
+				this.isCheckedIn = true;
 			}
 		},
 
 		showPreviousExercises() {
-			this.isShowingPreviousExercises = !this.isShowingPreviousExercises
-			this.isShowingSchedule = false
+			this.isShowingPreviousExercises = !this.isShowingPreviousExercises;
+			this.isShowingSchedule = false;
 		},
 
 		showSchedule() {
-			this.isShowingSchedule = !this.isShowingSchedule
-			this.isShowingPreviousExercises = false
+			this.isShowingSchedule = !this.isShowingSchedule;
+			this.isShowingPreviousExercises = false;
 		},
 
 		calculateAverageTimeSpent() {
-			let totalMinutes = 0
+			let totalMinutes = 0;
 
 			// Calculate total time spent in milliseconds
-			this.checkins.filter(checkin => checkin.checkoutTime !== null).forEach(checkin => {
-				const checkinTime = new Date(checkin.checkinTime)
-				const checkoutTime = new Date(checkin.checkoutTime)
-				const timeDifference = checkoutTime - checkinTime
-				totalMinutes += timeDifference / (1000 * 60) // converting milliseconds to minutes
-			})
+			this.checkins
+				.filter((checkin) => checkin.checkoutTime !== null)
+				.forEach((checkin) => {
+					const checkinTime = new Date(checkin.checkinTime);
+					const checkoutTime = new Date(checkin.checkoutTime);
+					const timeDifference = checkoutTime - checkinTime;
+					totalMinutes += timeDifference / (1000 * 60); // converting milliseconds to minutes
+				});
 
 			// Calculate average time spent in minutes
-			const averageMinutes = totalMinutes / this.checkins.length
+			const averageMinutes = totalMinutes / this.checkins.length;
 
-			return averageMinutes ? averageMinutes.toFixed(2) : 0
+			return averageMinutes ? averageMinutes.toFixed(2) : 0;
+		},
+		calculateTotalTimeSpent() {
+			let totalMinutes = 0;
+
+			// Calculate total time spent in milliseconds
+			this.checkins.forEach((checkin) => {
+				const checkinTime = new Date(checkin.checkinTime);
+				const checkoutTime = checkin.checkoutTime
+					? new Date(checkin.checkoutTime)
+					: new Date(); // Use current time if checkout time is null
+				const timeDifference = checkoutTime - checkinTime;
+				totalMinutes += timeDifference / (1000 * 60); // converting milliseconds to minutes
+			});
+
+			return totalMinutes.toFixed(2);
 		},
 
 		updateProfile() {
-			UserService.editProfile(this.editProfile)
-			this.isShowingProfile = true
+			UserService.editProfile(this.editProfile);
+			this.isShowingProfile = true;
 			this.isShowingSettings = false;
 		},
 
-		deleteProfile() {
-			UserService.deleteProfile()
-			this.$router.push('/logout')
+
+		confirmDelete(id) {
+			document.getElementById("delete-profile").addEventListener("click", function () {
+				const result = window.confirm("Are you sure you want to delete profile? This cannot be undone.");
+				if (result === true) {
+					alert("Profile Deleted!");
+					UserService.deleteProfile(id);
+					window.location.href = '/login'
+				} else {
+					alert("Action cancelled.");
+				}
+			});
 		},
-		// confirmDelete(id) {
-        //     document.getElementById("delete-profile").addEventListener("click", function () {
-        //         var result = window.confirm("Are you sure you want to delete profile? This cannot be undone.");
-        //         if (result === true) {
-        //             alert("Profile Deleted!");
-        //             UserService.deleteProfile(id);
-        //             window.location.reload();
-        //         } else {
-        //             alert("Action cancelled.");
-        //         }
-        //     });
-        // },
 
 		uploadFile(event) {
 			openUploadModal({
 				event,
 				options,
-				onComplete: files => {
+				onComplete: (files) => {
 					if (files.length === 0) {
-						alert('No files selected.')
+						alert("No files selected.");
 					} else {
-						this.editProfile.profilePicture = files.map(f => f.fileUrl).join('\n')
+						this.editProfile.profilePicture = files
+							.map((f) => f.fileUrl)
+							.join("\n");
 					}
 				},
-			})
+			});
 		},
-
 	},
-}
+};
 </script>
 
 <style scoped>
@@ -250,9 +287,9 @@ export default {
 	margin-top: 50px;
 	padding: 10px;
 
-	font-family: 'M PLUS 1p', monospace;
+	font-family: "M PLUS 1p", monospace;
 
-	position: relative
+	position: relative;
 }
 
 .settings-icon {
@@ -304,7 +341,7 @@ button {
 	cursor: pointer;
 	transition: background-color 200ms;
 
-	font-family: 'M PLUS 1p', monospace;
+	font-family: "M PLUS 1p", monospace;
 }
 
 button:hover {
@@ -378,6 +415,7 @@ form {
 	background-color: var(--color-blue-o);
 	color: var(--color-light-blue);
 }
+
 #goalSelector {
 	outline: none;
 	background-color: hsl(204, 5%, 79%);
