@@ -68,7 +68,8 @@
 		<div class="settings-container" v-if="isShowingSettings">
 			<div @click="isShowingProfile = false" class="settings-option">Edit Profile</div>
 			<hr>
-			<div @click="deleteProfile" class="settings-option">Delete Profile</div>
+			<!-- id="delete-profile" @click="confirmDelete" -->
+			<div class="settings-option">Delete Profile</div>
 		</div>
 
 		<img :src="userProfile.profilePicture" alt="Profile-Picture" />
@@ -208,6 +209,18 @@ export default {
 			UserService.deleteProfile()
 			this.$router.push('/logout')
 		},
+		// confirmDelete(id) {
+        //     document.getElementById("delete-profile").addEventListener("click", function () {
+        //         var result = window.confirm("Are you sure you want to delete profile? This cannot be undone.");
+        //         if (result === true) {
+        //             alert("Profile Deleted!");
+        //             UserService.deleteProfile(id);
+        //             window.location.reload();
+        //         } else {
+        //             alert("Action cancelled.");
+        //         }
+        //     });
+        // },
 
 		uploadFile(event) {
 			openUploadModal({
