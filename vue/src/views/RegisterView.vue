@@ -1,7 +1,7 @@
 <template>
 	<div id="register" class="text-center">
 		<form v-on:submit.prevent="register">
-			<div role="alert" v-if="registrationErrors">
+			<div role="alert" v-if="registrationErrors" style="color: var(--color-red); text-align: center; margin-bottom: 10px;">
 				{{ registrationErrorMsg }}
 			</div>
 			<div class="form-input-group">

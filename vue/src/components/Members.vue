@@ -13,7 +13,7 @@
                 v-if="amICheckedIn(member.latest_checkout, member.latest_checkin)">Check
                 Member
                 Out</button>
-            <button id="revoke-button" @click="banMember(member.userId)">Revoke Membership</button>
+            <button id="revoke-button" @click="confirmRevoke(member.userId)">Revoke Membership</button>
             <button id="hire-button" @click="hireMember(member.userId)" v-if="isOwner()">Make Member Employee</button>
         </div>
     </div>
@@ -83,6 +83,19 @@ export default {
 
             return formattedDate;
         },
+        confirmRevoke(id) {
+            document.getElementById("revoke-button").addEventListener("click", function () {
+                var result = window.confirm("Are you sure you want to revoke this member's membership?");
+                if (result === true) {
+                    alert("Membership revoked!");
+                    // this.banMember(memberId)
+                    EmployeeService.banMember(id);
+                    window.location.reload();
+                } else {
+                    alert("Action cancelled.");
+                }
+            });
+        }
     },
     computed: {
         ...mapGetters(['userPermissions'])

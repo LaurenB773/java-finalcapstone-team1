@@ -13,28 +13,16 @@
     <h2 class="font">RISE TO GREATNESS</h2>
 
     <form v-on:submit.prevent="login">
-      <div role="alert" v-if="invalidCredentials">
+      <div style="color: var(--color-red); text-align: center; margin-bottom: 10px;" role="alert"
+        v-if="invalidCredentials">
         Invalid username and password!
       </div>
       <div role="alert" v-if="this.$route.query.registration">
         Thank you for registering, please sign in.
       </div>
-        <input
-          placeholder="Username"
-          type="text"
-          id="username"
-          v-model="user.username"
-          required
-          autofocus
-        />
+      <input placeholder="Username" type="text" id="username" v-model="user.username" required autofocus />
 
-        <input
-          placeholder="Password"
-          type="password"
-          id="password"
-          v-model="user.password"
-          required
-          />
+      <input placeholder="Password" type="password" id="password" v-model="user.password" required />
 
       <button type="submit">Sign in</button>
     </form>
@@ -139,6 +127,5 @@ button:hover {
   background-color: var(--color-blue-o);
   cursor: pointer;
 }
-
 </style>
   
