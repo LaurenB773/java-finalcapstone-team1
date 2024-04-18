@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
+import com.techelevator.model.Equipment;
 import com.techelevator.model.Exercise;
 
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class JdbcExerciseDao implements ExerciseDao {
 
   private final JdbcTemplate jdbcTemplate;
+
 
   public JdbcExerciseDao(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
@@ -60,7 +62,7 @@ public class JdbcExerciseDao implements ExerciseDao {
     String exerciseSql = "insert into exercises (exercise_name, exercise_duration_minutes, reps, sets, weight_lbs) values (?, ?, ?, ?, ?) returning exercise_id;";
     String userExerciseSql = "insert into user_exercises (user_id, exercise_id) values (?, ?);";
     String equipmentSql = "update equipments set used_time_minutes = used_time_minutes + ? where equipment_id = ?;";
-
+    String exerciseEquipmentSql = "insert into exercise_equipment (exercise_id, equipment_id) values (?, ?); ";
     Exercise exercise = dto.getExercise();
 
     try {
@@ -78,6 +80,7 @@ public class JdbcExerciseDao implements ExerciseDao {
       // if there are a lot of equipment ids for each exercise being logged at once by
       // multiple users because it will update the equipments table for each equipment id
       for (int equipmentId : dto.getEquipmentIds()) {
+        jdbcTemplate.update(exerciseEquipmentSql, exerciseId, equipmentId);
         jdbcTemplate.update(equipmentSql, exercise.getExerciseDurationMinutes(), equipmentId);
       }
 
@@ -90,15 +93,35 @@ public class JdbcExerciseDao implements ExerciseDao {
   @Override
   public void deleteExercise(int id) {
     String userExerciseSql = "delete from user_exercises where exercise_id = ?;";
+    String exerciseEquipmentSql = "delete from exercise_equipment where exercise_id = ?;";
     String exerciseSql = "delete from exercises where exercise_id = ?;";
 
     try {
       jdbcTemplate.update(userExerciseSql, id);
+      jdbcTemplate.update(exerciseEquipmentSql, id);
       jdbcTemplate.update(exerciseSql, id);
     } catch (CannotGetJdbcConnectionException e) {
       throw new DaoException("Unable to connect to database");
     } 
   }
+
+  @Override
+  public List<Equipment> getEquipmentByExerciseId(int exerciseId) {
+    List<Equipment> equipments = new ArrayList<>();
+    String sql = "select * from equipments join exercise_equipment on exercise_equipment.equipment_id = equipments.equipment_id " +
+            "where exercise_equipment.exercise_id = ?";
+    try {
+      SqlRowSet results = jdbcTemplate.queryForRowSet(sql,exerciseId);
+      while (results.next()){
+          equipments.add(JdbcEquipmentDao.mapToRowEquipment(results));
+      }
+    }
+    catch (CannotGetJdbcConnectionException e) {
+      throw new DaoException("Unable to connect to database");
+    }
+    return equipments;
+  }
+
 
   private Exercise mapToRowExercise(SqlRowSet row) {
     Exercise exercise = new Exercise();
