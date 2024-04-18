@@ -5,6 +5,7 @@ import com.techelevator.dao.CreateExerciseDto;
 import com.techelevator.dao.ExerciseDao;
 import com.techelevator.dao.UserProfileDao;
 
+import com.techelevator.model.Equipment;
 import com.techelevator.model.Exercise;
 import com.techelevator.model.UserProfile;
 import com.techelevator.model.Checkin;
@@ -66,6 +67,12 @@ public class ProfileController {
   public List<Exercise> getExercises(Principal principal) {
     return exerciseDao.getExercises(getUserId(principal));
   }
+
+  @GetMapping("/exercises/{id}")
+  public List<Equipment> getEquipmentForExercise(@PathVariable int id){
+    return exerciseDao.getEquipmentByExerciseId(id);
+  }
+
 
   @PostMapping("/exercises")
   public Exercise createExercise(@RequestBody CreateExerciseDto dto, Principal principal){
