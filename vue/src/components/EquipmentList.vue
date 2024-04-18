@@ -125,6 +125,7 @@ export default {
  .add-button {
      background-color: var(--color-blue);
      border-radius: 8px;
+     border: none;
      padding: 5px;
      font-weight: 600;
      transition: background-color 200ms;
