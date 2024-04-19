@@ -40,7 +40,7 @@
                 </button>
             </div>
 
-            <button v-if="isMember() && selectedEventId === event.scheduleId"
+            <button id="sign-up-button" v-if="isMember() && selectedEventId === event.scheduleId"
                 @click="amISignedUp(event) ? signOut(selectedEventId) : signUp(selectedEventId)">{{
                     amISignedUp(event) ? 'Cancel' : 'Sign Up' }}</button>
         </div>
@@ -266,6 +266,18 @@ h1 {
 
 #confirm-edit:hover {
     color: var(--color-blue);
+    cursor: pointer;
+}
+#sign-up-button{
+    background-color: var(--color-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 5px;
+    font-weight: 600;
+    transition: background-color 200ms;
+}
+#sign-up-button:hover{
+    background-color: var(--color-blue-o);
     cursor: pointer;
 }
 </style>
